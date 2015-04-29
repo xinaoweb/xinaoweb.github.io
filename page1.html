@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html class="xa-app">
+<head>
+<!-- 
+开发人员书写规范:
+1.所有缩进都用 TAB， 而不是空格。
+2.非必要，禁止用行内样式例如 <div style="display:block"> 
+-->
+	<!-- Basic Page Needs
+	================================================== -->
+	<meta charset="utf-8">
+	<title>title</title>
+	<meta name="description" content="">
+	<meta name="author" content="J.Chen">
+	<!-- 让360双核浏览器用webkit内核渲染页面 !!! 注意，这行最好放在前面，防止浏览器开始解析的时候采用其它内置的渲染方案
+	================================================== -->
+	<meta name="renderer" content="webkit">
+	<!-- 让IE浏览器用最高级内核渲染页面 还有用 Chrome 框架的页面用webkit 内核
+	================================================== -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<!-- IOS6全屏 Chrome高版本全屏
+	================================================== -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes"> 
+	<!-- Mobile Specific Metas
+	================================================== -->
+	<!-- !!!注意 minimal-ui 是IOS7.1的新属性，最小化浏览器UI，但是在iOS8.1突然被取消 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<!-- 指定苹果设备添加到主屏的标题 -->
+	<meta name="apple-mobile-web-app-title" content="title2">
+	<!-- CSS
+	================================================== -->
+	<link href="css/reset.css" rel="stylesheet" type="text/css">
+	<link href="css/style.css" rel="stylesheet" type="text/css">
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="favicon.ico" >
+	<!-- Android 主屏图标
+	================================================== -->	
+	<link rel="icon" sizes="196x196" href="touch-icon.png">
+	<!-- IOS 主屏图标
+	================================================== -->
+	<link rel="apple-touch-icon" href="touch-icon-iphone.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="touch-icon-ipad.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="touch-icon-iphone-retina.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad-retina.png">
+	
+	<!-- Tile icon for Win8 (144x144 + tile color) -->
+	<!-- win 8 磁贴图标 -->
+	<meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+	<!-- win 8 磁贴颜色 -->
+	<meta name="msapplication-TileColor" content="#3372DF">
+	<meta http-equiv="Cache-Control" content="no-siteapp">
+	<script type="text/javascript">
+		<!--
+		var unityObjectUrl = "http://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js";
+		if (document.location.protocol == 'https:')
+			unityObjectUrl = unityObjectUrl.replace("http://", "https://ssl-");
+		document.write('<script type="text\/javascript" src="' + unityObjectUrl + '"><\/script>');
+		-->
+	</script>
+	
+	
+	<script src="js/lib/echarts-all.js"></script>
+	<script>
+		window.pageName = "page01"
+		/*检测是不是WebKit内核*/
+		var isWebkit = 'WebkitAppearance' in document.documentElement.style;
+		if(isWebkit){
+			/*进行匹配缩放*/
+			function webkitScalc() {
+				var defaultWidth = 6142;
+				var userWidth = window.innerWidth;
+				var scalcNum = userWidth / defaultWidth;
+				if ( scalcNum < 1 ) {
+					scalcNum = scalcNum*100
+					document.documentElement.style.zoom = scalcNum + "%";
+				}
+			}webkitScalc();
+			/*绑定到缩放事件*/
+			window.addEventListener("resize", webkitScalc);
+		}
+	</script>
+</head>
+<body>
+<div class="container"><!-- Everything started here -->
+	<div class="header-all">
+		<div class="xa-header clearfix">
+			<a href="#" class="xa-logo-text">
+				<img src="images/xa-logo.png" alt="">
+				<span>新奥泛能站云服务平台 V1.0</span>
+			</a>
+			<div class="xa-logo-right">
+				<img class="xa-logo2" src="images/xa-logo2.png" alt="">
+			</div>
+		</div>
+		<div class="xa-sub-header clearfix">
+			<a href="index.html" class="icon-button">
+				<span class="icon icon-home"></span>
+			</a>
+			<h2 class="subhead-title">
+				<span>黄花机场泛能站</span>
+			</h2>
+			<div class="subhead-param">
+				<div class="row">
+					<div class="cell th">
+						<span class="icon-button">
+							<i class="icon icon-temp"></i>
+						</span>
+					</div>
+					<div class="cell td">
+						<span class="spspan">温度</span>
+						<span class="spspan"><i class="highlight">13°C</i></span>
+					</div>
+					<div class="cell th">
+						<span class="icon-button">
+							<i class="icon icon-wth"></i>
+						</span>
+					</div>
+					<div class="cell td">
+						<span class="spspan">湿度</span>
+						<span class="spspan"><i class="highlight">15%</i></span>
+					</div>
+					<div class="cell th">
+						<span class="icon-button">
+							<i class="icon icon-sun"></i>
+						</span>
+					</div>
+					<div class="cell td">
+						<span class="spspan">辐照度</span>
+						<span class="spspan"><i class="highlight">w/㎡</i></span>
+					</div>
+				</div>
+			</div>
+			
+			<div class="subhead-tab-warp" for="toggle-tabs-001">
+				<div class="tabs cur">收益 / 成本</div>
+				<div class="tabs ">耗能 / 供能</div>
+			</div>
+		
+		</div>
+	</div>
+	<div class="xa-content clearfix">
+		<div class="xa-con-left">
+		
+			<div class="row rw986 pdtsty1">
+				<div class="inner">
+					<div class="col-2 txa-c">
+						<div id="pie1" class="dib" style="width:320px; height:320px;"></div>
+					</div>
+					<div class="col-2 txa-c">
+						<div id="pie2" class="dib" style="width:320px; height:320px;"></div>
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="row rw986" style="margin-top:-3px;margin-bottom:-3px;">
+				<div class="inner">
+					<div class="col-2 txa-c">
+						<span class="line" style="color:#f8ae3b"></span>
+					</div>
+					<div class="col-2 txa-c">
+						<span class="line" style="color:#21b171"></span>
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="row rw986">
+				<div class="inner">
+					<div class="col-2 txa-c">
+						<div class="chart-text-block bgc-org">
+							<p>节能量</p>
+							<p>20500.0 kWh</p>
+						</div>
+					</div>
+					<div class="col-2 txa-c">
+						<div class="chart-text-block bgc-gry">
+							<p>减排量</p>
+							<p>20500.0 kg</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="row rw986" style="margin-top:-3px;margin-bottom:-3px;">
+				<div class="inner">
+					<div class="col-2 txa-c">
+						<span class="dline" style="color:#f8ae3b"></span>
+					</div>
+					<div class="col-2 txa-c">
+						<span class="dline" style="color:#21b171"></span>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row rw986">
+				<div class="inner">
+					<div class="col-2 txa-c">
+						<div id="barchart-1" class="hov-line-chartblock"></div>
+					</div>
+					<div class="col-2 txa-c">
+						<div id="barchart-2" class="hov-line-chartblock"></div>
+					</div>
+				</div>
+			</div>
+		
+			<div class="row rw986 pdtsty1">
+				<div class="inner">
+					<div class="col-2 txa-c">
+						<div id="pie3" class="dib" style="width:320px; height:320px;"></div>
+					</div>
+					<div class="col-2 txa-c">
+						<div id="pie4" class="dib" style="width:320px; height:320px;"></div>
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="row rw986" style="margin-top:-3px;margin-bottom:-3px;">
+				<div class="inner">
+					<div class="col-2 txa-c">
+						<span class="line" style="color:#ec1e79"></span>
+					</div>
+					<div class="col-2 txa-c">
+						<span class="line" style="color:#92278e"></span>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row rw986">
+				<div class="inner">
+					<div class="col-2 txa-c">
+						<div id="" class="hov-line-chartblock flexmid">
+						<p>耗能</p>
+						<p><font color="#ec1e79">25406</font> kWh</p>
+						<p>耗能</p>
+						<p><font color="#ec1e79">25406</font> kWh</p>
+					</div>
+					</div>
+					<div class="col-2 txa-c">
+						<div id="" class="hov-line-chartblock flexmid">
+						<p>耗能</p>
+						<p><font color="#92278e">25406</font> kWh</p>
+						<p>耗能</p>
+						<p><font color="#92278e">25406</font> kWh</p>
+					</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row rw986">
+				<div class="inner">
+					<div class="col-2 txa-c"></div>
+					<div class="col-2 txa-c"></div>
+				</div>
+			</div>
+			
+			
+			
+		</div>
+		<div class="xa-con-right toggle-tabs-001">
+			<div class="tablayout cur" id="toggle-tabs-001">
+				<div class="column-chart-block">
+					<div class="ccb-left">
+						<div class="ccb-leftblocks">
+							<div class="ccb-leftblocks-inner flexmid" id="showModal_8">
+								<p id="cou_01">￥</p>
+								<p>当年成本</p>
+							</div>
+						</div>
+						<div class="ccb-leftblocks">
+							<div class="ccb-leftblocks-inner flexmid" id="showModal_9">
+								<p id="cou_02">￥</p>
+								<p>当年收益</p>
+							</div>
+						</div>
+					</div>
+					<div class="ccb-right">
+						<div class="chart-inner-wrap" id="columnChart3">
+							
+						</div>
+					</div>
+				</div>
+				<div class="column-chart-block">
+					<div class="ccb-left">
+						<div class="ccb-leftblocks">
+							<div class="ccb-leftblocks-inner flexmid">
+								<p id="cou_03">￥</p>
+								<p>当月成本</p>
+							</div>
+						</div>
+						<div class="ccb-leftblocks">
+							<div class="ccb-leftblocks-inner flexmid">
+								<p id="cou_04">￥</p>
+								<p>当月收益</p>
+							</div>
+						</div>
+					</div>
+					<div class="ccb-right">
+						<div class="chart-inner-wrap" id="columnChart4">
+							
+						</div>
+					</div>
+				</div>
+				<div class="column-chart-block">
+					<div class="ccb-left">
+						<div class="ccb-leftblocks">
+							<div class="ccb-leftblocks-inner flexmid">
+								<p id="cou_05">￥</p>
+								<p>当日成本</p>
+							</div>
+						</div>
+						<div class="ccb-leftblocks">
+							<div class="ccb-leftblocks-inner flexmid">
+								<p id="cou_06">￥</p>
+								<p>当日收益</p>
+							</div>
+						</div>
+					</div>
+					<div class="ccb-right">
+						<div class="chart-inner-wrap" id="columnChart5">
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="tablayout " id="toggle-tabs-002">
+				<div class="eng-title">
+					<span class="eng-titlein">耗能</span>
+				</div>
+				<div class="eng-block-wrap">
+					<div class="inner part-3">
+						<div class="eng-bp" id="showModal_1">
+							<div class="eng-block color-1">
+								<div class="eng-b-top clearfix">
+									<div class="eng-icon">
+										<img src="images/icon-thunder.png" alt="">
+									</div>
+									<div class="eng-text">
+										<div>
+											<p>今日耗电</p>
+											<p>40 kWh</p>
+										</div>
+									</div>
+								</div>
+								<div class="eng-b-con">
+									<div class="eng-bcin">
+										<p>当月耗电</p>
+										<p>1200 kWh</p>
+									</div>
+									<div class="eng-bcin">
+										<p>当年耗电</p>
+										<p>24000 kWh</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="eng-bp" id="showModal_2">
+							<div class="eng-block color-2">
+								<div class="eng-b-top clearfix">
+									<div class="eng-icon">
+										<img src="images/icon-fire.png" alt="">
+									</div>
+									<div class="eng-text">
+										<div>
+											<p>今日耗电</p>
+											<p>40 kWh</p>
+										</div>
+									</div>
+								</div>
+								<div class="eng-b-con">
+									<div class="eng-bcin">
+										<p>当月耗电</p>
+										<p>1200 kWh</p>
+									</div>
+									<div class="eng-bcin">
+										<p>当年耗电</p>
+										<p>24000 kWh</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="eng-bp" id="showModal_3">
+							<div class="eng-block color-3">
+								<div class="eng-b-top clearfix">
+									<div class="eng-icon">
+										<img src="images/icon-wth2.png" alt="">
+									</div>
+									<div class="eng-text">
+										<div>
+											<p>今日耗电</p>
+											<p>40 kWh</p>
+										</div>
+									</div>
+								</div>
+								<div class="eng-b-con">
+									<div class="eng-bcin">
+										<p>当月耗电</p>
+										<p>1200 kWh</p>
+									</div>
+									<div class="eng-bcin">
+										<p>当年耗电</p>
+										<p>24000 kWh</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="eng-title">
+					<span class="eng-titlein">供能</span>
+				</div>
+				<div class="eng-block-wrap">
+					<div class="inner part-2">
+						<div class="eng-bp" id="showModal_4">
+							<div class="eng-block color-71538a">
+								<div class="eng-b-top clearfix">
+									<div class="eng-icon">
+										<img src="images/icon-spr.png" alt="">
+									</div>
+									<div class="eng-text">
+										<div>
+											<p>今日供电</p>
+											<p>40 kWh</p>
+										</div>
+									</div>
+								</div>
+								<div class="eng-b-con">
+									<div class="eng-bcin">
+										<p>当月耗电</p>
+										<p>1200 kWh</p>
+									</div>
+									<div class="eng-bcin">
+										<p>当年耗电</p>
+										<p>24000 kWh</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="eng-bp" id="showModal_5">
+							<div class="eng-block color-ab5150">
+								<div class="eng-b-top clearfix">
+									<div class="eng-icon">
+										<img src="images/icon-fire2.png" alt="">
+									</div>
+									<div class="eng-text">
+										<div>
+											<p>今日供热</p>
+											<p>40 kWh</p>
+										</div>
+									</div>
+								</div>
+								<div class="eng-b-con">
+									<div class="eng-bcin">
+										<p>当月耗电</p>
+										<p>1200 kWh</p>
+									</div>
+									<div class="eng-bcin">
+										<p>当年耗电</p>
+										<p>24000 kWh</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="eng-bp" id="showModal_6">
+							<div class="eng-block color-838d58">
+								<div class="eng-b-top clearfix">
+									<div class="eng-icon">
+										<img src="images/icon-cup.png" alt="">
+									</div>
+									<div class="eng-text">
+										<div>
+											<p>今日供热水</p>
+											<p>40 kWh</p>
+										</div>
+									</div>
+								</div>
+								<div class="eng-b-con">
+									<div class="eng-bcin">
+										<p>当月耗电</p>
+										<p>1200 kWh</p>
+									</div>
+									<div class="eng-bcin">
+										<p>当年耗电</p>
+										<p>24000 kWh</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="eng-bp" id="showModal_7">
+							<div class="eng-block color-b59142">
+								<div class="eng-b-top clearfix">
+									<div class="eng-icon">
+										<img src="images/icon-9dots.png" alt="">
+									</div>
+									<div class="eng-text">
+										<div>
+											<p>今日供蒸汽</p>
+											<p>40 kWh</p>
+										</div>
+									</div>
+								</div>
+								<div class="eng-b-con">
+									<div class="eng-bcin">
+										<p>当月耗电</p>
+										<p>1200 kWh</p>
+									</div>
+									<div class="eng-bcin">
+										<p>当年耗电</p>
+										<p>24000 kWh</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="xa-con-cent">
+			<div id="unityPlayer">
+				<div class="missing">
+					<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
+						<img alt="Unity Web Player. Install now!" src="http://webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
+					</a>
+				</div>
+				<div class="broken">
+					<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now! Restart your browser after install.">
+						<img alt="Unity Web Player. Install now! Restart your browser after install." src="http://webplayer.unity3d.com/installation/getunityrestart.png" width="193" height="63" />
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="xa-bottom-layout">
+		<div class="inner">
+			<div class="ctr-button"></div>
+			<div class="inner-selector">
+				<div class="inner-selector-i">
+					<div class="selector cur">
+						<img src="images/sampleimg-1.jpg" alt="">
+						<p>黄花机场泛能站</p>
+					</div>
+					<div class="selector">
+						<img src="images/sampleimg-2.jpg" alt="">
+						<p>神农城泛能站</p>
+					</div>
+					<div class="selector">
+						<img src="images/sampleimg-3.jpg" alt="">
+						<p>亭湖医院泛能站</p>
+					</div>
+					<div class="selector">
+						<img src="images/sampleimg-4.jpg" alt="">
+						<p>亭湖医院泛能站</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+</body>
+<div class="xa-modal-overlay modal-overlay-hide"></div>
+<div class="xa-modal-wrapper flexmid modal-hide">
+	<div class="modal-box">
+		<div class="title">
+			<div class="clsbtn"></div>
+			<div class="selector">
+				<div class="selector-inner">
+					<input type="text" class="dateinput">
+				</div>
+			</div>
+			
+			<span class="left">耗电</span>
+			
+		</div>
+		<div class="modal-content">
+			<div class="chartinner" id="chartinner">
+
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Javascript with AMD 
+	ADM开发DEMO 不采取AMD开发请自行去掉
+================================================== -->
+<script src="js/lib/require.js" data-main="js/app/main" ></script>
+</html>
