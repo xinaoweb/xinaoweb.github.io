@@ -130,7 +130,7 @@ var jayfunction = function() {
 			
 			$.ajax({
 				type : "get",
-				async:true,
+				async:false,
 				url : "ajaxsample/gislist.js",
 				dataType : "jsonp",
 				jsonp: "callback",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(默认为:callback)
@@ -419,12 +419,12 @@ var jayfunction = function() {
 		return 
 	} else {
 	var defaultTheme = "macarons"; // 默认chart主题
-//	var myCharts = echarts.init(document.getElementById('pie1'), defaultTheme);
-//	var myCharts2 = echarts.init(document.getElementById('pie2'), defaultTheme);
-//	var myChartsPie3 = echarts.init(document.getElementById('pie3'), defaultTheme);
-//	var myChartsPie4 = echarts.init(document.getElementById('pie4'), defaultTheme);
-//	var myCharts3 = echarts.init(document.getElementById('barchart-1'), defaultTheme);
-//	var myCharts4 = echarts.init(document.getElementById('barchart-2'), defaultTheme);
+	var myCharts = echarts.init(document.getElementById('pie1'), defaultTheme);
+	var myCharts2 = echarts.init(document.getElementById('pie2'), defaultTheme);
+	var myChartsPie3 = echarts.init(document.getElementById('pie3'), defaultTheme);
+	var myChartsPie4 = echarts.init(document.getElementById('pie4'), defaultTheme);
+	var myCharts3 = echarts.init(document.getElementById('barchart-1'), defaultTheme);
+	var myCharts4 = echarts.init(document.getElementById('barchart-2'), defaultTheme);
 	var mycolumnChart3 = echarts.init(document.getElementById('columnChart3'), defaultTheme);
 	var mycolumnChart4 = echarts.init(document.getElementById('columnChart4'), defaultTheme);
 	var mycolumnChart5 = echarts.init(document.getElementById('columnChart5'), defaultTheme);
@@ -450,8 +450,7 @@ var jayfunction = function() {
 		normal : {
 			label : {
 				formatter : function (params){
-					//保留小数点后面1位
-					return  Math.floor((100 - params.value)*10)/10 + '%';
+					return 100 - params.value + '%';
 				},
 				textStyle: {
 					fontWeight:'bold',
@@ -1083,29 +1082,29 @@ var jayfunction = function() {
 		
 	
 	
-//	myCharts.setOption(optionsPie1);
-//	myCharts2.setOption(optionsPie2);
-//	myCharts3.setOption(optionsbar1);
-//	var optionsbar2 = optionsbar1;
-//	optionsbar2.series[0].itemStyle.normal.color = "#22b473";
-//	optionsbar2.series[0].itemStyle.normal.label.formatter = function(params) {
-//		return params.value + "\n" + "标煤(kg)";
-//	};
-//	optionsbar2.series[0].data = [5406,16406];
-//	optionsbar2.xAxis[0].data = ["常规碳排放","常规能耗"];
-//	myCharts4.setOption(optionsbar2);
+	myCharts.setOption(optionsPie1);
+	myCharts2.setOption(optionsPie2);
+	myCharts3.setOption(optionsbar1);
+	var optionsbar2 = optionsbar1;
+	optionsbar2.series[0].itemStyle.normal.color = "#22b473";
+	optionsbar2.series[0].itemStyle.normal.label.formatter = function(params) {
+		return params.value + "\n" + "标煤(kg)";
+	};
+	optionsbar2.series[0].data = [5406,16406];
+	optionsbar2.xAxis[0].data = ["常规碳排放","常规能耗"];
+	myCharts4.setOption(optionsbar2);
 	
 	
-	/*var optionsPie3 = optionsPie1;
+	var optionsPie3 = optionsPie1;
 	var value = 75;
 	var secValue = 100 - 75;
 	optionsPie3.color = ["#ec1e79"];
 	optionsPie3.series[0].data[0].value = secValue;
 	optionsPie3.series[0].data[1].value = value;
 	optionsPie3.series[0].data[1].name = "系统能效";
-	myChartsPie3.setOption(optionsPie3);*/
+	myChartsPie3.setOption(optionsPie3);
 	
-	/*var optionsPie4 = optionsPie1;
+	var optionsPie4 = optionsPie1;
 	value = 15;
 	secValue = 100 - value;
 	optionsPie4.color = ["#92278e"];
@@ -1113,7 +1112,7 @@ var jayfunction = function() {
 	optionsPie4.series[0].data[1].value = value;
 	optionsPie4.series[0].data[1].name = "可再生能源\n利用率";
 	optionsPie4.series[0].data[1].itemStyle.normal.label.textStyle.fontSize =36;
-	myChartsPie4.setOption(optionsPie4);*/
+	myChartsPie4.setOption(optionsPie4);
 	
 	
 	
@@ -1124,254 +1123,6 @@ var jayfunction = function() {
 	columnChartopt.series[1].data = [1000, 2233, 1412, 1000, 311, 275, 2377, 1547, 254, 100, 700, 100];
 	mycolumnChart5.setOption(columnChartopt5);
 	
-		
-		
-		
-		
-		
-	$doc.on("leftjsonpdataReady", function(){
-		console.log(leftjsonpdata,"left Json Data load");
-		var datalength = leftjsonpdata.length;
-//		console.log(datalength)
-		$.each(leftjsonpdata, function(index, data) {
-			if ( index <= 1) {
-				var _name,
-					_percent,
-					data_1_name,
-					data_1_val,
-					data_1_unit,
-					data_2_name,
-					data_2_val,
-					data_2_unit,
-					data_3_name,
-					data_3_val,
-					data_3_unit,
-					classGroup;
-
-				_name = data.name;
-				_percent = data.datavalue;
-				/* */
-				data_1_name = data.data1.name;
-				data_1_val = data.data1.datavalue;
-				data_1_unit = data.data1.unitname;
-				/* */
-				data_2_name = data.data2.name;
-				data_2_val = data.data2.datavalue;
-				data_2_unit = data.data2.unitname;
-
-				data_3_name = data.data3.name;
-				data_3_val = data.data3.datavalue;
-				data_3_unit = data.data3.unitname;
-
-				classGroup = ".leftGruop_" + index;
-				var $classGroup = $(classGroup)
-				$classGroup.find(".chart-text-block").find("p").eq(0).html(data_1_name)
-				$classGroup.find(".chart-text-block").find("p").eq(1).html(data_1_val+ " " +data_1_unit)
-				
-				var $chartel = $classGroup.filter(function() {
-					var $this = $(this);
-					if ($this.hasClass("dib") && $this.attr("id")) {
-						return $this;
-					}
-				})
-//				console.log($chartel)
-				var myCharts = echarts.init($chartel[0], defaultTheme);
-				var chartOPT;
-				if (index == "0") {
-					chartOPT = optionsPie1;
-					chartOPT.color = ['#f8ae3b'];
-				} else if (index == "1") {
-					chartOPT = optionsPie2
-					chartOPT.color = ['#21b171'];
-				}
-				
-				
-				var secVal = 100 - _percent;
-				chartOPT.series[0].data[0].value = secVal
-				chartOPT.series[0].data[1].value = _percent
-				chartOPT.series[0].data[1].name = _name
-				myCharts.setOption(chartOPT);
-				
-				
-				
-				var $chartel2 = $classGroup.filter(function() {
-					var $this = $(this);
-					if ($this.hasClass("hov-line-chartblock") && $this.attr("id")) {
-						return $this;
-					}
-				})
-				
-				console.log($chartel2)
-				var myCharts2x = echarts.init($chartel2[0], defaultTheme);
-				
-				var chartOPT2 = optionsbar1;
-				chartOPT2.series[0].itemStyle.normal.label.formatter = function(params) {
-					return params.value + "\n" + data_2_unit;
-				};
-				chartOPT2.series[0].data = [data_2_val,data_3_val];
-				chartOPT2.xAxis[0].data = [data_2_name,data_3_name];
-				if (index == "0") {
-					chartOPT2.series[0].itemStyle.normal.color = "#f8ae3b";
-					
-				} else if (index == "1") {
-					chartOPT2.series[0].itemStyle.normal.color = "#21b171";
-				}
-				myCharts2x.setOption(chartOPT2)
-				
-				
-				/*var optionsbar2 = optionsbar1;
-				optionsbar2.series[0].itemStyle.normal.color = "#f8ae3b";
-				optionsbar2.series[0].itemStyle.normal.label.formatter = function(params) {
-					return params.value + "\n" + "标煤(kg)";
-				};
-				optionsbar2.series[0].data = [5406,16406];
-				optionsbar2.xAxis[0].data = ["常规碳排放","常规能耗"];
-				myCharts4.setOption(optionsbar2);*/
-				
-				
-				
-				
-				
-				
-				/*console.log(
-					_name,
-					_percent,
-					data_1_name,
-					data_1_val,
-					data_1_unit,
-					data_2_name,
-					data_2_val,
-					data_2_unit,
-					data_3_name,
-					data_3_val,
-					data_3_unit,
-					classGroup
-				)*/
-			} else {
-				var _name,
-					_percent,
-					data_1_name,
-					data_1_val,
-					data_1_unit,
-					data_2_name,
-					data_2_val,
-					data_2_unit,
-					data_3_name,
-					data_3_val,
-					data_3_unit,
-					classGroup;
-
-				_name = data.name;
-				_percent = data.datavalue;
-				/* */
-				data_1_name = data.data1.name;
-				data_1_val = data.data1.datavalue;
-				data_1_unit = data.data1.unitname;
-				/* */
-				data_2_name = data.data2.name;
-				data_2_val = data.data2.datavalue;
-				data_2_unit = data.data2.unitname;
-
-				classGroup = ".leftGruop_" + index; 
-
-
-				/*console.log(
-					_name,
-					_percent,
-					data_1_name,
-					data_1_val,
-					data_1_unit,
-					data_2_name,
-					data_2_val,
-					data_2_unit,
-					classGroup
-				)*/
-				
-				classGroup = ".leftGruop_" + index;
-				var $classGroup = $(classGroup);
-				var $classGroupBlock = $classGroup.find(".hov-line-chartblock");
-				var $classGroupBlock_p = $classGroupBlock.find("p");
-				
-				
-				var $chartel = $classGroup.filter(function() {
-					var $this = $(this);
-					if ($this.hasClass("dib") && $this.attr("id")) {
-						return $this;
-					}
-				})
-//				console.log($chartel)
-				var myCharts = echarts.init($chartel[0], defaultTheme);
-				var chartOPT;
-				if (index == "2") {
-					chartOPT = optionsPie1;
-					chartOPT.color = ['#ec1e79'];
-					chartOPT.series[0].data[0].value = 100 - _percent;
-					chartOPT.series[0].data[1].value = (function() {
-						if (_percent > 100) {
-							return 100;
-						} else {
-							return _percent;
-						}
-					})();
-					chartOPT.series[0].data[1].name = _name;
-					
-				} else if (index == "3") {
-					chartOPT = optionsPie1
-					chartOPT.color = ['#92278e'];
-					chartOPT.series[0].data[0].value = 100 - _percent;
-					chartOPT.series[0].data[1].value = _percent;
-					chartOPT.series[0].data[1].name = (function() {
-						if (_name == "可再生能源利用率") return "可再生能源\n利用率"
-					})();
-					chartOPT.series[0].data[1].itemStyle.normal.label.textStyle.fontSize =36;
-				}
-				myCharts.setOption(chartOPT)
-				
-				
-				
-				
-				$classGroupBlock_p.eq(0).html( data_1_name )
-				$classGroupBlock_p.eq(2).html( data_2_name )
-				
-				$classGroupBlock_p.eq(1).find("font").html(data_1_val)
-				$classGroupBlock_p.eq(1).find("span").html(data_1_unit)
-				
-				$classGroupBlock_p.eq(3).find("font").html(data_2_val)
-				$classGroupBlock_p.eq(3).find("span").html(data_2_unit)
-				
-			}
-			
-		});
-	});
-		
-		
-		
-		
-		
-	var leftjsonpdata = {};
-	$.ajax({
-		type : "get",
-		async:true,
-		url : "ajaxsample/leftjsonp.js",
-		dataType : "jsonp",
-		jsonp: "callback",
-		jsonpCallback:"leftjsonp",
-		success : function(json){
-			leftjsonpdata = json;
-			$doc.trigger("leftjsonpdataReady")
-		},
-			error:function(){
-			alert('加载左侧图表数据失败');
-		}
-	});
-		
-		
-		
-		
-		
-		
-		
-		
 	//判断echart undefined end
 //			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 //			modalchartobj.setOption(optionModal3);
@@ -1437,7 +1188,7 @@ var jayfunction = function() {
 	var tab01chartjsonM = {};
 	$.ajax({
 		type : "get",
-		async:true,
+		async:false,
 		url : "ajaxsample/costsumM.js",
 		dataType : "jsonp",
 		jsonp: "callback",
@@ -1453,7 +1204,7 @@ var jayfunction = function() {
 	var tab01chartjsonD = {};
 	$.ajax({
 		type : "get",
-		async:true,
+		async:false,
 		url : "ajaxsample/costsumD.js",
 		dataType : "jsonp",
 		jsonp: "callback",
@@ -1471,7 +1222,7 @@ var jayfunction = function() {
 	var tab01chartjsonY = {};
 	$.ajax({
 		type : "get",
-		async:true,
+		async:false,
 		url : "ajaxsample/costsumY.js",
 		dataType : "jsonp",
 		jsonp: "callback",
