@@ -1,5 +1,7 @@
 //配置页面加载模块参数
 require.config({
+	//等待加载的时间
+	waitSeconds:120,
 	//添加加载异步加载CSS的插件
 	map:{
 		'*':{
@@ -9,7 +11,7 @@ require.config({
 	//配置Javascript文件映射路径
 	paths: {
 		modernizr	:"../lib/modernizr.custom",
-		jquery		:"../lib/jquery.min",
+		jquery		:["http://cdn.bootcss.com/jquery/2.1.3/jquery.min","../lib/jquery.min"],
 		jay			:"jay"
 	},
 	shim: {//模块依赖关系 demo
