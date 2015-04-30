@@ -70,7 +70,7 @@
 	<meta name="msapplication-TileColor" content="#3372DF">
 	<meta http-equiv="Cache-Control" content="no-siteapp">
 	<script>
-		window.pageName = "index";
+		//window.pageName = "index";
 		/*检测是不是WebKit内核*/
 		var isWebkit = 'WebkitAppearance' in document.documentElement.style;
 		var isIE = document.all && document.addEventListener;
@@ -123,171 +123,660 @@
 </head>
 
 <body>
-<div class="index-container">
-	<div class="index-top">
-		新奥泛能站云服务平台 V1.0
-	</div>
-	<div class="xa-logo-rightop">
-		<img src="images/xa-logo2.png" alt="">
-	</div>
-	<div class="map-content" id="Amapcontent" style="width:100%">
-		
-	</div>
-	
-	<div class="left-cover-layout"></div>
-	<div class="right-cover-layout"></div>
-	
-	<div class="index-slider index_right_height">
-		<div class="swiper-container" id="index_left_swiper">
-			<div class="swiper-wrapper">
-				<!-- Slides -->
-				<div class="swiper-slide flexmid">
-					<h2 class="sw-title has-img-icon">
-						<img src="images/icon-blue-peo.png" class="sw-tcion" alt="">
-						用户体验
-					</h2>
-					<p class="txa-c">
-						手机、移动终端随时随地项目运营情况全面掌握
-					</p>
-				</div>
-				<div class="swiper-slide flexmid">
-					<h2 class="sw-title has-img-icon">
-						<img src="images/icon-blue-poc.png" class="sw-tcion" alt="">
-						远程服务
-					</h2>
-					<p class="txa-c">
-						设备和系统多种形式、多种方法关联分析快速展示
-					</p>
-				</div>
-				<div class="swiper-slide flexmid">
-					<h2 class="sw-title has-img-icon">
-						<img src="images/icon-blue-peos.png" class="sw-tcion" alt="">
-						潜力挖掘
-					</h2>
-					<p class="txa-c">
-						建筑能耗、工艺系统运行数据挖掘，节能评估
-					</p>
-				</div>
-				<div class="swiper-slide flexmid">
-					<h2 class="sw-title has-img-icon">
-						<img src="images/icon-blue-peo.png" class="sw-tcion" alt="">
-						用户体验
-					</h2>
-					<p class="txa-c">
-						手机、移动终端随时随地项目运营情况全面掌握
-					</p>
-				</div>
-				<div class="swiper-slide flexmid">
-					<h2 class="sw-title has-img-icon">
-						<img src="images/icon-blue-poc.png" class="sw-tcion" alt="">
-						远程服务
-					</h2>
-					<p class="txa-c">
-						设备和系统多种形式、多种方法关联分析快速展示
-					</p>
-				</div>
-				<div class="swiper-slide flexmid">
-					<h2 class="sw-title has-img-icon">
-						<img src="images/icon-blue-peos.png" class="sw-tcion" alt="">
-						潜力挖掘
-					</h2>
-					<p class="txa-c">
-						建筑能耗、工艺系统运行数据挖掘，节能评估
-					</p>
-				</div>
-				<div class="swiper-slide flexmid">
-					<h2 class="sw-title has-img-icon">
-						<img src="images/icon-blue-peo.png" class="sw-tcion" alt="">
-						用户体验
-					</h2>
-					<p class="txa-c">
-						手机、移动终端随时随地项目运营情况全面掌握
-					</p>
-				</div>
-				<div class="swiper-slide flexmid">
-					<h2 class="sw-title has-img-icon">
-						<img src="images/icon-blue-poc.png" class="sw-tcion" alt="">
-						远程服务
-					</h2>
-					<p class="txa-c">
-						设备和系统多种形式、多种方法关联分析快速展示
-					</p>
-				</div>
-				<div class="swiper-slide flexmid">
-					<h2 class="sw-title has-img-icon">
-						<img src="images/icon-blue-peos.png" class="sw-tcion" alt="">
-						潜力挖掘
-					</h2>
-					<p class="txa-c">
-						建筑能耗、工艺系统运行数据挖掘，节能评估
-					</p>
-				</div>
-			</div>
-		</div>
-		<div class="ils-pages swiper-pagination" id="ils_pages"></div>
-	</div>
-	
-	<div class="index-slider-right index_right_height">
-		<div id="slider_prew"></div>
-		<div id="slider_next"></div>
-		<div class="swiper-container" id="index_right_swiper">
-			<div class="swiper-wrapper">
-				
-				
-				<a class="swiper-slide irhitemsheight" href="page1.html">
-					
-					<div class="mapview-line-hov">
-						<div class="mapview-line-cycle">
-							<div class="icon-loaction"></div>
-						</div>
-						<div class="mv-local">湖南省 · 长沙市 · 长沙区</div>
-						<div class="mv-localname">上海地图坐标</div>
-					</div>
-					
-					<div class="mapview-right-text-wrap">
-						<div class="inner-cycle-top flexmid">
-							<p>60,758 ㎡</p>
-							<h2>建筑</h2>
-						</div>
-						<div class="inner-cycle-bot flexmid">
-							<h2>供能</h2>
-							<p>101,758 ㎡</p>
-						</div>
-					
-						<span class="inner-text">
-							<i class="it-line-hov"></i>
-							<em>公共建筑</em>
-						</span>
-					</div>
-					
-					<div class="mapview-cycle-wrap">
-						<div class="mapview-cycle"><img src="images/sampleimg-6.jpg" alt="">
-							<div class="mpv-cycle-detail flexmid">
-								<h3>二氧化碳排放总量 (kg)</h3>
-								<p>21321321132231</p>
-								<h3>成本总量 (rmb)</h3>
-								<p>21321321132231</p>
-								<h3>用电总量 (kwh)</h3>
-								<p>21321321132231</p>
-							</div>
-						</div>
-						<div class="mapview-cycle-tips">
-							<div class="icon-si flexmid">
-								<img src="images/icon-bulid-1.png" alt="">
-							</div>
-							<div class="text-date flexmid">
-								<h2>12</h2>
-								<p>2015</p>
-							</div>
-						</div>
-					</div>
-				</a>
-				
-			</div>
-		</div>
-	</div>
-	
+<div id="wrapper" class="wrapper">
+
+    <div class="index-container layout layout1 pt-page-current">
+        <div class="index-top">
+            新奥泛能站云服务平台 V1.0
+        </div>
+        <div class="xa-logo-rightop">
+            <img src="images/xa-logo2.png" alt="">
+        </div>
+        <div class="map-content" id="Amapcontent" style="width:100%">
+            
+        </div>
+        
+        <div class="left-cover-layout"></div>
+        <div class="right-cover-layout"></div>
+        
+        <div class="index-slider index_right_height">
+            <div class="swiper-container" id="index_left_swiper">
+                <div class="swiper-wrapper">
+                    <!-- Slides -->
+                    <div class="swiper-slide flexmid">
+                        <h2 class="sw-title has-img-icon">
+                            <img src="images/icon-blue-peo.png" class="sw-tcion" alt="">
+                            用户体验
+                        </h2>
+                        <p class="txa-c">
+                            手机、移动终端随时随地项目运营情况全面掌握
+                        </p>
+                    </div>
+                    <div class="swiper-slide flexmid">
+                        <h2 class="sw-title has-img-icon">
+                            <img src="images/icon-blue-poc.png" class="sw-tcion" alt="">
+                            远程服务
+                        </h2>
+                        <p class="txa-c">
+                            设备和系统多种形式、多种方法关联分析快速展示
+                        </p>
+                    </div>
+                    <div class="swiper-slide flexmid">
+                        <h2 class="sw-title has-img-icon">
+                            <img src="images/icon-blue-peos.png" class="sw-tcion" alt="">
+                            潜力挖掘
+                        </h2>
+                        <p class="txa-c">
+                            建筑能耗、工艺系统运行数据挖掘，节能评估
+                        </p>
+                    </div>
+                    <div class="swiper-slide flexmid">
+                        <h2 class="sw-title has-img-icon">
+                            <img src="images/icon-blue-peo.png" class="sw-tcion" alt="">
+                            用户体验
+                        </h2>
+                        <p class="txa-c">
+                            手机、移动终端随时随地项目运营情况全面掌握
+                        </p>
+                    </div>
+                    <div class="swiper-slide flexmid">
+                        <h2 class="sw-title has-img-icon">
+                            <img src="images/icon-blue-poc.png" class="sw-tcion" alt="">
+                            远程服务
+                        </h2>
+                        <p class="txa-c">
+                            设备和系统多种形式、多种方法关联分析快速展示
+                        </p>
+                    </div>
+                    <div class="swiper-slide flexmid">
+                        <h2 class="sw-title has-img-icon">
+                            <img src="images/icon-blue-peos.png" class="sw-tcion" alt="">
+                            潜力挖掘
+                        </h2>
+                        <p class="txa-c">
+                            建筑能耗、工艺系统运行数据挖掘，节能评估
+                        </p>
+                    </div>
+                    <div class="swiper-slide flexmid">
+                        <h2 class="sw-title has-img-icon">
+                            <img src="images/icon-blue-peo.png" class="sw-tcion" alt="">
+                            用户体验
+                        </h2>
+                        <p class="txa-c">
+                            手机、移动终端随时随地项目运营情况全面掌握
+                        </p>
+                    </div>
+                    <div class="swiper-slide flexmid">
+                        <h2 class="sw-title has-img-icon">
+                            <img src="images/icon-blue-poc.png" class="sw-tcion" alt="">
+                            远程服务
+                        </h2>
+                        <p class="txa-c">
+                            设备和系统多种形式、多种方法关联分析快速展示
+                        </p>
+                    </div>
+                    <div class="swiper-slide flexmid">
+                        <h2 class="sw-title has-img-icon">
+                            <img src="images/icon-blue-peos.png" class="sw-tcion" alt="">
+                            潜力挖掘
+                        </h2>
+                        <p class="txa-c">
+                            建筑能耗、工艺系统运行数据挖掘，节能评估
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="ils-pages swiper-pagination" id="ils_pages"></div>
+        </div>
+        
+        <div class="index-slider-right index_right_height">
+            <div id="slider_prew"></div>
+            <div id="slider_next"></div>
+            <div class="swiper-container" id="index_right_swiper">
+                <div class="swiper-wrapper">
+                    
+                   <!-- 
+                    <a class="swiper-slide irhitemsheight" href="page1.html">
+                    -->
+                        
+                        <div class="mapview-line-hov">
+                            <div class="mapview-line-cycle">
+                                <div class="icon-loaction"></div>
+                            </div>
+                            <div class="mv-local">湖南省 · 长沙市 · 长沙区</div>
+                            <div class="mv-localname">上海地图坐标</div>
+                        </div>
+                        
+                        <div class="mapview-right-text-wrap">
+                            <div class="inner-cycle-top flexmid">
+                                <p>60,758 ㎡</p>
+                                <h2>建筑</h2>
+                            </div>
+                            <div class="inner-cycle-bot flexmid">
+                                <h2>供能</h2>
+                                <p>101,758 ㎡</p>
+                            </div>
+                        
+                            <span class="inner-text">
+                                <i class="it-line-hov"></i>
+                                <em>公共建筑</em>
+                            </span>
+                        </div>
+                        
+                        <div class="mapview-cycle-wrap">
+                            <div class="mapview-cycle"><img src="images/sampleimg-6.jpg" alt="">
+                                <div class="mpv-cycle-detail flexmid">
+                                    <h3>二氧化碳排放总量 (kg)</h3>
+                                    <p>21321321132231</p>
+                                    <h3>成本总量 (rmb)</h3>
+                                    <p>21321321132231</p>
+                                    <h3>用电总量 (kwh)</h3>
+                                    <p>21321321132231</p>
+                                </div>
+                            </div>
+                            <div class="mapview-cycle-tips">
+                                <div class="icon-si flexmid">
+                                    <img src="images/icon-bulid-1.png" alt="">
+                                </div>
+                                <div class="text-date flexmid">
+                                    <h2>12</h2>
+                                    <p>2015</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--
+                    </a>
+                    -->
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="container  layout layout2"><!-- Everything started here -->
+        <div class="header-all">
+            <div class="xa-header clearfix">
+                <a href="#" class="xa-logo-text">
+                    <img src="images/xa-logo.png" alt="">
+                    <span>新奥泛能站云服务平台 V1.0</span>
+                </a>
+                <div class="xa-logo-right">
+                    <img class="xa-logo2" src="images/xa-logo2.png" alt="">
+                </div>
+            </div>
+            <div class="xa-sub-header clearfix">
+                <div id="goHome" class="icon-button">
+                    <span class="icon icon-home"></span>
+                </div>
+                <h2 class="subhead-title">
+                    <span>黄花机场泛能站</span>
+                </h2>
+                <div class="subhead-param">
+                    <div class="row">
+                        <div class="cell th">
+                            <span class="icon-button">
+                                <i class="icon icon-temp"></i>
+                            </span>
+                        </div>
+                        <div class="cell td">
+                            <span class="spspan">温度</span>
+                            <span class="spspan"><i class="highlight">13°C</i></span>
+                        </div>
+                        <div class="cell th">
+                            <span class="icon-button">
+                                <i class="icon icon-wth"></i>
+                            </span>
+                        </div>
+                        <div class="cell td">
+                            <span class="spspan">湿度</span>
+                            <span class="spspan"><i class="highlight">15%</i></span>
+                        </div>
+                        <div class="cell th">
+                            <span class="icon-button">
+                                <i class="icon icon-sun"></i>
+                            </span>
+                        </div>
+                        <div class="cell td">
+                            <span class="spspan">辐照度</span>
+                            <span class="spspan"><i class="highlight">w/㎡</i></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subhead-tab-warp" for="toggle-tabs-001">
+                    <div class="tabs cur">收益 / 成本</div>
+                    <div class="tabs ">耗能 / 供能</div>
+                </div>
+            
+            </div>
+        </div>
+        <div class="xa-content clearfix">
+            <div class="xa-con-left">
+            
+                <div class="row rw986 pdtsty1">
+                    <div class="inner">
+                        <div class="col-2 txa-c">
+                            <div id="pie1" class="dib leftGruop_0" style="width:320px; height:320px;"></div>
+                        </div>
+                        <div class="col-2 txa-c">
+                            <div id="pie2" class="dib leftGruop_1" style="width:320px; height:320px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="row rw986" style="margin-top:-3px;margin-bottom:-3px;">
+                    <div class="inner">
+                        <div class="col-2 txa-c">
+                            <span class="line" style="color:#f8ae3b"></span>
+                        </div>
+                        <div class="col-2 txa-c">
+                            <span class="line" style="color:#21b171"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="row rw986">
+                    <div class="inner">
+                        <div class="col-2 txa-c leftGruop_0">
+                            <div class="chart-text-block bgc-org">
+                                <p>&nbsp;</p>
+                                <p>&nbsp;<!--0000 kWh--></p>
+                            </div>
+                        </div>
+                        <div class="col-2 txa-c leftGruop_1">
+                            <div class="chart-text-block bgc-gry">
+                                <p>&nbsp;</p>
+                                <p>&nbsp;<!--0000 kg--></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="row rw986" style="margin-top:-3px;margin-bottom:-3px;">
+                    <div class="inner">
+                        <div class="col-2 txa-c">
+                            <span class="dline" style="color:#f8ae3b"></span>
+                        </div>
+                        <div class="col-2 txa-c">
+                            <span class="dline" style="color:#21b171"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row rw986">
+                    <div class="inner">
+                        <div class="col-2 txa-c">
+                            <div id="barchart-1" class="hov-line-chartblock leftGruop_0"></div>
+                        </div>
+                        <div class="col-2 txa-c">
+                            <div id="barchart-2" class="hov-line-chartblock leftGruop_1"></div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row rw986 pdtsty1">
+                    <div class="inner">
+                        <div class="col-2 txa-c">
+                            <div id="pie3" class="dib leftGruop_2" style="width:320px; height:320px;"></div>
+                        </div>
+                        <div class="col-2 txa-c">
+                            <div id="pie4" class="dib leftGruop_3" style="width:320px; height:320px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="row rw986" style="margin-top:-3px;margin-bottom:-3px;">
+                    <div class="inner">
+                        <div class="col-2 txa-c">
+                            <span class="line" style="color:#ec1e79"></span>
+                        </div>
+                        <div class="col-2 txa-c">
+                            <span class="line" style="color:#92278e"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row rw986">
+                    <div class="inner">
+                        <div class="col-2 txa-c leftGruop_2" >
+                            <div id="" class="hov-line-chartblock flexmid">
+                                <p>&nbsp;</p>
+                                <p><font color="#ec1e79">&nbsp;<!--25406--></font> <span>&nbsp;<!--kWh--></span></p>
+                                <p>&nbsp;</p>
+                                <p><font color="#ec1e79">&nbsp;<!--25406--></font> <span>&nbsp;<!--kWh--></span></p>
+                            </div>
+                        </div>
+                        <div class="col-2 txa-c leftGruop_3">
+                            <div id="" class="hov-line-chartblock flexmid">
+                                <p>&nbsp;</p>
+                                <p><font color="#92278e">&nbsp;<!--25406--></font> <span>&nbsp;<!--kWh--></span></p>
+                                <p>&nbsp;</p>
+                                <p><font color="#92278e">&nbsp;<!--25406--></font> <span>&nbsp;<!--kWh--></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--<div class="row rw986">
+                    <div class="inner">
+                        <div class="col-2 txa-c"></div>
+                        <div class="col-2 txa-c"></div>
+                    </div>
+                </div>-->
+                
+                
+                
+            </div>
+            <div class="xa-con-right toggle-tabs-001">
+                <div class="tablayout cur" id="toggle-tabs-001">
+                    <div class="column-chart-block">
+                        <div class="ccb-left">
+                            <div class="ccb-leftblocks">
+                                <div class="ccb-leftblocks-inner flexmid" id="showModal_8">
+                                    <p id="cou_01">￥</p>
+                                    <p>当年成本</p>
+                                </div>
+                            </div>
+                            <div class="ccb-leftblocks">
+                                <div class="ccb-leftblocks-inner flexmid" id="showModal_9">
+                                    <p id="cou_02">￥</p>
+                                    <p>当年收益</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ccb-right">
+                            <div class="chart-inner-wrap" id="columnChart3">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column-chart-block">
+                        <div class="ccb-left">
+                            <div class="ccb-leftblocks">
+                                <div class="ccb-leftblocks-inner flexmid">
+                                    <p id="cou_03">￥</p>
+                                    <p>当月成本</p>
+                                </div>
+                            </div>
+                            <div class="ccb-leftblocks">
+                                <div class="ccb-leftblocks-inner flexmid">
+                                    <p id="cou_04">￥</p>
+                                    <p>当月收益</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ccb-right">
+                            <div class="chart-inner-wrap" id="columnChart4">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column-chart-block">
+                        <div class="ccb-left">
+                            <div class="ccb-leftblocks">
+                                <div class="ccb-leftblocks-inner flexmid">
+                                    <p id="cou_05">￥</p>
+                                    <p>当日成本</p>
+                                </div>
+                            </div>
+                            <div class="ccb-leftblocks">
+                                <div class="ccb-leftblocks-inner flexmid">
+                                    <p id="cou_06">￥</p>
+                                    <p>当日收益</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ccb-right">
+                            <div class="chart-inner-wrap" id="columnChart5">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tablayout " id="toggle-tabs-002">
+                    <div class="eng-title">
+                        <span class="eng-titlein">耗能</span>
+                    </div>
+                    <div class="eng-block-wrap">
+                        <div class="inner part-3">
+                            <div class="eng-bp" id="showModal_1">
+                                <div class="eng-block color-1">
+                                    <div class="eng-b-top clearfix">
+                                        <div class="eng-icon">
+                                            <img src="images/icon-thunder.png" alt="">
+                                        </div>
+                                        <div class="eng-text">
+                                            <div>
+                                                <p>今日耗电</p>
+                                                <p>40 kWh</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="eng-b-con">
+                                        <div class="eng-bcin">
+                                            <p>当月耗电</p>
+                                            <p>1200 kWh</p>
+                                        </div>
+                                        <div class="eng-bcin">
+                                            <p>当年耗电</p>
+                                            <p>24000 kWh</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="eng-bp" id="showModal_2">
+                                <div class="eng-block color-2">
+                                    <div class="eng-b-top clearfix">
+                                        <div class="eng-icon">
+                                            <img src="images/icon-fire.png" alt="">
+                                        </div>
+                                        <div class="eng-text">
+                                            <div>
+                                                <p>今日耗电</p>
+                                                <p>40 kWh</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="eng-b-con">
+                                        <div class="eng-bcin">
+                                            <p>当月耗电</p>
+                                            <p>1200 kWh</p>
+                                        </div>
+                                        <div class="eng-bcin">
+                                            <p>当年耗电</p>
+                                            <p>24000 kWh</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="eng-bp" id="showModal_3">
+                                <div class="eng-block color-3">
+                                    <div class="eng-b-top clearfix">
+                                        <div class="eng-icon">
+                                            <img src="images/icon-wth2.png" alt="">
+                                        </div>
+                                        <div class="eng-text">
+                                            <div>
+                                                <p>今日耗电</p>
+                                                <p>40 kWh</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="eng-b-con">
+                                        <div class="eng-bcin">
+                                            <p>当月耗电</p>
+                                            <p>1200 kWh</p>
+                                        </div>
+                                        <div class="eng-bcin">
+                                            <p>当年耗电</p>
+                                            <p>24000 kWh</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="eng-title">
+                        <span class="eng-titlein">供能</span>
+                    </div>
+                    <div class="eng-block-wrap">
+                        <div class="inner part-2">
+                            <div class="eng-bp" id="showModal_4">
+                                <div class="eng-block color-71538a">
+                                    <div class="eng-b-top clearfix">
+                                        <div class="eng-icon">
+                                            <img src="images/icon-spr.png" alt="">
+                                        </div>
+                                        <div class="eng-text">
+                                            <div>
+                                                <p>今日供电</p>
+                                                <p>40 kWh</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="eng-b-con">
+                                        <div class="eng-bcin">
+                                            <p>当月耗电</p>
+                                            <p>1200 kWh</p>
+                                        </div>
+                                        <div class="eng-bcin">
+                                            <p>当年耗电</p>
+                                            <p>24000 kWh</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="eng-bp" id="showModal_5">
+                                <div class="eng-block color-ab5150">
+                                    <div class="eng-b-top clearfix">
+                                        <div class="eng-icon">
+                                            <img src="images/icon-fire2.png" alt="">
+                                        </div>
+                                        <div class="eng-text">
+                                            <div>
+                                                <p>今日供热</p>
+                                                <p>40 kWh</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="eng-b-con">
+                                        <div class="eng-bcin">
+                                            <p>当月耗电</p>
+                                            <p>1200 kWh</p>
+                                        </div>
+                                        <div class="eng-bcin">
+                                            <p>当年耗电</p>
+                                            <p>24000 kWh</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="eng-bp" id="showModal_6">
+                                <div class="eng-block color-838d58">
+                                    <div class="eng-b-top clearfix">
+                                        <div class="eng-icon">
+                                            <img src="images/icon-cup.png" alt="">
+                                        </div>
+                                        <div class="eng-text">
+                                            <div>
+                                                <p>今日供热水</p>
+                                                <p>40 kWh</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="eng-b-con">
+                                        <div class="eng-bcin">
+                                            <p>当月耗电</p>
+                                            <p>1200 kWh</p>
+                                        </div>
+                                        <div class="eng-bcin">
+                                            <p>当年耗电</p>
+                                            <p>24000 kWh</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="eng-bp" id="showModal_7">
+                                <div class="eng-block color-b59142">
+                                    <div class="eng-b-top clearfix">
+                                        <div class="eng-icon">
+                                            <img src="images/icon-9dots.png" alt="">
+                                        </div>
+                                        <div class="eng-text">
+                                            <div>
+                                                <p>今日供蒸汽</p>
+                                                <p>40 kWh</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="eng-b-con">
+                                        <div class="eng-bcin">
+                                            <p>当月耗电</p>
+                                            <p>1200 kWh</p>
+                                        </div>
+                                        <div class="eng-bcin">
+                                            <p>当年耗电</p>
+                                            <p>24000 kWh</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="xa-con-cent">
+                <div id="unityPlayer">
+                    <div class="missing">
+                        <a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
+                            <img alt="Unity Web Player. Install now!" src="http://webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
+                        </a>
+                    </div>
+                    <div class="broken">
+                        <a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now! Restart your browser after install.">
+                            <img alt="Unity Web Player. Install now! Restart your browser after install." src="http://webplayer.unity3d.com/installation/getunityrestart.png" width="193" height="63" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="xa-bottom-layout">
+            <div class="inner">
+                <div class="ctr-button"></div>
+                <div class="inner-selector">
+                    <div class="inner-selector-i">
+                        <div class="selector cur">
+                            <img src="images/sampleimg-1.jpg" alt="">
+                            <p>黄花机场泛能站</p>
+                        </div>
+                        <div class="selector">
+                            <img src="images/sampleimg-2.jpg" alt="">
+                            <p>神农城泛能站</p>
+                        </div>
+                        <div class="selector">
+                            <img src="images/sampleimg-3.jpg" alt="">
+                            <p>亭湖医院泛能站</p>
+                        </div>
+                        <div class="selector">
+                            <img src="images/sampleimg-4.jpg" alt="">
+                            <p>亭湖医院泛能站</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
 </div>
+
 </body>
 
 <!-- Javascript with AMD 

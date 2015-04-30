@@ -17,21 +17,18 @@ require.config({
 	shim: {//模块依赖关系 demo
 		//'swiperscrollbar': {deps:['swiper']},
 		//'swiper': {deps: ['jquery']},
-		'jay': {deps: ['jquery']},
+		'jay': {deps: ['jquery','modernizr']},
 		//'jay'  : {deps: ['swiper','swiperscrollbar']}
 	}
 });
 
 //配置页面加载模块
-require(['modernizr'],function(modernizr) {
-	!Modernizr.rgba?window.location="np.html":'';
-});
 
 require(
 	[
 		'jay'
 	], 
-	function (jquery,jay){
+	function (jquery,modernizr,jay){
 		$(function() {
 			jayfunction();
 		});
@@ -40,5 +37,6 @@ require(
 //加载对应css模块
 require([
 	"css!../../css/style1",
+	"css!../../css/animations",
 	"css!../../css/style2"
 ]);
