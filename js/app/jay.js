@@ -269,7 +269,7 @@ var jayfunction = function() {
 	$doc.on("click", ".ctr-button", function() {
 		$(".xa-bottom-layout").toggleClass("show")
 	});
-	if (typeof pageName != 'undefined' && pageName == "page01") {
+	if (typeof pageName != 'undefined' ) {
 		require([
 			"css!http://cdn.bootcss.com/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.standalone.min.css",
 			"css!http://cdn.bootcss.com/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker3.standalone.min.css",
@@ -277,7 +277,22 @@ var jayfunction = function() {
 		],function() {
 			require([
 			"http://cdn.bootcss.com/bootstrap-datepicker/1.4.0/locales/bootstrap-datepicker.zh-CN.min.js"],function(e) {
-				$('.dateinput').datepicker({
+				$('.dateinput-year').datepicker({
+					startView:2,
+					minViewMode:2,
+					format:'yyyy',
+					language:"zh-CN"
+				});
+				$('.dateinput-months').datepicker({
+					startView:1,
+					minViewMode:1,
+					format:'mm',
+					language:"zh-CN"
+				});
+				$('.dateinput-day').datepicker({
+					startView:0,
+					minViewMode:0,
+					format:'dd',
 					language:"zh-CN"
 				});
 			})
