@@ -266,7 +266,9 @@ var jayfunction = function() {
 		
 	}//index end
 	
-	
+	$doc.on("click", ".ctr-button", function() {
+		$(".xa-bottom-layout").toggleClass("show")
+	});
 	if (typeof pageName != 'undefined' && pageName == "page01") {
 		require([
 			"css!http://cdn.bootcss.com/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.standalone.min.css",
@@ -284,9 +286,6 @@ var jayfunction = function() {
 //		alert(document.documentElement.clientWidth)
 //		alert(document.documentElement.clientHeight)
 		
-		$doc.on("click", ".ctr-button", function() {
-			$(".xa-bottom-layout").toggleClass("show")
-		});
 	} if (typeof pageName == 'undefined') {
 		throw new Error('没有定义页面名称')
 	}
@@ -405,14 +404,92 @@ var jayfunction = function() {
 			"top":"90px"
 		});
 		function show_5_callback() {
-			console.log("show 5 call back");
-			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
-			modalchartobj.setOption(optionModal3);
-			
-			console.log($span1,$span2)
-			$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
-			$(document.getElementById("tempss")).prepend($span1)
-			$(document.getElementById("tempss")).prepend($span2)
+			$.ajax({
+				type : "get",
+				async:true,
+				url : "ajaxsample/pop_inc_col.js",
+				dataType : "jsonp",
+				jsonp: "callback",
+				jsonpCallback:"popinc_col",
+				success : function(jsoncol){
+					
+					$.ajax({
+						type : "get",
+						async:true,
+						url : "ajaxsample/pop_inc_pie.js",
+						dataType : "jsonp",
+						jsonp: "callback",
+						jsonpCallback:"popinc_pie",
+						success : function(jsonpie){
+							$.ajax({
+								type : "get",
+								async:true,
+								url : "ajaxsample/pop_inc_pie2.js",
+								dataType : "jsonp",
+								jsonp: "callback",
+								jsonpCallback:"popinc_pie2",
+								success : function(jsonpie2){
+									console.log(jsoncol,"dataCOL");
+									console.log(jsonpie,"dataPIE");
+									console.log(jsonpie2,"dataPIE2");
+									
+									
+									modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
+									var opt = optionModal3;
+									var xAxisdata = [];
+									var colsdata01 = [];
+									var colsdata02 = [];
+									var piedata = [];
+									var piedata2 = [];
+									$.each(jsoncol[0].costdatas, function(index,data) {
+										xAxisdata[index] = data.rectime;
+										colsdata01[index] = data.data;
+									});
+									$.each(jsoncol[0].incomedatas, function(index,data) {
+										colsdata02[index] = data.data;
+									});
+									$.each(jsonpie, function(index,data) {
+										piedata[index] = {
+											value : data.y, name:data.name
+										}
+									});
+									$.each(jsonpie2, function(index,data) {
+										piedata2[index] = {
+											value : data.y, name:data.name
+										}
+									});
+
+
+									console.log(colsdata01,"col1")
+									console.log(colsdata02,"col2")
+
+									opt.xAxis[0].data = xAxisdata;
+									opt.series[0].data = colsdata01;
+									opt.series[0].barWidth = 15;
+									opt.series[1].data = colsdata02;
+									opt.series[1].barWidth = 15;
+									opt.series[2].data = piedata;
+									opt.series[3].data = piedata2;
+									modalchartobj.setOption(opt);
+									$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
+									$(document.getElementById("tempss")).prepend($span1)
+									$(document.getElementById("tempss")).prepend($span2)
+								},
+									error:function(){
+									alert('加载饼图数据2据失败');
+								}
+							});
+						},
+							error:function(){
+							alert('弹出层饼图加载失败');
+						}
+					})
+				},
+					error:function(){
+					alert('弹出层柱状图加载失败');
+				}
+			})
+			console.log("show 8 call back");
 		}
 		showModal(show_5_callback);
 	}).on("click", "#showModal_9",function() {
@@ -1045,7 +1122,7 @@ var jayfunction = function() {
 				roseType : 'area',
 				center: (function() {
 					var half = 2908/2
-					var k = [half*1.5, "50%"]
+					var k = [half*1.25, "50%"]
 					return k
 				})(),
 				radius :[120, (function() {
@@ -1086,7 +1163,7 @@ var jayfunction = function() {
 				roseType : 'area',
 				center: (function() {
 					var half = 2908/2
-					var k = [half*1.5, "50%"]
+					var k = [half*1.75, "50%"]
 					return k
 				})(),
 				radius :[120, (function() {
