@@ -608,6 +608,7 @@
 .no-js .pt-page {
 	visibility: visible;
 	z-index: 1;
+    height:100%;
 }
 
 
