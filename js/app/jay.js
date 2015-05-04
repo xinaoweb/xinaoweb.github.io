@@ -190,7 +190,10 @@ var jayfunction = function() {
 			
 			
 		    $('#goHome').on('click', function(e) {
-            
+            		
+					$(".mapview-active").removeClass("mapview-active");
+					bdmap.centerAndZoom("北京",7);
+				
                     window.pageName = "index";
 
                     if(window.pageName == "index")
