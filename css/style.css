@@ -441,6 +441,10 @@ a{text-decoration: none;}
 /*	background-color: #8bfffb;*/
 	margin: 0 1700px 0 1340px;
 }
+.xa-con-cent > #unityPlayer > embed 
+{
+   position: absolute; z-index: 1;
+}
 .xa-con-right .tablayout.cur
 {
 	display: block;
@@ -770,6 +774,7 @@ a{text-decoration: none;}
 	height: 100%;
 	left: 0;
 	top: 0;
+    opacity: 0.9;
 }
 
 .modal-box .title > .left

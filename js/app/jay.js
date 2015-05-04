@@ -193,7 +193,9 @@ var jayfunction = function() {
             
                     window.pageName = "index";
 
-                        switchPage()         
+                    if(window.pageName == "index")
+                        $('#unityPlayer').css({'visibility':'hidden'}) // 隐藏3d
+                    switchPage(); //切换页面         
             });	
 			$("#index_right_swiper").on("click", ".swiper-slide", function(e) {
 				var $this = $(this);
@@ -207,17 +209,8 @@ var jayfunction = function() {
 					$this.addClass(_actclass).siblings().removeClass(_actclass);
 					e.preventDefault();
 				} else {
-                /*
-                    require([
-                        "css!css/animations.css"
-                    ],function() {
-                    */
                     window.pageName = "page01";
-
-                        switchPage()         
-                        /*
-                    });
-                    */
+                    switchPage(); //切换页面         
                 }
 			});
 			
@@ -318,6 +311,8 @@ var jayfunction = function() {
 		});
 		$xa_modal_wrapper.addClass("modal-hidding");
 		$xa_modal_overlay.addClass("modal-overlay-hide");
+
+        $('#unityPlayer').css({'visibility':'visible'}); // 显示3d
 	});
 	
 	function showModal(callback) {
@@ -332,6 +327,7 @@ var jayfunction = function() {
 		$xa_modal_wrapper.removeClass("modal-hide");
 		$xa_modal_wrapper.addClass("modal-showing");
 		$xa_modal_overlay.removeClass("modal-overlay-hide")
+        $('#unityPlayer').css({'visibility':'hidden'}) // 隐藏3d
 	}
 	
 	
@@ -1643,7 +1639,8 @@ var jayfunction = function() {
 		
 			var config = {
 				width: 3100, 
-				height: 2180,
+				//height: 2180,
+				height: 2100,
 				params: { enableDebugging:"0" }
 				
 			};
@@ -1688,7 +1685,8 @@ var jayfunction = function() {
                     if(n == 1) u.initPlugin(jQuery("#unityPlayer")[0], "TestWeb1.unity3d");
                     else u.initPlugin(jQuery("#unityPlayer")[0], "TestWeb.unity3d");
                 }); 
-                    u.initPlugin(jQuery("#unityPlayer")[0], "TestWeb1.unity3d");
+                if(window.pageName == "page01")
+                    u.initPlugin(jQuery("#unityPlayer")[0], "TestWeb1.unity3d"); // 初始化3d
 			});
 
 
@@ -2033,6 +2031,7 @@ function getRandomArbitrary(min, max) {
 	}
 
 	function onEndAnimation( $outpage, $inpage ) {
+
 		endCurrPage = false;
 		endNextPage = false;
 		resetPage( $outpage, $inpage );
