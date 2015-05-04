@@ -210,6 +210,8 @@ var jayfunction = function() {
 					e.preventDefault();
 				} else {
                     window.pageName = "page01";
+                    if(window.pageName == "page01")
+                        $('#unityPlayer').css({'visibility':'visible'}) // 隐藏3d
                     switchPage(); //切换页面         
                 }
 			});
@@ -1685,7 +1687,7 @@ var jayfunction = function() {
                     if(n == 1) u.initPlugin(jQuery("#unityPlayer")[0], "TestWeb1.unity3d");
                     else u.initPlugin(jQuery("#unityPlayer")[0], "TestWeb.unity3d");
                 }); 
-                if(window.pageName == "page01")
+                //if(window.pageName == "page01")
                     u.initPlugin(jQuery("#unityPlayer")[0], "TestWeb1.unity3d"); // 初始化3d
 			});
 
