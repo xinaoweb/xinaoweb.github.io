@@ -3,6 +3,65 @@ var jayfunction = function() {
 	var $doc,$win,$html,$body;
 	
 	$doc = $(document);
+	// 链接VPN数据
+var demand
+  , projectBoxIndex = 0 // 项目索引 
+
+function Request() {
+    this.loading = $('#loading')
+}
+$.extend(Request.prototype, {
+    start: function(opt) {
+        var url = opt.url ? opt.url : 'rems-test.json'
+          , type = opt.type ? opt.type : 'GET'
+          , data = opt.data ? opt.data : {}
+          , timeout = opt.timeout ? opt.timeout : 10000
+          , currentRequest = null
+          , done = opt.done ? opt.done : doneFn
+          , fail = opt.fail ? opt.fail : failFn
+          , jsonp = opt.jsonp ? opt.jsonp : 'callbackparam'
+          , self = this;
+
+        currentRequest = $.ajax({
+            url: url
+          , type: type
+          , timeout: timeout
+          , data: data
+          , dataType: 'jsonp'
+          , jsonp: jsonp //服务端用于接收callback调用的function名的参数  
+          //, jsonpCallback: 'success_jsonpCallback'//callback的function名称,服务端会把名称和data一起传递回来 
+          , crossDomain: true
+          , mimeType: 'application/json'
+          , contentType: 'text/plain'
+          //, xhrFields: { withCredentials: false }
+          , beforeSend: function() {
+                if(currentRequest != null) currentRequest.abort();
+          }
+        })
+        .done(function(data){
+            var d = data;
+            self.loading.addClass('hide');
+            done(d);
+        })
+        .fail(function(jqXHR, textStatus) {
+            if(textStatus == 'timeout') { alert('timeout'); }
+            fail(jqXHR, textStatus);
+        });
+    }
+});
+function failFn(jqXHR, textStatus) { console.log('error is ' + jqXHR.statusText + ' textStatus is ' + textStatus); }
+function doneFn() { console.log('done'); }
+demand = new Request(); // 统一调用ajax
+
+//demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/login?USERNAME=ennshow&PASSWORD=ennshow0311',jsonp: 'login' ,done:remsLogin}); // 请求登录
+function remsLogin(data) {
+    if(data[0].login === 'true') demand.start({url:'http://10.36.128.73:8080/reds/ds/gislist', jsonp: 'gislist',done:indexInit}); // 登录成功加载项目
+    else alert('数据库出错')
+}
+function indexInit(){
+    console.log('hi123')
+}
+
 	
     /* 页面切换开始 */
 // page transitions
@@ -1648,8 +1707,10 @@ var jayfunction = function() {
 			}
 		});
 		var a = $(this).attr("index");
-		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+a,jsonp: 'setProject' ,done:setCompelte})
+		
 		bindY_M_D_data(detail_data_index); //pinmingle add 右边年月日数据绑定
+		
+		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+a,jsonp: 'setProject' ,done:setCompelte});
 		
 	
 	});
@@ -2289,64 +2350,6 @@ function getRandomArbitrary(min, max) {
 
 	init();
 
-// 链接VPN数据
-var demand
-  , projectBoxIndex = 0 // 项目索引 
-
-function Request() {
-    this.loading = $('#loading')
-}
-$.extend(Request.prototype, {
-    start: function(opt) {
-        var url = opt.url ? opt.url : 'rems-test.json'
-          , type = opt.type ? opt.type : 'GET'
-          , data = opt.data ? opt.data : {}
-          , timeout = opt.timeout ? opt.timeout : 10000
-          , currentRequest = null
-          , done = opt.done ? opt.done : doneFn
-          , fail = opt.fail ? opt.fail : failFn
-          , jsonp = opt.jsonp ? opt.jsonp : 'callbackparam'
-          , self = this;
-
-        currentRequest = $.ajax({
-            url: url
-          , type: type
-          , timeout: timeout
-          , data: data
-          , dataType: 'jsonp'
-          , jsonp: jsonp //服务端用于接收callback调用的function名的参数  
-          //, jsonpCallback: 'success_jsonpCallback'//callback的function名称,服务端会把名称和data一起传递回来 
-          , crossDomain: true
-          , mimeType: 'application/json'
-          , contentType: 'text/plain'
-          //, xhrFields: { withCredentials: false }
-          , beforeSend: function() {
-                if(currentRequest != null) currentRequest.abort();
-          }
-        })
-        .done(function(data){
-            var d = data;
-            self.loading.addClass('hide');
-            done(d);
-        })
-        .fail(function(jqXHR, textStatus) {
-            if(textStatus == 'timeout') { alert('timeout'); }
-            fail(jqXHR, textStatus);
-        });
-    }
-});
-function failFn(jqXHR, textStatus) { console.log('error is ' + jqXHR.statusText + ' textStatus is ' + textStatus); }
-function doneFn() { console.log('done'); }
-demand = new Request(); // 统一调用ajax
-
-//demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/login?USERNAME=ennshow&PASSWORD=ennshow0311',jsonp: 'login' ,done:remsLogin}); // 请求登录
-function remsLogin(data) {
-    if(data[0].login === 'true') demand.start({url:'http://10.36.128.73:8080/reds/ds/gislist', jsonp: 'gislist',done:indexInit}); // 登录成功加载项目
-    else alert('数据库出错')
-}
-function indexInit(){
-    console.log('hi123')
-}
 
 
 
