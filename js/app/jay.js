@@ -1803,9 +1803,31 @@ function main_days_Compelte(data){
 	tab01chartjsonD = data;
 	$doc.trigger("tab01chartjsonloadD");
 }
+
+function gnhnfn_Compelte(data){
+	console.log(json,"供能耗能数据");
+	$.each(data, function(index, data) {
+		var _day_name = "今日"+data.name;
+		var _month_name = "当月"+ data.name;
+		var _year_name = "当年"+ data.name;
+		
+		var _day_val =data.data1.datavalue+ " " +data.data1.unitname ;
+		var _month_val = data.data2.datavalue+ " " +data.data2.unitname;
+		var _year_val = data.data3.datavalue+ " " +data.data3.unitname;
+		
+		$(".ghn-0"+parseInt(index+1)+"-day-name").html(_day_name);
+		$(".ghn-0"+parseInt(index+1)+"-day-val").html(_day_val);
+		$(".ghn-0"+parseInt(index+1)+"-month-name").html(_month_name);
+		$(".ghn-0"+parseInt(index+1)+"-month-val").html(_month_val);
+		$(".ghn-0"+parseInt(index+1)+"-year-name").html(_year_name);
+		$(".ghn-0"+parseInt(index+1)+"-year-val").html(_year_val);
+		
+		
+	});
+}
 	
 	function gnhnfn() {
-		$.ajax({
+		/*$.ajax({
 			type : "get",
 			async:true,
 			url : "ajaxsample/gnhn.js",
@@ -1836,7 +1858,9 @@ function main_days_Compelte(data){
 				error:function(){
 				alert('供能耗能数据失败');
 			}
-		});	
+		});	*/
+		
+			demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainRight?timeradio=days',jsonp: 'mainRight' ,done:gnhnfn_Compelte});
 	}
 	$doc.on("loadRightTab2JSON", gnhnfn);
 	$doc.trigger("loadRightTab2JSON");
