@@ -443,8 +443,55 @@ var jayfunction = function() {
 		}
 		showModal(show_5_callback);
 	}).on("click", "#showModal_6",function() {
+//		；、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
 		function show_6_callback() {
-			console.log("show 1 call back")
+			console.log("show 6 call back");
+				$.ajax({
+					type : "get",
+					async:true,
+					url : "ajaxsample/pop_inc_line_muti.js",
+					dataType : "jsonp",
+					jsonp: "callback",
+					jsonpCallback:"popinc_line_muti",
+					success : function(json){
+						console.log(json)
+						var opt = optionModal2;
+						opt.xAxis[0].data= (function() {
+							var  k = [];
+							$.each(json[0].list , function(index,data) {
+								k[index] = data.rectime.split(" ")[0];
+							});
+							return k
+						})();
+						opt.series = [];
+						$.each(json,function(index,data) {
+							opt.series[index] = (function() {
+								var sd = {
+									name: (function() {
+										return data.div.name;
+									})(),
+									type:'line',
+									symbolSize:10,
+									stack: '总量',
+									itemStyle:optionModal2itemsty,
+									data:(function() {
+										var k = [];
+										$.each(data.list, function(index, data) {
+											k[index] = data.data;
+										});
+										return k;
+									})()
+								}
+								return sd;
+							})();
+						});
+						modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
+						modalchartobj.setOption(opt);
+					},
+						error:function(){
+						alert('加载多条曲线图表据失败');
+					}
+				});
 		}
 		showModal(show_6_callback);
 	}).on("click", "#showModal_7",function() {
