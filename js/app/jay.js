@@ -581,6 +581,7 @@ var jayfunction = function() {
 									opt.series[1].barWidth = 15;
 									opt.series[2].data = piedata;
 									opt.series[3].data = piedata2;
+									
 									modalchartobj.setOption(opt);
 									$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
 									$(document.getElementById("tempss")).prepend($span1)
@@ -1130,7 +1131,23 @@ var jayfunction = function() {
 			show:false
 		},
 		tooltip : {
-			trigger: 'axis'
+			show:true,
+			textStyle:{
+				fontSize:30
+			},
+			showDelay: 0,
+			hideDelay: 50,
+			transitionDuration:0,
+			backgroundColor : 'rgba(255,0,255,0.7)',
+			borderColor : '#f50',
+			borderRadius : 8,
+			borderWidth: 2,
+			padding: 10,    // [5, 10, 15, 20]
+			position : function(p) {
+				// 位置回调
+				// console.log && console.log(p);
+				return [p[0] + 10, p[1] - 10];
+			}
 		},
 		legend: {
 			x:"45%",
@@ -1191,7 +1208,7 @@ var jayfunction = function() {
 			{
 				name:"当年成本",
 				type:'bar',
-				barWidth : 20,
+				barWidth : 15,
 				barCategoryGap:'40%',
 				itemStyle : 
 				{
@@ -1210,7 +1227,7 @@ var jayfunction = function() {
 			{
 				name:"当年收益",
 				type:"bar",
-				barWidth : 20,
+				barWidth : 15,
 				barCategoryGap:'40%',
 				itemStyle : { 
 					normal: 
