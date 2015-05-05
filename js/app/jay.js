@@ -45,8 +45,9 @@ var jayfunction = function() {
 
 	if (typeof pageName != 'undefined' && pageName == "index") {
 		require([
-			"http://cdn.bootcss.com/Swiper/3.0.6/js/swiper.min.js",
-			"css!http://cdn.bootcss.com/Swiper/3.0.6/css/swiper.min"
+			"../lib/swiper/swiper.min",
+			"css!../lib/swiper/swiper.min"
+
 		],function(){
 			
 			
