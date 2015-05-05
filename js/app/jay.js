@@ -273,13 +273,13 @@ var jayfunction = function() {
 		$(".xa-bottom-layout").toggleClass("show")
 	});
 
-	require([
+	/*require([
 		"css!../lib/datepicker/bootstrap-datepicker.standalone.min",
 		"css!../lib/datepicker/bootstrap-datepicker3.standalone.min",
 		"../lib/datepicker/bootstrap-datepicker.min"
 	],function() {
 		require([
-		"../lib/datepicker/bootstrap-datepicker.zh-CN.min"],function(e) {
+		"../lib/datepicker/bootstrap-datepicker.zh-CN.min"],function(e) {*/
 			$('.dateinput-year').datepicker({
 				autoclose:true,
 				startView:2,
@@ -301,9 +301,9 @@ var jayfunction = function() {
 				format:'dd',
 				language:"zh-CN"
 			});
-		})
+	/*	})
 
-	});
+	});*/
 	
 	var $xa_modal_overlay = $(".xa-modal-overlay"),
 		$xa_modal_wrapper = $(".xa-modal-wrapper");

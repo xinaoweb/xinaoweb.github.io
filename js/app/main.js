@@ -12,12 +12,17 @@ require.config({
 	paths: {
 		modernizr	:"../lib/modernizr.custom",
 		jquery		:["http://cdn.bootcss.com/jquery/2.1.3/jquery.min","../lib/jquery.min"],
+		datepicker	:"../lib/datepicker/bootstrap-datepicker.min",
+		datelocation:"../lib/datepicker/bootstrap-datepicker.zh-CN.min",
 		jay			:"jay"
 	},
 	shim: {//模块依赖关系 demo
 		//'swiperscrollbar': {deps:['swiper']},
 		//'swiper': {deps: ['jquery']},
-		'jay': {deps: ['jquery','modernizr']},
+		//'swiper': {deps: ['jquery']},
+		'datepicker': {deps: ['jquery']},
+		'datelocation': {deps: ['datepicker']},
+		'jay': {deps: ['jquery','modernizr','datepicker']},
 		//'jay'  : {deps: ['swiper','swiperscrollbar']}
 	}
 });
