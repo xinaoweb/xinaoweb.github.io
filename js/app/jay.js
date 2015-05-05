@@ -220,6 +220,7 @@ var jayfunction = function() {
                     
                     detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
                     $(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
+					bindY_M_D_data(detail_data_index) //pinmingle add
                 }
 			});
 			
@@ -1616,7 +1617,6 @@ var jayfunction = function() {
 		});
 	$doc.on("click", ".inner-selector-i .selector", function() {
 		detail_data_index = $(this).index(); //pinmingle add
-		alert("2："+detail_data_index);
 		$(this).addClass("cur").siblings().removeClass("cur");
 		$.ajax({
 			type : "get",
@@ -1633,6 +1633,8 @@ var jayfunction = function() {
 				alert('加载左侧图表数据失败');
 			}
 		});
+		
+		bindY_M_D_data(detail_data_index); //pinmingle add 右边年月日数据绑定
 	
 	
 	});
@@ -1707,58 +1709,63 @@ var jayfunction = function() {
 		columnChartoptInit.series[1].data = dates2;
 		mycolumnChart3.setOption(columnChartoptInit);
 	});
-	var tab01chartjsonM = {};
-	$.ajax({
-		type : "get",
-		async:true,
-		url : "ajaxsample/costsumM.js",
-		dataType : "jsonp",
-		jsonp: "callback",
-		jsonpCallback:"costsumM",
-		success : function(json){
-			tab01chartjsonM = json;
-			$doc.trigger("tab01chartjsonloadM")
-		},
-			error:function(){
-			alert('加载图表01数据失败');
-		}
-	});
-	var tab01chartjsonD = {};
-	$.ajax({
-		type : "get",
-		async:true,
-		url : "ajaxsample/costsumD.js",
-		dataType : "jsonp",
-		jsonp: "callback",
-		jsonpCallback:"costsumD",
-		success : function(json){
-			tab01chartjsonD = json;
-			$doc.trigger("tab01chartjsonloadD")
-		},
-			error:function(){
-			alert('加载图表01数据失败');
-		}
-	});		
-
+		
+		
+		
+	}
 	
+	var tab01chartjsonM = {};
+	var tab01chartjsonD = {};
 	var tab01chartjsonY = {};
-	$.ajax({
-		type : "get",
-		async:true,
-		url : "ajaxsample/costsumY.js",
-		dataType : "jsonp",
-		jsonp: "callback",
-		jsonpCallback:"costsumY",
-		success : function(json){
-			tab01chartjsonY = json;
-			$doc.trigger("tab01chartjsonloadY")
-		},
-			error:function(){
-			alert('加载图表01数据失败');
-		}
-	});		
+	function bindY_M_D_data(i){
+		var rightY_M_D_data = [{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"}];
+		$.ajax({
+			type : "get",
+			async:true,
+			url : rightY_M_D_data[i].mData,
+			dataType : "jsonp",
+			jsonp: "callback",
+			jsonpCallback:"costsumM",
+			success : function(json){
+				tab01chartjsonM = json;
+				$doc.trigger("tab01chartjsonloadM")
+			},
+				error:function(){
+				alert('加载图表01数据失败');
+			}
+		});
 		
-		
+		$.ajax({
+			type : "get",
+			async:true,
+			url : rightY_M_D_data[i].dData,
+			dataType : "jsonp",
+			jsonp: "callback",
+			jsonpCallback:"costsumD",
+			success : function(json){
+				tab01chartjsonD = json;
+				$doc.trigger("tab01chartjsonloadD")
+			},
+				error:function(){
+				alert('加载图表01数据失败');
+			}
+		});		
+
+		$.ajax({
+			type : "get",
+			async:true,
+			url : rightY_M_D_data[i].yData,
+			dataType : "jsonp",
+			jsonp: "callback",
+			jsonpCallback:"costsumY",
+			success : function(json){
+				tab01chartjsonY = json;
+				$doc.trigger("tab01chartjsonloadY")
+			},
+				error:function(){
+				alert('加载图表01数据失败');
+			}
+		});	
 	}
 	
 	
