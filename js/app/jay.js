@@ -276,18 +276,21 @@ var jayfunction = function() {
 			require([
 			"http://cdn.bootcss.com/bootstrap-datepicker/1.4.0/locales/bootstrap-datepicker.zh-CN.min.js"],function(e) {
 				$('.dateinput-year').datepicker({
+					autoclose:true,
 					startView:2,
 					minViewMode:2,
 					format:'yyyy',
 					language:"zh-CN"
 				});
 				$('.dateinput-months').datepicker({
+					autoclose:true,
 					startView:1,
 					minViewMode:1,
 					format:'mm',
 					language:"zh-CN"
 				});
 				$('.dateinput-day').datepicker({
+					autoclose:true,
 					startView:0,
 					minViewMode:0,
 					format:'dd',
