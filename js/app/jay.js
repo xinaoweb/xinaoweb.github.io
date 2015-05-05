@@ -1623,7 +1623,8 @@ var jayfunction = function() {
 				error:function(){
 				alert('加载左侧图表数据失败');
 			}
-		}).eq(detail_data_index).trigger("click");
+		});
+		$(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
 	
 	});
 		
