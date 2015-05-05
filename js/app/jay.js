@@ -220,6 +220,7 @@ var jayfunction = function() {
                     
                     detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
                     $(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
+					bindY_M_D_data(detail_data_index) //pinmingle add
                 }
 			});
 			
@@ -1632,7 +1633,8 @@ var jayfunction = function() {
 				alert('加载左侧图表数据失败');
 			}
 		});
-	
+		
+		bindY_M_D_data(detail_data_index); //pinmingle add 右边年月日数据绑定
 	
 	});
 	
@@ -1647,6 +1649,11 @@ var jayfunction = function() {
 	//判断echart undefined end
 //			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 //			modalchartobj.setOption(optionModal3);
+
+function bindY_M_D_data(i){
+	
+	var rightY_M_D_data = [{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"}];
+	
 	$doc.on("tab01chartjsonloadM", function(e) {
 		console.log(tab01chartjsonM);
 		$("#cou_01").html("￥ "+tab01chartjsonM[0].costsum);
@@ -1715,11 +1722,10 @@ var jayfunction = function() {
 	var tab01chartjsonD = {};
 	var tab01chartjsonY = {};
 		
-		
 		$.ajax({
 			type : "get",
 			async:true,
-			url : "ajaxsample/costsumM.js",
+			url : rightY_M_D_data[i].mData,
 			dataType : "jsonp",
 			jsonp: "callback",
 			jsonpCallback:"costsumM",
@@ -1735,7 +1741,7 @@ var jayfunction = function() {
 		$.ajax({
 			type : "get",
 			async:true,
-			url : "ajaxsample/costsumD.js",
+			url : rightY_M_D_data[i].dData,
 			dataType : "jsonp",
 			jsonp: "callback",
 			jsonpCallback:"costsumD",
@@ -1751,7 +1757,7 @@ var jayfunction = function() {
 		$.ajax({
 			type : "get",
 			async:true,
-			url : "ajaxsample/costsumY.js",
+			url : rightY_M_D_data[i].yData,
 			dataType : "jsonp",
 			jsonp: "callback",
 			jsonpCallback:"costsumY",
@@ -1763,8 +1769,7 @@ var jayfunction = function() {
 				alert('加载图表01数据失败');
 			}
 		});	
-
-	
+}
 	
 	
 	function gnhnfn() {
