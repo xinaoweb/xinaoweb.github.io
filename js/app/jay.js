@@ -271,44 +271,38 @@ var jayfunction = function() {
 	$doc.on("click", ".ctr-button", function() {
 		$(".xa-bottom-layout").toggleClass("show")
 	});
-	if (typeof pageName != 'undefined' ) {
+
+	require([
+		"css!../lib/datepicker/bootstrap-datepicker.standalone.min",
+		"css!../lib/datepicker/bootstrap-datepicker3.standalone.min",
+		"../lib/datepicker/bootstrap-datepicker.min"
+	],function() {
 		require([
-			"css!http://cdn.bootcss.com/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.standalone.min.css",
-			"css!http://cdn.bootcss.com/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker3.standalone.min.css",
-			"http://cdn.bootcss.com/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js"
-		],function() {
-			require([
-			"http://cdn.bootcss.com/bootstrap-datepicker/1.4.0/locales/bootstrap-datepicker.zh-CN.min.js"],function(e) {
-				$('.dateinput-year').datepicker({
-					autoclose:true,
-					startView:2,
-					minViewMode:2,
-					format:'yyyy',
-					language:"zh-CN"
-				});
-				$('.dateinput-months').datepicker({
-					autoclose:true,
-					startView:1,
-					minViewMode:1,
-					format:'mm',
-					language:"zh-CN"
-				});
-				$('.dateinput-day').datepicker({
-					autoclose:true,
-					startView:0,
-					minViewMode:0,
-					format:'dd',
-					language:"zh-CN"
-				});
-			})
-			
-		});
-//		alert(document.documentElement.clientWidth)
-//		alert(document.documentElement.clientHeight)
-		
-	} if (typeof pageName == 'undefined') {
-		throw new Error('没有定义页面名称')
-	}
+		"../lib/datepicker/bootstrap-datepicker.zh-CN.min"],function(e) {
+			$('.dateinput-year').datepicker({
+				autoclose:true,
+				startView:2,
+				minViewMode:2,
+				format:'yyyy',
+				language:"zh-CN"
+			});
+			$('.dateinput-months').datepicker({
+				autoclose:true,
+				startView:1,
+				minViewMode:1,
+				format:'mm',
+				language:"zh-CN"
+			});
+			$('.dateinput-day').datepicker({
+				autoclose:true,
+				startView:0,
+				minViewMode:0,
+				format:'dd',
+				language:"zh-CN"
+			});
+		})
+
+	});
 	
 	var $xa_modal_overlay = $(".xa-modal-overlay"),
 		$xa_modal_wrapper = $(".xa-modal-wrapper");
