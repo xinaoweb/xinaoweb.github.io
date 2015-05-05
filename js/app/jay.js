@@ -221,7 +221,8 @@ var jayfunction = function() {
                     
                     detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
                     $(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
-					bindY_M_D_data(detail_data_index) //pinmingle add
+					//bindY_M_D_data(detail_data_index) //pinmingle add
+					demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid=1',jsonp: 'setProject' ,done:setCompelte})
                 }
 			});
 			
@@ -1738,7 +1739,7 @@ function bindY_M_D_data(i){
 			}
 		});
 		
-		$.ajax({
+		/*$.ajax({
 			type : "get",
 			async:true,
 			url : rightY_M_D_data[i].dData,
@@ -1752,7 +1753,8 @@ function bindY_M_D_data(i){
 				error:function(){
 				alert('加载图表01数据失败');
 			}
-		});		
+		});		*/
+		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now',jsonp: 'mainfinance' ,done:mainCompelte})
 		
 		$.ajax({
 			type : "get",
@@ -1774,6 +1776,13 @@ function bindY_M_D_data(i){
 		
 }
 	
+//一些会调函数
+function setCompelte(){}	
+
+function mainCompelte(data){
+	tab01chartjsonD = data;
+	$doc.trigger("tab01chartjsonloadD");
+}
 	
 	function gnhnfn() {
 		$.ajax({
