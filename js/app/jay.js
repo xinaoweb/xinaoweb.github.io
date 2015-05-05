@@ -221,7 +221,7 @@ var jayfunction = function() {
                     
                     detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
                     $(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
-					//bindY_M_D_data(detail_data_index) //pinmingle add
+					bindY_M_D_data(detail_data_index) //pinmingle add
 					demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid=1',jsonp: 'setProject' ,done:setCompelte})
                 }
 			});
@@ -1647,8 +1647,10 @@ var jayfunction = function() {
 				alert('加载左侧图表数据失败');
 			}
 		});
-		
+		var a = $(this).attr("index");
+		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+a,jsonp: 'setProject' ,done:setCompelte})
 		bindY_M_D_data(detail_data_index); //pinmingle add 右边年月日数据绑定
+		
 	
 	});
 		
