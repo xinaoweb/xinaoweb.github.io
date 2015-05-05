@@ -281,21 +281,27 @@ var jayfunction = function() {
 	],function() {
 		require([
 		"../lib/datepicker/bootstrap-datepicker.zh-CN.min"],function(e) {*/
-			$('.dateinput-year').datepicker({
+    var globalYears, globalMons, globalDays 
+
+    var dateYear = $('.dateinput-year')
+      , dateMon  = $('.dateinput-months')
+      , dateDay  = $('.dateinput-day')
+
+			dateYear.datepicker({
 				autoclose:true,
 				startView:2,
 				minViewMode:2,
 				format:'yyyy',
 				language:"zh-CN"
 			});
-			$('.dateinput-months').datepicker({
+			dateMon.datepicker({
 				autoclose:true,
 				startView:1,
 				minViewMode:1,
 				format:'mm',
 				language:"zh-CN"
 			});
-			$('.dateinput-day').datepicker({
+			dateDay.datepicker({
 				autoclose:true,
 				startView:0,
 				minViewMode:0,
