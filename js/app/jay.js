@@ -368,7 +368,84 @@ function indexInit(){
 				format:'dd',
 				language:"zh-CN"
 			}).on('changeDate', function(ev){
-                console.log(ev.date.getDate()) 
+                console.log(ev.date.getDate())
+				
+				// 这里示范加载3个Ajax数据，并且一起完成之后再执行之后的动作
+				// 为了后面方便，我们定义一个方法
+				var ajaxLoad_1,
+					ajaxLoad_2,
+					ajaxLoad_3,
+					getEchart;
+				function ajaxget(URL,CALLBACK_NAME) {
+					var thisAjax = $.ajax({
+						type : "get",
+						async:true,
+						url : URL,
+						dataType : "jsonp",
+						jsonp: "callback",
+						jsonpCallback:CALLBACK_NAME
+					});
+					return thisAjax;
+				}
+				ajaxLoad_1 = ajaxget("ajaxsample/pop_inc_col.js", "popinc_col");
+				ajaxLoad_2 = ajaxget("ajaxsample/pop_inc_pie.js", "popinc_pie");
+				ajaxLoad_3 = ajaxget("ajaxsample/pop_inc_pie2.js", "popinc_pie2");
+				$.when(ajaxLoad_1,ajaxLoad_2,ajaxLoad_3).done(function(json_a,json_b,json_c){
+					/*
+					* 返回的数据例如 json_a
+					* 包括3个数据：
+					* [数据,状态, 数据的type]
+					* 例如这里返回的是
+					* [Array[1], "success", Object]
+					* [Array[3], "success", Object]
+					* [Array[3], "success", Object]
+					*/
+					console.log(json_a,json_b,json_c,"拿到的3个JSON数据");
+					//由于我在弹出框的时候已经把echart的实例缓存到data里面，我从这里拿到它的实例进行修改
+					getEchart = $modalinnerChartWrap.data("echart");
+					var templeopt = optionModal3;
+					var xAxisdata = [];
+					var colsdata01 = [];
+					var colsdata02 = [];
+					var piedata = [];
+					var piedata2 = [];
+					$.each(json_a[0][0].costdatas, function(index,data) {
+						xAxisdata[index] = data.rectime;
+						colsdata01[index] = data.data;
+					});
+					$.each(json_a[0][0].incomedatas, function(index,data) {
+						colsdata02[index] = parseInt(data.data + Math.random()*100) ;
+					});
+					$.each(json_b[0], function(index,data) {
+						piedata[index] = {
+							value : parseInt(Math.random()*1000), name:data.name
+						}
+					});
+					$.each(json_c[0], function(index,data) {
+						piedata2[index] = {
+							value :parseInt(Math.random()*1000), name:data.name
+						}
+					});
+					//templeopt.series = [];
+					templeopt.xAxis[0].data = xAxisdata;
+					templeopt.series[0].data = colsdata01;
+					templeopt.series[0].barWidth = 15;
+					templeopt.series[1].data = colsdata02;
+					templeopt.series[1].barWidth = 15;
+					templeopt.series[2].data = piedata;
+					templeopt.series[3].data = piedata2;
+					
+					console.log(piedata)
+					console.log(piedata2)
+					
+					modalchartobj.setOption(templeopt);
+					templeopt=null;//clean,end
+					/*$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
+					$(document.getElementById("tempss")).prepend($span1);
+					$(document.getElementById("tempss")).prepend($span2);*/
+					
+					
+				});
                 $doc.on('modalshow',function(){
                     console.log('pop-up')
                 });
@@ -412,7 +489,7 @@ function indexInit(){
 	
 	
 	
-	var $modalinnerChartWrap = $("#chartinner");
+	window.$modalinnerChartWrap = $("#chartinner");
 	var modalchartobj ;
 	$doc.on("click", "#showModal_1", function() {
 		modalchartobj = null;
@@ -515,7 +592,6 @@ function indexInit(){
 		}
 		showModal(show_5_callback);
 	}).on("click", "#showModal_6",function() {
-//		；、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
 		function show_6_callback() {
 			console.log("show 6 call back");
 				$.ajax({
@@ -656,8 +732,9 @@ function indexInit(){
 									
 									modalchartobj.setOption(opt);
 									$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
-									$(document.getElementById("tempss")).prepend($span1)
-									$(document.getElementById("tempss")).prepend($span2)
+									$(document.getElementById("tempss")).prepend($span1);
+									$(document.getElementById("tempss")).prepend($span2);
+									$modalinnerChartWrap.data("echart", modalchartobj);
 								},
 									error:function(){
 									alert('加载饼图数据2据失败');
