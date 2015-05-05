@@ -1637,11 +1637,9 @@ var jayfunction = function() {
 		bindY_M_D_data(detail_data_index); //pinmingle add 右边年月日数据绑定
 	
 	});
-	
 		
 		
-		
-		
+}		
 		
 		
 		
@@ -1719,14 +1717,9 @@ function bindY_M_D_data(i){
 		mycolumnChart3.setOption(columnChartoptInit);
 	});
 		
-		
-		
-	}
 	
-	
-		
-		alert("2i:"+i);
-		$.ajax({
+	alert("2:"+i);
+	$.ajax({
 			type : "get",
 			async:true,
 			url : rightY_M_D_data[i].mData,
@@ -1773,6 +1766,9 @@ function bindY_M_D_data(i){
 				alert('加载图表01数据失败');
 			}
 		});	
+			
+		
+		
 }
 	
 	
@@ -2299,4 +2295,3 @@ function indexInit(){
 
 };
        
-
