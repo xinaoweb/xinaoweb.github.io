@@ -1599,6 +1599,21 @@ var jayfunction = function() {
 	var leftjsonpdata = {};
 	//pinmingle add
 	var data_Jsonp = ["leftjsonp.js","leftjsonp_2.js","leftjsonp_3.js","leftjsonp_4.js"];
+	$.ajax({
+			type : "get",
+			async:true,
+			url : "ajaxsample/"+data_Jsonp[0],
+			dataType : "jsonp",
+			jsonp: "callback",
+			jsonpCallback:"leftjsonp",
+			success : function(json){
+				leftjsonpdata = json;
+				$doc.trigger("leftjsonpdataReady")
+			},
+				error:function(){
+				alert('加载左侧图表数据失败');
+			}
+		});
 	$doc.on("click", ".inner-selector-i .selector", function() {
 		detail_data_index = $(this).index(); //pinmingle add
 		alert("2："+detail_data_index);
@@ -1621,7 +1636,7 @@ var jayfunction = function() {
 	
 	
 	});
-		$(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
+		//$(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
 		
 		
 		
