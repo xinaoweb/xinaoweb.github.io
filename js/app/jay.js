@@ -219,7 +219,7 @@ var jayfunction = function() {
                     switchPage(); //切换页面   
                     
                     detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
-                    alert(detail_data_index);
+                    $(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
                 }
 			});
 			
@@ -1636,7 +1636,7 @@ var jayfunction = function() {
 	
 	
 	});
-		//$(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
+	
 		
 		
 		
