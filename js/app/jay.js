@@ -302,13 +302,19 @@ var jayfunction = function() {
 				format:'mm',
 				language:"zh-CN"
 			});
-			dateDay.datepicker({
+            	dateDay.datepicker({
 				autoclose:true,
 				startView:0,
 				minViewMode:0,
 				format:'dd',
 				language:"zh-CN"
-			});
+			}).on('changeDate', function(ev){
+                console.log(ev.date.getDate()) 
+                $doc.on('modalshow',function(){
+                    console.log('pop-up')
+                });
+            });
+
 	/*	})
 
 	});*/
