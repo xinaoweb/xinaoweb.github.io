@@ -1624,9 +1624,10 @@ var jayfunction = function() {
 				alert('加载左侧图表数据失败');
 			}
 		});
-		$(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
+	
 	
 	});
+		$(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
 		
 		
 		
