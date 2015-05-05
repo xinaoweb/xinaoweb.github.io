@@ -1720,6 +1720,7 @@ var jayfunction = function() {
 	function bindY_M_D_data(i){
 		var rightY_M_D_data = [{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"}];
 		
+		alert("i:"+i);
 		$.ajax({
 			type : "get",
 			async:true,
