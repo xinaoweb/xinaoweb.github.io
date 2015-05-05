@@ -1718,8 +1718,11 @@ var jayfunction = function() {
 	var tab01chartjsonD = {};
 	var tab01chartjsonY = {};
 	function bindY_M_D_data(i){
-		var rightY_M_D_data = [{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"}];
-		$.ajax({
+		var rightY_M_D_data = [{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"}];
+		
+		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid=1',jsonp: 'setProject' ,done:complete});
+		
+		/*$.ajax({
 			type : "get",
 			async:true,
 			url : rightY_M_D_data[i].mData,
@@ -1733,7 +1736,7 @@ var jayfunction = function() {
 				error:function(){
 				alert('加载图表01数据失败');
 			}
-		});
+		});*/
 		
 		$.ajax({
 			type : "get",
@@ -1766,6 +1769,13 @@ var jayfunction = function() {
 				alert('加载图表01数据失败');
 			}
 		});	
+	}
+	
+	function complete(){
+		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now',jsonp: 'mainfinance' ,done:complete_d});
+	}
+	function complete_d(){
+		console.log("t_pimile");
 	}
 	
 	
