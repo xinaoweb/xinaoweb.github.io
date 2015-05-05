@@ -1610,7 +1610,7 @@ var jayfunction = function() {
 		$.ajax({
 			type : "get",
 			async:true,
-			url : "ajaxsample/"+data_Jsonp[index],
+			url : "ajaxsample/"+data_Jsonp[detail_data_index],
 			dataType : "jsonp",
 			jsonp: "callback",
 			jsonpCallback:"leftjsonp",
