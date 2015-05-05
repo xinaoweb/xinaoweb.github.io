@@ -1786,7 +1786,7 @@ var jayfunction = function() {
                     else u.initPlugin(jQuery("#unityPlayer")[0], "TestWeb.unity3d");
                 }); 
                 //if(window.pageName == "page01")
-                    u.initPlugin(jQuery("#unityPlayer")[0], "TestWeb1.unity3d"); // 初始化3d
+                    //u.initPlugin(jQuery("#unityPlayer")[0], "TestWeb1.unity3d"); // 初始化3d
 			});
 
 
