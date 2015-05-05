@@ -1654,9 +1654,7 @@ var tab01chartjsonM = {};
 	var tab01chartjsonY = {};
 	
 function bindY_M_D_data(i){
-	alert("i:"+i);
-	
-	
+
 	$doc.on("tab01chartjsonloadM", function(e) {
 		console.log(tab01chartjsonM);
 		$("#cou_01").html("￥ "+tab01chartjsonM[0].costsum);
@@ -1717,8 +1715,6 @@ function bindY_M_D_data(i){
 		mycolumnChart3.setOption(columnChartoptInit);
 	});
 		
-	
-	alert("2:"+i);
 	$.ajax({
 			type : "get",
 			async:true,
