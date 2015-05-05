@@ -1583,24 +1583,26 @@ var jayfunction = function() {
 		
 	var leftjsonpdata = {};
 	//pinmingle add
+	var data_Jsonp = ["leftjsonp.js","leftjsonp_2.js","leftjsonp_3.js","leftjsonp_4.js"];
 	$doc.on("click", ".inner-selector-i .selector", function() {
 		var index = $(this).index();
-		alert(index);
-	});
-	$.ajax({
-		type : "get",
-		async:true,
-		url : "ajaxsample/leftjsonp.js",
-		dataType : "jsonp",
-		jsonp: "callback",
-		jsonpCallback:"leftjsonp",
-		success : function(json){
-			leftjsonpdata = json;
-			$doc.trigger("leftjsonpdataReady")
-		},
-			error:function(){
-			alert('加载左侧图表数据失败');
-		}
+
+		$.ajax({
+			type : "get",
+			async:true,
+			url : "ajaxsample/"+data_Jsonp[index],
+			dataType : "jsonp",
+			jsonp: "callback",
+			jsonpCallback:"leftjsonp",
+			success : function(json){
+				leftjsonpdata = json;
+				$doc.trigger("leftjsonpdataReady")
+			},
+				error:function(){
+				alert('加载左侧图表数据失败');
+			}
+		});
+	
 	});
 		
 		
