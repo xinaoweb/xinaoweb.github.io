@@ -366,8 +366,53 @@ var jayfunction = function() {
 		$modalinnerChartWrap[0].innerHTML= "";
 		function show_4_callback() {
 			console.log("show 4 call back");
-			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
-			modalchartobj.setOption(optionModal2);
+			$.ajax({
+				type : "get",
+				async:true,
+				url : "ajaxsample/pop_inc_line_single.js",
+				dataType : "jsonp",
+				jsonp: "callback",
+				jsonpCallback:"popinc_line_single",
+				success : function(json){
+//					console.log(json);
+					var opt = optionModal2;
+					opt.xAxis[0].data= (function() {
+						var  k = [];
+						$.each(json[0].list , function(index,data) {
+							k[index] = data.rectime.split(" ")[0];
+						});
+						return k
+					})();
+					opt.series = [];
+					opt.series[0] = (function() {
+						var sd = {
+							name: (function() {
+								return json[0].div.name;
+							})(),
+							type:'line',
+							symbolSize:10,
+							stack: '总量',
+							itemStyle:optionModal2itemsty,
+							data:(function() {
+								var k = [];
+								$.each(json[0].list, function(index, data) {
+									k[index] = data.data;
+								});
+								return k;
+							})()
+						}
+						return sd;
+					})();
+					modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
+					modalchartobj.setOption(opt);
+				},
+					error:function(){
+					alert('加载单条曲线数据失败');
+				}
+			});	
+			
+			
+			
 			
 		}
 		showModal(show_4_callback);
