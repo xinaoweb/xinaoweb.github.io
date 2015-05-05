@@ -1805,8 +1805,9 @@ function main_days_Compelte(data){
 }
 
 function gnhnfn_Compelte(data){
-	console.log(json,"供能耗能数据");
-	$.each(data, function(index, data) {
+	var d = data;
+	console.log(data,"供能耗能数据");
+	$.each(d, function(index, data) {
 		var _day_name = "今日"+data.name;
 		var _month_name = "当月"+ data.name;
 		var _year_name = "当年"+ data.name;
