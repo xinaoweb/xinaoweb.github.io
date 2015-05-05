@@ -1649,10 +1649,10 @@ var jayfunction = function() {
 	//判断echart undefined end
 //			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 //			modalchartobj.setOption(optionModal3);
-
+var rightY_M_D_data = [{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"}];
 function bindY_M_D_data(i){
+	alert("i:"+i);
 	
-	var rightY_M_D_data = [{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"}];
 	
 	$doc.on("tab01chartjsonloadM", function(e) {
 		console.log(tab01chartjsonM);
@@ -1722,6 +1722,7 @@ function bindY_M_D_data(i){
 	var tab01chartjsonD = {};
 	var tab01chartjsonY = {};
 		
+		alert("2i:"+i);
 		$.ajax({
 			type : "get",
 			async:true,
