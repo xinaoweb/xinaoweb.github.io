@@ -1586,7 +1586,7 @@ var jayfunction = function() {
 	var data_Jsonp = ["leftjsonp.js","leftjsonp_2.js","leftjsonp_3.js","leftjsonp_4.js"];
 	$doc.on("click", ".inner-selector-i .selector", function() {
 		var index = $(this).index();
-
+		$(this).addClass("cur").siblings().removeClass("cur");
 		$.ajax({
 			type : "get",
 			async:true,
