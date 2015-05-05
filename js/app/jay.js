@@ -200,6 +200,7 @@ var jayfunction = function() {
                         $('#unityPlayer').css({'visibility':'hidden'}) // 隐藏3d
                     switchPage(); //切换页面         
             });	
+            var detail_data_index = 0; //内页图表数据索引 pinmingle add
 			$("#index_right_swiper").on("click", ".swiper-slide", function(e) {
 				var $this = $(this);
 				var _relh = $this.attr("refh");
@@ -215,7 +216,9 @@ var jayfunction = function() {
                     window.pageName = "page01";
                     if(window.pageName == "page01")
                         $('#unityPlayer').css({'visibility':'visible'}) // 隐藏3d
-                    switchPage(); //切换页面         
+                    switchPage(); //切换页面   
+                    
+                    detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add   
                 }
 			});
 			
@@ -1602,7 +1605,7 @@ var jayfunction = function() {
 	//pinmingle add
 	var data_Jsonp = ["leftjsonp.js","leftjsonp_2.js","leftjsonp_3.js","leftjsonp_4.js"];
 	$doc.on("click", ".inner-selector-i .selector", function() {
-		var index = $(this).index();
+		detail_data_index = $(this).index(); //pinmingle add
 		$(this).addClass("cur").siblings().removeClass("cur");
 		$.ajax({
 			type : "get",
@@ -1618,7 +1621,7 @@ var jayfunction = function() {
 				error:function(){
 				alert('加载左侧图表数据失败');
 			}
-		});
+		}).eq(detail_data_index).trigger("click");
 	
 	});
 		
