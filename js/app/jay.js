@@ -220,7 +220,6 @@ var jayfunction = function() {
                     
                     detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
                     $(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
-					bindY_M_D_data(detail_data_index) //pinmingle add
                 }
 			});
 			
@@ -1633,8 +1632,6 @@ var jayfunction = function() {
 				alert('加载左侧图表数据失败');
 			}
 		});
-		
-		bindY_M_D_data(detail_data_index); //pinmingle add 右边年月日数据绑定
 	
 	
 	});
@@ -1717,16 +1714,12 @@ var jayfunction = function() {
 	var tab01chartjsonM = {};
 	var tab01chartjsonD = {};
 	var tab01chartjsonY = {};
-	function bindY_M_D_data(i){
-		var rightY_M_D_data = [{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"}];
-		
-		alert("i:"+i);
 		
 		
 		$.ajax({
 			type : "get",
 			async:true,
-			url : rightY_M_D_data[i].mData,
+			url : "ajaxsample/costsumM.js",
 			dataType : "jsonp",
 			jsonp: "callback",
 			jsonpCallback:"costsumM",
@@ -1742,7 +1735,7 @@ var jayfunction = function() {
 		$.ajax({
 			type : "get",
 			async:true,
-			url : rightY_M_D_data[i].dData,
+			url : "ajaxsample/costsumD.js",
 			dataType : "jsonp",
 			jsonp: "callback",
 			jsonpCallback:"costsumD",
@@ -1758,7 +1751,7 @@ var jayfunction = function() {
 		$.ajax({
 			type : "get",
 			async:true,
-			url : rightY_M_D_data[i].yData,
+			url : "ajaxsample/costsumY.js",
 			dataType : "jsonp",
 			jsonp: "callback",
 			jsonpCallback:"costsumY",
@@ -1770,9 +1763,7 @@ var jayfunction = function() {
 				alert('加载图表01数据失败');
 			}
 		});	
-		
-	}
-	
+
 	
 	
 	
@@ -2299,4 +2290,3 @@ function indexInit(){
 
 };
        
-
