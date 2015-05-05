@@ -218,7 +218,8 @@ var jayfunction = function() {
                         $('#unityPlayer').css({'visibility':'visible'}) // 隐藏3d
                     switchPage(); //切换页面   
                     
-                    detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add   
+                    detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
+                    alert(detail_data_index);
                 }
 			});
 			
@@ -1606,6 +1607,7 @@ var jayfunction = function() {
 	var data_Jsonp = ["leftjsonp.js","leftjsonp_2.js","leftjsonp_3.js","leftjsonp_4.js"];
 	$doc.on("click", ".inner-selector-i .selector", function() {
 		detail_data_index = $(this).index(); //pinmingle add
+		alert("2："+detail_data_index);
 		$(this).addClass("cur").siblings().removeClass("cur");
 		$.ajax({
 			type : "get",
