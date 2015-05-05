@@ -1582,6 +1582,11 @@ var jayfunction = function() {
 		
 		
 	var leftjsonpdata = {};
+	//pinmingle add
+	$doc.on("click", ".inner-selector-i .selector", function() {
+		var index = $(this).index();
+		alert(index);
+	});
 	$.ajax({
 		type : "get",
 		async:true,
