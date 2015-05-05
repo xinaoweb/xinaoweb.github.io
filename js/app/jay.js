@@ -1721,25 +1721,11 @@ var jayfunction = function() {
 		var rightY_M_D_data = [{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"},{"yData":"ajaxsample/costsumY.js","mData":"ajaxsample/costsumM.js","dData":"ajaxsample/costsumD.js"}];
 		
 		alert("i:"+i);
-		$.ajax({
-			type : "get",
-			async:true,
-			url : rightY_M_D_data[i].yData,
-			dataType : "jsonp",
-			jsonp: "callback",
-			jsonpCallback:"costsumY",
-			success : function(json){
-				tab01chartjsonY = json;
-				$doc.trigger("tab01chartjsonloadY")
-			},
-				error:function(){
-				alert('加载图表01数据失败');
-			}
-		});	
+		
 		
 		$.ajax({
 			type : "get",
-			async:true,
+			async:false,
 			url : rightY_M_D_data[i].mData,
 			dataType : "jsonp",
 			jsonp: "callback",
@@ -1755,7 +1741,7 @@ var jayfunction = function() {
 		
 		$.ajax({
 			type : "get",
-			async:true,
+			async:false,
 			url : rightY_M_D_data[i].dData,
 			dataType : "jsonp",
 			jsonp: "callback",
@@ -1768,7 +1754,22 @@ var jayfunction = function() {
 				alert('加载图表01数据失败');
 			}
 		});		
-
+		
+		$.ajax({
+			type : "get",
+			async:false,
+			url : rightY_M_D_data[i].yData,
+			dataType : "jsonp",
+			jsonp: "callback",
+			jsonpCallback:"costsumY",
+			success : function(json){
+				tab01chartjsonY = json;
+				$doc.trigger("tab01chartjsonloadY")
+			},
+				error:function(){
+				alert('加载图表01数据失败');
+			}
+		});	
 		
 	}
 	
