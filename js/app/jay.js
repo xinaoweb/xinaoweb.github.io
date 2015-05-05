@@ -1723,6 +1723,22 @@ var jayfunction = function() {
 		$.ajax({
 			type : "get",
 			async:true,
+			url : rightY_M_D_data[i].yData,
+			dataType : "jsonp",
+			jsonp: "callback",
+			jsonpCallback:"costsumY",
+			success : function(json){
+				tab01chartjsonY = json;
+				$doc.trigger("tab01chartjsonloadY")
+			},
+				error:function(){
+				alert('加载图表01数据失败');
+			}
+		});	
+		
+		$.ajax({
+			type : "get",
+			async:true,
 			url : rightY_M_D_data[i].mData,
 			dataType : "jsonp",
 			jsonp: "callback",
@@ -1752,21 +1768,7 @@ var jayfunction = function() {
 			}
 		});		
 
-		$.ajax({
-			type : "get",
-			async:true,
-			url : rightY_M_D_data[i].yData,
-			dataType : "jsonp",
-			jsonp: "callback",
-			jsonpCallback:"costsumY",
-			success : function(json){
-				tab01chartjsonY = json;
-				$doc.trigger("tab01chartjsonloadY")
-			},
-				error:function(){
-				alert('加载图表01数据失败');
-			}
-		});	
+		
 	}
 	
 	
