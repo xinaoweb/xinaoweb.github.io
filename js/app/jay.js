@@ -393,23 +393,43 @@ switch(_pid) {
 				minViewMode:2,
 				format:'yyyy',
 				language:"zh-CN"
+			}).on('changeDate',function(e) {
+				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-" +dateDay.val();
+				console.log(joinDate);
+				if ( dateYear.val() && dateMon.val() && dateDay.val()) {
+					$doc.trigger("modal_date_change",joinDate);
+				}
 			});
 			dateMon.datepicker({
 				autoclose:true,
 				startView:1,
 				minViewMode:1,
-				format:'mm',
+				format:'m',
 				language:"zh-CN"
+			}).on('changeDate',function(e) {
+				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-" +dateDay.val();
+				console.log(joinDate);
+				if ( dateYear.val() && dateMon.val() && dateDay.val()) {
+					$doc.trigger("modal_date_change",joinDate);
+				}
 			});
             	dateDay.datepicker({
 				autoclose:true,
 				startView:0,
 				minViewMode:0,
-				format:'dd',
+				format:'d',
 				language:"zh-CN"
 			}).on('changeDate', function(ev){
                 console.log(ev.date.getDate())
+				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-" +dateDay.val();
+				console.log(joinDate);
+				if ( dateYear.val() && dateMon.val() && dateDay.val()) {
+					$doc.trigger("modal_date_change",joinDate);
+				}
 				
+					
+				//断点---------------------------------------------------------------------
+				return;
 				// 这里示范加载3个Ajax数据，并且一起完成之后再执行之后的动作
 				// 为了后面方便，我们定义一个方法
 				var ajaxLoad_1,
@@ -480,16 +500,16 @@ switch(_pid) {
 					console.log(piedata2)
 					
 					modalchartobj.setOption(templeopt);
-					templeopt=null;//clean,end
+					templeopt=null;
+					
+					
 					/*$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
 					$(document.getElementById("tempss")).prepend($span1);
 					$(document.getElementById("tempss")).prepend($span2);*/
 					
 					
 				});
-                $doc.on('modalshow',function(){
-                    console.log('pop-up')
-                });
+               
             });
 
 	/*	})
@@ -513,6 +533,19 @@ switch(_pid) {
         $('#unityPlayer').css({'visibility':'visible'}); // 显示3d
 	});
 	
+	
+	 $doc.on('modalshow',function(){
+		console.log('pop-up');
+		var date = new Date();
+		var year = date.getFullYear();
+		var month = date.getMonth();
+		var day = date.getDay();
+		$(".dateinput-day").val(day).datepicker("update");
+		$(".dateinput-months").val(parseInt(month+1)).datepicker("update");
+		$(".dateinput-year").val(year).datepicker("update");
+	});
+	
+	
 	function showModal(callback) {
 		$xa_modal_wrapper.on("animationend.ane webkitAnimationEnd.ane", function() {
 			$xa_modal_wrapper.removeClass("modal-showing");
@@ -527,6 +560,30 @@ switch(_pid) {
 		$xa_modal_overlay.removeClass("modal-overlay-hide")
         $('#unityPlayer').css({'visibility':'hidden'}) // 隐藏3d
 	}
+	
+	
+	$doc.on("modal_date_change", function(e,date) {
+		var changeDate = date;
+		var chartDetail =  $modalinnerChartWrap.data();
+		if ( chartDetail.chartType && chartDetail.chartType >= 1) {
+			if (chartDetail.chartType == "1") {
+				["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now","mainfinance"]
+				var links1 = chartDetail.chartDataURL[0][0] + chartDetail.chartDataURL[0][1] + "?timeradio=" + chartDetail.chartDateType + "&&date=" + changeDate;
+				var links2 = chartDetail.chartDataURL[1][0] + chartDetail.chartDataURL[1][1] + "?timeradio=" + chartDetail.chartDateType + "&&date=" + changeDate;
+				var links3 = chartDetail.chartDataURL[2][0] + chartDetail.chartDataURL[2][1] + "?timeradio=" + chartDetail.chartDateType + "&&date=" + changeDate;
+				var test = [
+					[links1, chartDetail.chartDataURL[0][1]], 
+					[links1, chartDetail.chartDataURL[1][1]],
+					[links1, chartDetail.chartDataURL[2][1]]
+				]
+				console.log(links1,links2,links3,"拿到3个链接参数");
+				console.log(test)
+				console.log("这里我拿到的数据是错的，在这里断点，请检查");
+				return ;
+				costFn(test[0],test[1],test[2])
+			}
+		} 
+	});
 	
 	
 	
@@ -705,7 +762,15 @@ switch(_pid) {
 		});
 		function show_8_callback() {
         costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=years&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=years&date=now","financePie"]);
+			console.log("modal8 clicked")
+			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
+			$modalinnerChartWrap.data({
+				"chartType":"1",
+				"chartDateType":"years",
+				"chartDataURL":URLS
+			});
 		}
+		
 		showModal(show_8_callback);
 	}).on("click", "#showModal_9",function() {
 		modalchartobj = null;
@@ -736,21 +801,45 @@ switch(_pid) {
 	}).on("click", "#showModal_10",function() {
 		function show_10_callback() {
             costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date=now","financePie"]);
+			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
+			$modalinnerChartWrap.data({
+				"chartType":"1",
+				"chartDateType":"mons",
+				"chartDataURL":URLS
+			});
 		}
 		showModal(show_10_callback);
 	}).on("click", "#showModal_11",function() {
 		function show_11_callback() {
             costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date=now","financePie"]);
+			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
+			$modalinnerChartWrap.data({
+				"chartType":"1",
+				"chartDateType":"mons",
+				"chartDataURL":URLS
+			});
 		}
 		showModal(show_11_callback);
 	}).on("click", "#showModal_12",function() {
 		function show_12_callback() {
             costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=now","financePie"]);
+			var URLS =[["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
+			$modalinnerChartWrap.data({
+				"chartType":"1",
+				"chartDateType":"day",
+				"chartDataURL":URLS
+			});
 		}
 		showModal(show_12_callback);
 	}).on("click", "#showModal_13",function() {
 		function show_13_callback() {
             costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=now","financePie"]);
+			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
+			$modalinnerChartWrap.data({
+				"chartType":"1",
+				"chartDateType":"day",
+				"chartDataURL":URLS
+			});
 		}
 		showModal(show_13_callback);
 	});
@@ -2457,8 +2546,8 @@ function getRandomArbitrary(min, max) {
 
 				modalchartobj.setOption(opt);
 				$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
-				$(document.getElementById("tempss")).prepend($span1);
-				$(document.getElementById("tempss")).prepend($span2);
+				//$(document.getElementById("tempss")).prepend($span1);
+				//$(document.getElementById("tempss")).prepend($span2);
 				$modalinnerChartWrap.data("echart", modalchartobj);
 			})
     }	
