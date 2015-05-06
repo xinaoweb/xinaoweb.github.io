@@ -576,7 +576,9 @@ switch(_pid) {
 					[links1, chartDetail.chartDataURL[2][1]]
 				]
 				console.log(links1,links2,links3,"拿到3个链接参数");
-				console.log(test)
+				console.log(test[0])
+				console.log(test[1])
+				console.log(test[2])
 				console.log("这里我拿到的数据是错的，在这里断点，请检查");
 //				return ;
 				costFn(test[0],test[1],test[2])
