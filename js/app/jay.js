@@ -54,13 +54,16 @@ function failFn(jqXHR, textStatus) { console.log('error is ' + jqXHR.statusText 
 function doneFn() { console.log('done'); }
 demand = new Request(); // 统一调用ajax
 
-//demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/login?USERNAME=ennshow&PASSWORD=ennshow0311',jsonp: 'login' ,done:remsLogin}); // 请求登录
+demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/login?USERNAME=ennshow&PASSWORD=ennshow0311',jsonp: 'login' ,done:remsLogin}); // 请求登录
 function remsLogin(data) {
     if(data[0].login === 'true') demand.start({url:'http://10.36.128.73:8080/reds/ds/gislist', jsonp: 'gislist',done:indexInit}); // 登录成功加载项目
     else alert('数据库出错')
 }
-function indexInit(){
+function indexInit(data){
     console.log('hi123')
+    
+    jsonDataRight = data;
+    $doc.trigger("index_jsonload")
 }
 
 	
@@ -218,7 +221,8 @@ function indexInit(){
 			
 			
 			
-			$.ajax({
+            /* 已加载VPN数据，故注释
+			$.ajax({ //请求首页项目
 				type : "get",
 				async:true,
 				url : "ajaxsample/gislist.js",
@@ -233,6 +237,7 @@ function indexInit(){
 					alert('加载数据失败');
 				}
 			});
+            */
 		
 			
 			
