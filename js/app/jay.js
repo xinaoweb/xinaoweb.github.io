@@ -281,7 +281,7 @@ function indexInit(){
                     
                     detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
                     $(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
-					var a =1;
+					/*var a =1;
 					if(detail_data_index>=1){
 						a = detail_data_index+2;
 					
@@ -289,6 +289,7 @@ function indexInit(){
 					alert(a);
 					demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+a,jsonp: 'setProject' ,done:setCompelte});
 					bindY_M_D_data(); //pinmingle add
+					*/
                 }
 			});
 			
