@@ -114,7 +114,7 @@ function indexInit(data){
 			
 			
 			$doc.on("index_jsonload", function(e) {
-				console.log('list '+jsonDataRight)
+				//console.log('list '+jsonDataRight)
 				var $div = $("<div>");
 				$.each(jsonDataRight, function(i,data){
 					var _location = data.address;
@@ -144,6 +144,7 @@ function indexInit(data){
 					
 					var _refh = data.longitude;
 					var _refv = data.latitude;
+                    var _pid = data.projectid;
 					
 					
 					//百度地图
@@ -153,9 +154,10 @@ function indexInit(data){
 					bdmap.addOverlay(marker2);     
 					
 					
+
 					var template =
 					//'<a class="swiper-slide irhitemsheight" href="page1.html" refh="'+_refh+'" refv="'+_refv+'" >'+
-					'<div class="swiper-slide irhitemsheight" refh="'+_refh+'" refv="'+_refv+'" >'+
+					'<div class="swiper-slide irhitemsheight" refh="'+_refh+'" refv="'+_refv+'" data-pid="'+_pid+'" >'+
 					'	<div class="mapview-line-hov">'+
 					'		<div class="mapview-line-cycle">'+
 					'			<div class="icon-loaction"></div>'+
@@ -254,6 +256,18 @@ function indexInit(data){
 			
 			
 			
+            var unityPlayer = '<div id="unityPlayer">'+
+                    '<div class="missing">'+
+                    '    <a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">'+
+                    '        <img alt="Unity Web Player. Install now!" src="http://webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />'+
+                    '    </a>'+
+                    '</div>'+
+                    '<div class="broken">'+
+                    '    <a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now! Restart your browser after install.">'+
+                    '        <img alt="Unity Web Player. Install now! Restart your browser after install." src="http://webplayer.unity3d.com/installation/getunityrestart.png" width="193" height="63" />'+
+                    '    </a>'+
+                    '</div>'+
+                '</div>';
 			
 		    $('#goHome').on('click', function(e) {
             		
@@ -262,8 +276,10 @@ function indexInit(data){
 				
                     window.pageName = "index";
 
-                    if(window.pageName == "index")
+                    if(window.pageName == "index") {
+                        $('#unityPlayer').remove();
                         $('#unityPlayer').css({'visibility':'hidden'}) // 隐藏3d
+                    }
                     switchPage(); //切换页面         
             });	
             var detail_data_index = 0; //内页图表数据索引 pinmingle add
@@ -271,6 +287,7 @@ function indexInit(data){
 				var $this = $(this);
 				var _relh = $this.attr("refh");
 				var _relv = $this.attr("refv");
+                var _pid = $this.attr('data-pid')
 				var point = new BMap.Point( Number(_relh),Number(_relv) );
 //				console.log(point)
 				bdmap.centerAndZoom(point,20);
@@ -283,8 +300,18 @@ function indexInit(data){
                     if(window.pageName == "page01")
                         $('#unityPlayer').css({'visibility':'visible'}) // 隐藏3d
                     switchPage(); //切换页面   
-                    
+                    if($('#unityPlayer').length === 0)
+                        $('.xa-con-cent').append(unityPlayer);
+
+switch(_pid) {
+    case '1':builtUnity3d("obj/AirPort201500506.unity3d");break;
+    case '3':builtUnity3d("obj/Hostpial20150506.unity3d");break;
+    case '4':builtUnity3d("obj/Other20150506.unity3d");break;
+}
+
+
                     detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
+                   console.log('index '+detail_data_index) 
                     $(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
 					/*var a =1;
 					if(detail_data_index>=1){
@@ -1697,7 +1724,8 @@ function indexInit(data){
 				alert('加载左侧图表数据失败');
 			}
 		});*/
-		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=days',jsonp: 'mainLeft' ,done:mainLeft_Compelte});
+		//demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=days',jsonp: 'mainLeft' ,done:mainLeft_Compelte});
+        var projectid
 	$doc.on("click", ".inner-selector-i .selector", function() {
 		detail_data_index = $(this).index(); //pinmingle add
 		$(this).addClass("cur").siblings().removeClass("cur");
@@ -1717,11 +1745,11 @@ function indexInit(data){
 			}
 		});*/
 		
-		var a = $(this).attr("index");
+		 projectid = $(this).attr("index");
 		
 		//alert("bbb"+a);
 		
-		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+a,jsonp: 'setProject' ,done:setCompelte});
+		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+projectid,jsonp: 'setProject' ,done:setCompelte});
 		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=days',jsonp: 'mainLeft' ,done:mainLeft_Compelte}); //pinmingle add 左侧数据绑定
 		bindY_M_D_data(); //pinmingle add 右边年月日数据绑定
 	
@@ -1948,79 +1976,21 @@ function gnhnfn_Compelte(data){
 	//RecvMsgFormUnity();
 		function RecvMsgFormUnity(str, callback)
 		{
-            $.ajax({
-                url: 'test.json'
-              , type: 'GET'
-            }).done(function(data){
-                console.log(data.labeldata[1].datavalue)
-                var d = JSON.stringify(data)
                 u.getUnity().SendMessage("AnchorPoint", "RecvMessage",d);
-            });
 		}
-		
-			var config = {
-				width: 3100, 
-				//height: 2180,
-				height: 2100,
-				params: { enableDebugging:"0" }
-				
-			};
-			var u = new UnityObject2(config);
-
-			jQuery(function() {
-
-				var $missingScreen = jQuery("#unityPlayer").find(".missing");
-				var $brokenScreen = jQuery("#unityPlayer").find(".broken");
-				$missingScreen.hide();
-				$brokenScreen.hide();
-				
-				u.observeProgress(function (progress) {
-					switch(progress.pluginStatus) {
-						case "broken":
-							$brokenScreen.find("a").click(function (e) {
-								e.stopPropagation();
-								e.preventDefault();
-								u.installPlugin();
-								return false;
-							});
-							$brokenScreen.show();
-						break;
-						case "missing":
-							$missingScreen.find("a").click(function (e) {
-								e.stopPropagation();
-								e.preventDefault();
-								u.installPlugin();
-								return false;
-							});
-							$missingScreen.show();
-						break;
-						case "installed":
-							$missingScreen.remove();
-						break;
-						case "first":
-						break;
-					}
-				});
-                $('.change3D').on('click', function(){
-                    var n = $(this).data('num')
-                    if(n == 1) u.initPlugin(jQuery("#unityPlayer")[0], "TestWeb1.unity3d");
-                    else u.initPlugin(jQuery("#unityPlayer")[0], "TestWeb.unity3d");
-                }); 
-                //if(window.pageName == "page01")
-                    //u.initPlugin(jQuery("#unityPlayer")[0], "TestWeb1.unity3d"); // 初始化3d
-			});
 
 
     // 页面切换效果
-        function switchPage() {
+        function switchPage(callback) {
 			if( isAnimating ) {
 				return false;
 			}
 			if( animcursor > 67) {
 				animcursor = 1;
 			}
-			nextPage( animcursor );
+			nextPage( animcursor, callback );
 			++animcursor;
+            //callback();
         }
 // random
 function getRandomArbitrary(min, max) {
@@ -2036,7 +2006,7 @@ function getRandomArbitrary(min, max) {
 
 	}
 
-	function nextPage( animation ) {
+	function nextPage( animation, callback ) {
 
 		if( isAnimating ) {
 			return false;
@@ -2344,6 +2314,7 @@ function getRandomArbitrary(min, max) {
 				onEndAnimation( $currPage, $nextPage );
 			}
 		} );
+        //callback();
 
 		if( !support ) {
 			onEndAnimation( $currPage, $nextPage );
@@ -2351,12 +2322,14 @@ function getRandomArbitrary(min, max) {
 
 	}
 
-	function onEndAnimation( $outpage, $inpage ) {
+	function onEndAnimation( $outpage, $inpage, callback) {
 
 		endCurrPage = false;
 		endNextPage = false;
 		resetPage( $outpage, $inpage );
 		isAnimating = false;
+        //if(callback !== null)
+        //callback();
 	}
 
 	function resetPage( $outpage, $inpage ) {
@@ -2367,6 +2340,58 @@ function getRandomArbitrary(min, max) {
 
 	init();
 
+// unity3d
+	function builtUnity3d(name) {
+    
+			var config = {
+				width: 3100, 
+				//height: 2180,
+				height: 2100,
+				params: { enableDebugging:"0" }
+				
+			};
+			var u = new UnityObject2(config);
+
+
+				var $missingScreen = jQuery("#unityPlayer").find(".missing");
+				var $brokenScreen = jQuery("#unityPlayer").find(".broken");
+				$missingScreen.hide();
+				$brokenScreen.hide();
+				
+				u.observeProgress(function (progress) {
+					switch(progress.pluginStatus) {
+						case "broken":
+							$brokenScreen.find("a").click(function (e) {
+								e.stopPropagation();
+								e.preventDefault();
+								u.installPlugin();
+								return false;
+							});
+							$brokenScreen.show();
+						break;
+						case "missing":
+							$missingScreen.find("a").click(function (e) {
+								e.stopPropagation();
+								e.preventDefault();
+								u.installPlugin();
+								return false;
+							});
+							$missingScreen.show();
+						break;
+						case "installed":
+							$missingScreen.remove();
+						break;
+						case "first":
+						break;
+					}
+				});
+
+                //if(window.pageName == "page01") {
+                
+                    //u.initPlugin(jQuery("#unityPlayer")[0], "obj/Hostpial20150506.unity3d"); // 初始化3d
+                    u.initPlugin(jQuery("#unityPlayer")[0], name); // 初始化3d
+                //}
+    }	
 
 // 成本收益弹出框调用函数
 	function costFn(){ // 只传url和jsonp
@@ -2387,7 +2412,7 @@ function getRandomArbitrary(min, max) {
 				return thisAjax;
 			}
             //             demand.start({url:"http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now",jsonp:'mainfinance',done:function(data){console.log('dddddd '+data);ajaxLoad_1 = data}});
-            console.log('dididid '+arguments)
+            //console.log('dididid '+arguments)
 			ajaxLoad_1 = ajaxget(arguments[0][0],arguments[0][1], "popinc_col");
 			ajaxLoad_2 = ajaxget(arguments[1][0],arguments[1][1], "popinc_pie");
 			ajaxLoad_3 = ajaxget(arguments[2][0],arguments[2][1], "popinc_pie2");
