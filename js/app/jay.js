@@ -394,7 +394,7 @@ switch(_pid) {
 				format:'yyyy',
 				language:"zh-CN"
 			}).on('changeDate',function(e) {
-				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-" +dateDay.val();
+				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-"+dateDay.val();
 				console.log(joinDate);
 				if ( dateYear.val() && dateMon.val() && dateDay.val()) {
 					$doc.trigger("modal_date_change",joinDate);
@@ -404,10 +404,10 @@ switch(_pid) {
 				autoclose:true,
 				startView:1,
 				minViewMode:1,
-				format:'m',
+				format:'mm',
 				language:"zh-CN"
 			}).on('changeDate',function(e) {
-				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-" +dateDay.val();
+				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-" + dateDay.val();
 				console.log(joinDate);
 				if ( dateYear.val() && dateMon.val() && dateDay.val()) {
 					$doc.trigger("modal_date_change",joinDate);
@@ -417,11 +417,11 @@ switch(_pid) {
 				autoclose:true,
 				startView:0,
 				minViewMode:0,
-				format:'d',
+				format:'dd',
 				language:"zh-CN"
 			}).on('changeDate', function(ev){
                 console.log(ev.date.getDate())
-				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-" +dateDay.val();
+				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-" + dateDay.val();
 				console.log(joinDate);
 				if ( dateYear.val() && dateMon.val() && dateDay.val()) {
 					$doc.trigger("modal_date_change",joinDate);
@@ -540,8 +540,8 @@ switch(_pid) {
 		var year = date.getFullYear();
 		var month = date.getMonth();
 		var day = date.getDay();
-		$(".dateinput-day").val(day).datepicker("update");
-		$(".dateinput-months").val(parseInt(month+1)).datepicker("update");
+		$(".dateinput-day").val("0"+day).datepicker("update");
+		$(".dateinput-months").val("0"+parseInt(month+1)).datepicker("update");
 		$(".dateinput-year").val(year).datepicker("update");
 	});
 	
@@ -578,7 +578,7 @@ switch(_pid) {
 				console.log(links1,links2,links3,"拿到3个链接参数");
 				console.log(test)
 				console.log("这里我拿到的数据是错的，在这里断点，请检查");
-				return ;
+//				return ;
 				costFn(test[0],test[1],test[2])
 			}
 		} 
