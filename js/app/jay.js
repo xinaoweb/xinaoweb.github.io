@@ -7,6 +7,7 @@ var jayfunction = function() {
 var demand
   , projectBoxIndex = 0 // 项目索引 
 
+var jsonDataRight = {}; // 全局
 function Request() {
     this.loading = $('#loading')
 }
@@ -27,7 +28,7 @@ $.extend(Request.prototype, {
           , type: type
           , timeout: timeout
           , data: data
-          , async : false
+          //, async : false
           , dataType: 'jsonp'
           , jsonp: jsonp //服务端用于接收callback调用的function名的参数  
           //, jsonpCallback: 'success_jsonpCallback'//callback的function名称,服务端会把名称和data一起传递回来 
@@ -60,8 +61,7 @@ function remsLogin(data) {
     else alert('数据库出错')
 }
 function indexInit(data){
-    console.log('hi123')
-    
+    console.log('111'+data[0].data1)
     jsonDataRight = data;
     $doc.trigger("index_jsonload")
 }
@@ -114,14 +114,16 @@ function indexInit(data){
 		],function(){
 			
 			
-			var jsonDataRight = {};
 			$doc.on("index_jsonload", function(e) {
-				console.log(jsonDataRight)
+				console.log('list '+jsonDataRight)
 				var $div = $("<div>");
 				$.each(jsonDataRight, function(i,data){
 					var _location = data.address;
 					var _locationName = data.projectname;
 					var _protype = data.industryclassname;
+                    var _co2 = (data.data1===null) ? 0 : data.data1;
+                    var _cost = (data.data2===null) ? 0 : data.data2;
+                    var _electric = (data.data3===null) ? 0 : data.data3;
 					var _pic =  (function() {
 						var defimg = "images/loacationimg00.jpg"
 						if (data.projectid == "1") {
@@ -135,9 +137,10 @@ function indexInit(data){
 						}
 						return defimg
 					})();
-					
-					
+				    var nm = data.rectime;	
+                    console.log('PPPP ' +nm)
 					var _m = 12,_y =2015
+					//var _m = data.rectime.substring(1,4),_y =data.rectime.substring(6,7)
 					
 					var _buildingarea = data.buildingarea;
 					var _supplyarea = data.supplyarea;
@@ -181,11 +184,11 @@ function indexInit(data){
 					'		<div class="mapview-cycle"><img src="'+_pic+'" alt="">'+
 					'			<div class="mpv-cycle-detail flexmid">'+
 					'				<h3>二氧化碳排放总量 (kg)</h3>'+
-					'				<p>21321321132231</p>'+
+					'				<p>'+_co2+'</p>'+
 					'				<h3>成本总量 (rmb)</h3>'+
-					'				<p>21321321132231</p>'+
+					'				<p>'+_cost+'</p>'+
 					'				<h3>用电总量 (kwh)</h3>'+
-					'				<p>21321321132231</p>'+
+					'				<p>'+_electric+'</p>'+
 					'			</div>'+
 					'		</div>'+
 					'		<div class="mapview-cycle-tips">'+
