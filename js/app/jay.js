@@ -1838,7 +1838,7 @@ function indexInit(){
 	var leftjsonpdata = {};
 	//pinmingle add
 	var data_Jsonp = ["leftjsonp.js","leftjsonp_2.js","leftjsonp_3.js","leftjsonp_4.js"];
-	$.ajax({
+	/*$.ajax({
 			type : "get",
 			async:true,
 			url : "http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=days",
@@ -1852,15 +1852,15 @@ function indexInit(){
 				error:function(){
 				alert('加载左侧图表数据失败');
 			}
-		});
+		});*/
+		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=days',jsonp: 'mainLeft' ,done:mainLeft_Compelte});
 	$doc.on("click", ".inner-selector-i .selector", function() {
 		detail_data_index = $(this).index(); //pinmingle add
 		$(this).addClass("cur").siblings().removeClass("cur");
-		$.ajax({
+		/*$.ajax({
 			type : "get",
 			async:true,
-			//url : "ajaxsample/"+data_Jsonp[detail_data_index],
-			url : "http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=days",
+			url : "ajaxsample/"+data_Jsonp[detail_data_index],
 			dataType : "jsonp",
 			jsonp: "callback",
 			jsonpCallback:"leftjsonp",
@@ -1871,12 +1871,14 @@ function indexInit(){
 				error:function(){
 				alert('加载左侧图表数据失败');
 			}
-		});
+		});*/
+		
 		var a = $(this).attr("index");
 		
 		alert("bbb"+a);
 		
 		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+a,jsonp: 'setProject' ,done:setCompelte});
+		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=days',jsonp: 'mainLeft' ,done:mainLeft_Compelte}); //pinmingle add 左侧数据绑定
 		bindY_M_D_data(); //pinmingle add 右边年月日数据绑定
 	
 	});
@@ -2029,6 +2031,11 @@ function main_mons_Compelte(data){
 function main_days_Compelte(data){
 	tab01chartjsonD = data;
 	$doc.trigger("tab01chartjsonloadD");
+}
+
+function mainLeft_Compelte(data){
+	leftjsonpdata = data;
+	$doc.trigger("leftjsonpdataReady")
 }
 
 function gnhnfn_Compelte(data){
