@@ -677,70 +677,7 @@ function indexInit(data){
 			"top":"90px"
 		});
 		function show_8_callback() {
-		
-			var ajaxLoad_1,
-				ajaxLoad_2,
-				ajaxLoad_3,
-				getEchart;
-			function ajaxget(URL,JSONP,CALLBACK_NAME) {
-				var thisAjax = $.ajax({
-					type : "get",
-					async:true,
-					url : URL,
-					dataType : "jsonp",
-					jsonp: JSONP,
-					jsonpCallback:CALLBACK_NAME
-				});
-				return thisAjax;
-			}
-			ajaxLoad_1 = ajaxget("http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now","mainfinance", "popinc_col");
-			ajaxLoad_2 = ajaxget("http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=now","financePie", "popinc_pie");
-			ajaxLoad_3 = ajaxget("http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date=now","financePie", "popinc_pie2");
-			$.when(ajaxLoad_1,ajaxLoad_2,ajaxLoad_3).done(function(json_a,json_b,json_c) {
-				console.log( json_a,json_b,json_c,"拿到JSON数据")
-				modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
-				var opt = optionModal3;
-				var xAxisdata = [];
-				var colsdata01 = [];
-				var colsdata02 = [];
-				var piedata = [];
-				var piedata2 = [];
-				$.each(json_a[0][0].costdatas, function(index,data) {
-					xAxisdata[index] = data.rectime;
-					colsdata01[index] = data.data;
-				});
-				$.each(json_a[0][0].incomedatas, function(index,data) {
-					colsdata02[index] = data.data;
-				});
-				$.each(json_b[0], function(index,data) {
-					piedata[index] = {
-						value : data.y, name:data.name
-					}
-				});
-				$.each(json_c[0], function(index,data) {
-					piedata2[index] = {
-						value : data.y, name:data.name
-					}
-				});
-
-
-				console.log(colsdata01,"col1")
-				console.log(colsdata02,"col2")
-
-				opt.xAxis[0].data = xAxisdata;
-				opt.series[0].data = colsdata01;
-				opt.series[0].barWidth = 15;
-				opt.series[1].data = colsdata02;
-				opt.series[1].barWidth = 15;
-				opt.series[2].data = piedata;
-				opt.series[3].data = piedata2;
-
-				modalchartobj.setOption(opt);
-				$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
-				$(document.getElementById("tempss")).prepend($span1);
-				$(document.getElementById("tempss")).prepend($span2);
-				$modalinnerChartWrap.data("echart", modalchartobj);
-			})
+        costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=years&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=years&date=now","financePie"]);
 		}
 		showModal(show_8_callback);
 	}).on("click", "#showModal_9",function() {
@@ -771,19 +708,24 @@ function indexInit(data){
 		showModal(show_5_callback);
 	}).on("click", "#showModal_10",function() {
 		function show_10_callback() {
-			console.log("show 1 call back")
+            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date=now","financePie"]);
 		}
 		showModal(show_10_callback);
 	}).on("click", "#showModal_11",function() {
 		function show_11_callback() {
-			console.log("show 1 call back")
+            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date=now","financePie"]);
 		}
 		showModal(show_11_callback);
 	}).on("click", "#showModal_12",function() {
 		function show_12_callback() {
-			console.log("show 1 call back")
+            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=now","financePie"]);
 		}
 		showModal(show_12_callback);
+	}).on("click", "#showModal_13",function() {
+		function show_13_callback() {
+            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=now","financePie"]);
+		}
+		showModal(show_13_callback);
 	});
 	
 	
@@ -2426,7 +2368,75 @@ function getRandomArbitrary(min, max) {
 	init();
 
 
+// 成本收益弹出框调用函数
+	function costFn(){ // 只传url和jsonp
+    
+			var ajaxLoad_1,
+				ajaxLoad_2,
+				ajaxLoad_3,
+				getEchart;
+			function ajaxget(URL,JSONP,CALLBACK_NAME) {
+				var thisAjax = $.ajax({
+					type : "get",
+					async:true,
+					url : URL,
+					dataType : "jsonp",
+					jsonp: JSONP,
+					jsonpCallback:CALLBACK_NAME
+				});
+				return thisAjax;
+			}
+            //             demand.start({url:"http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now",jsonp:'mainfinance',done:function(data){console.log('dddddd '+data);ajaxLoad_1 = data}});
+            console.log('dididid '+arguments)
+			ajaxLoad_1 = ajaxget(arguments[0][0],arguments[0][1], "popinc_col");
+			ajaxLoad_2 = ajaxget(arguments[1][0],arguments[1][1], "popinc_pie");
+			ajaxLoad_3 = ajaxget(arguments[2][0],arguments[2][1], "popinc_pie2");
+			$.when(ajaxLoad_1,ajaxLoad_2,ajaxLoad_3).done(function(json_a,json_b,json_c) {
+				console.log( json_a,json_b,json_c,"拿到JSON数据")
+				modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
+				var opt = optionModal3;
+				var xAxisdata = [];
+				var colsdata01 = [];
+				var colsdata02 = [];
+				var piedata = [];
+				var piedata2 = [];
+				$.each(json_a[0][0].costdatas, function(index,data) {
+					xAxisdata[index] = data.rectime;
+					colsdata01[index] = data.data;
+				});
+				$.each(json_a[0][0].incomedatas, function(index,data) {
+					colsdata02[index] = data.data;
+				});
+				$.each(json_b[0], function(index,data) {
+					piedata[index] = {
+						value : data.y, name:data.name
+					}
+				});
+				$.each(json_c[0], function(index,data) {
+					piedata2[index] = {
+						value : data.y, name:data.name
+					}
+				});
 
+
+				console.log(colsdata01,"col1")
+				console.log(colsdata02,"col2")
+
+				opt.xAxis[0].data = xAxisdata;
+				opt.series[0].data = colsdata01;
+				opt.series[0].barWidth = 15;
+				opt.series[1].data = colsdata02;
+				opt.series[1].barWidth = 15;
+				opt.series[2].data = piedata;
+				opt.series[3].data = piedata2;
+
+				modalchartobj.setOption(opt);
+				$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
+				$(document.getElementById("tempss")).prepend($span1);
+				$(document.getElementById("tempss")).prepend($span2);
+				$modalinnerChartWrap.data("echart", modalchartobj);
+			})
+    }	
 
 };
        
