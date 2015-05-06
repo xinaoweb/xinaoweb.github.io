@@ -567,7 +567,6 @@ switch(_pid) {
 		var chartDetail =  $modalinnerChartWrap.data();
 		if ( chartDetail.chartType && chartDetail.chartType >= 1) {
 			if (chartDetail.chartType == "1") {
-				["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now","mainfinance"]
 				var links1 = chartDetail.chartDataURL[0][0] + chartDetail.chartDataURL[0][1] + "?timeradio=" + chartDetail.chartDateType + "&&date=" + changeDate;
 				var links2 = chartDetail.chartDataURL[1][0] + chartDetail.chartDataURL[1][1] + "?timeradio=" + chartDetail.chartDateType + "&&date=" + changeDate;
 				var links3 = chartDetail.chartDataURL[2][0] + chartDetail.chartDataURL[2][1] + "?timeradio=" + chartDetail.chartDateType + "&&date=" + changeDate;
