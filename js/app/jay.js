@@ -61,7 +61,6 @@ function remsLogin(data) {
     else alert('数据库出错')
 }
 function indexInit(data){
-    console.log('111'+data[0].data1)
     jsonDataRight = data;
     $doc.trigger("index_jsonload")
 }
@@ -137,8 +136,6 @@ function indexInit(data){
 						}
 						return defimg
 					})();
-				    var nm = data.rectime;	
-                    console.log('PPPP ' +nm)
 					var _m = 12,_y =2015
 					//var _m = data.rectime.substring(1,4),_y =data.rectime.substring(6,7)
 					
@@ -403,6 +400,7 @@ function indexInit(data){
 					});
 					return thisAjax;
 				}
+
 				ajaxLoad_1 = ajaxget("ajaxsample/pop_inc_col.js", "popinc_col");
 				ajaxLoad_2 = ajaxget("ajaxsample/pop_inc_pie.js", "popinc_pie");
 				ajaxLoad_3 = ajaxget("ajaxsample/pop_inc_pie2.js", "popinc_pie2");
@@ -678,112 +676,7 @@ function indexInit(data){
 			"fontSize":"60px",
 			"top":"90px"
 		});
-		function show_5_callback() {
-			/*$.ajax({
-				type : "get",
-				async:true,
-				url : "ajaxsample/pop_inc_col.js",
-				dataType : "jsonp",
-				jsonp: "callback",
-				jsonpCallback:"popinc_col",
-				success : function(jsoncol){
-					
-					$.ajax({
-						type : "get",
-						async:true,
-						url : "ajaxsample/pop_inc_pie.js",
-						dataType : "jsonp",
-						jsonp: "callback",
-						jsonpCallback:"popinc_pie",
-						success : function(jsonpie){
-							$.ajax({
-								type : "get",
-								async:true,
-								url : "ajaxsample/pop_inc_pie2.js",
-								dataType : "jsonp",
-								jsonp: "callback",
-								jsonpCallback:"popinc_pie2",
-								success : function(jsonpie2){
-									console.log(jsoncol,"dataCOL");
-									console.log(jsonpie,"dataPIE");
-									console.log(jsonpie2,"dataPIE2");
-									
-									
-									modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
-									var opt = optionModal3;
-									var xAxisdata = [];
-									var colsdata01 = [];
-									var colsdata02 = [];
-									var piedata = [];
-									var piedata2 = [];
-									$.each(jsoncol[0].costdatas, function(index,data) {
-										xAxisdata[index] = data.rectime;
-										colsdata01[index] = data.data;
-									});
-									$.each(jsoncol[0].incomedatas, function(index,data) {
-										colsdata02[index] = data.data;
-									});
-									$.each(jsonpie, function(index,data) {
-										piedata[index] = {
-											value : data.y, name:data.name
-										}
-									});
-									$.each(jsonpie2, function(index,data) {
-										piedata2[index] = {
-											value : data.y, name:data.name
-										}
-									});
-
-
-									console.log(colsdata01,"col1")
-									console.log(colsdata02,"col2")
-
-									opt.xAxis[0].data = xAxisdata;
-									opt.series[0].data = colsdata01;
-									opt.series[0].barWidth = 15;
-									opt.series[1].data = colsdata02;
-									opt.series[1].barWidth = 15;
-									opt.series[2].data = piedata;
-									opt.series[3].data = piedata2;
-									
-									modalchartobj.setOption(opt);
-									$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
-									$(document.getElementById("tempss")).prepend($span1);
-									$(document.getElementById("tempss")).prepend($span2);
-									$modalinnerChartWrap.data("echart", modalchartobj);
-								},
-									error:function(){
-									alert('加载饼图数据2据失败');
-								}
-							});
-						},
-							error:function(){
-							alert('弹出层饼图加载失败');
-						}
-					})
-				},
-					error:function(){
-					alert('弹出层柱状图加载失败');
-				}
-			})*/
-			
-			//demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now',jsonp: 'mainfinance' ,done:main_years_Compelte});
-			
-			
-			
-			/*$.ajax({
-				type : "get",
-				async:true,
-				url : "http://10.36.128.73:8080/reds/ds/mainfinance?projectid=3&timeradio=days&date=2015-04-15",
-				dataType : "jsonp",
-				jsonp: "mainfinance",
-				jsonpCallback:"popinc_pie"
-			}).always(function(data) {
-				console.log(data)
-			})
-
-
-			console.log("show 8 call back");*/
+		function show_8_callback() {
 		
 			var ajaxLoad_1,
 				ajaxLoad_2,
@@ -800,9 +693,9 @@ function indexInit(data){
 				});
 				return thisAjax;
 			}
-			ajaxLoad_1 = ajaxget("http://10.36.128.73:8080/reds/ds/mainfinance?projectid=3&timeradio=days&date=2015-04-15","mainfinance", "popinc_col");
-			ajaxLoad_2 = ajaxget("http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=2015-04-15","financePie", "popinc_pie");
-			ajaxLoad_3 = ajaxget("http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=2015-04-15","financePie", "popinc_pie2");
+			ajaxLoad_1 = ajaxget("http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now","mainfinance", "popinc_col");
+			ajaxLoad_2 = ajaxget("http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=now","financePie", "popinc_pie");
+			ajaxLoad_3 = ajaxget("http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date=now","financePie", "popinc_pie2");
 			$.when(ajaxLoad_1,ajaxLoad_2,ajaxLoad_3).done(function(json_a,json_b,json_c) {
 				console.log( json_a,json_b,json_c,"拿到JSON数据")
 				modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
@@ -849,7 +742,7 @@ function indexInit(data){
 				$modalinnerChartWrap.data("echart", modalchartobj);
 			})
 		}
-		showModal(show_5_callback);
+		showModal(show_8_callback);
 	}).on("click", "#showModal_9",function() {
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
@@ -1884,7 +1777,7 @@ function indexInit(data){
 		
 		var a = $(this).attr("index");
 		
-		alert("bbb"+a);
+		//alert("bbb"+a);
 		
 		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+a,jsonp: 'setProject' ,done:setCompelte});
 		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=days',jsonp: 'mainLeft' ,done:mainLeft_Compelte}); //pinmingle add 左侧数据绑定
