@@ -1841,7 +1841,7 @@ function indexInit(){
 	$.ajax({
 			type : "get",
 			async:true,
-			url : "ajaxsample/"+data_Jsonp[0],
+			url : "http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=days",
 			dataType : "jsonp",
 			jsonp: "callback",
 			jsonpCallback:"leftjsonp",
@@ -1859,7 +1859,8 @@ function indexInit(){
 		$.ajax({
 			type : "get",
 			async:true,
-			url : "ajaxsample/"+data_Jsonp[detail_data_index],
+			//url : "ajaxsample/"+data_Jsonp[detail_data_index],
+			url : "http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=days",
 			dataType : "jsonp",
 			jsonp: "callback",
 			jsonpCallback:"leftjsonp",
