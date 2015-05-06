@@ -285,9 +285,10 @@ function indexInit(){
 					if(detail_data_index>=1){
 						a = detail_data_index+2;
 					
-					}alert(a+","+detail_data_index);
+					}
+					alert(a);
 					demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+a,jsonp: 'setProject' ,done:setCompelte});
-					bindY_M_D_data(detail_data_index) //pinmingle add
+					bindY_M_D_data(); //pinmingle add
                 }
 			});
 			
@@ -1872,10 +1873,10 @@ function indexInit(){
 		});
 		var a = $(this).attr("index");
 		
-		alert("bbb"+a+","+detail_data_index);
+		alert("bbb"+a);
 		
 		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+a,jsonp: 'setProject' ,done:setCompelte});
-		bindY_M_D_data(detail_data_index); //pinmingle add 右边年月日数据绑定
+		bindY_M_D_data(); //pinmingle add 右边年月日数据绑定
 	
 	});
 		
@@ -1894,7 +1895,7 @@ var tab01chartjsonM = {};
 	var tab01chartjsonD = {};
 	var tab01chartjsonY = {};
 	
-function bindY_M_D_data(i){
+function bindY_M_D_data(){
 
 	$doc.on("tab01chartjsonloadM", function(e) {
 		console.log(tab01chartjsonM);
