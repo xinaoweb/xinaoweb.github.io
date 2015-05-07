@@ -2576,7 +2576,7 @@ function energyFn() {
 
     modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
     
-    }
+    })
 }
 // 成本收益弹出框调用函数
 	function costFn(){ // 只传url和jsonp
