@@ -59,8 +59,8 @@
 {
 	z-index: 1;
 	position: absolute;
-	right: 0;
-	top: 0;
+	left: 208px;
+	top: 50px;
 }
 .index-slider
 {

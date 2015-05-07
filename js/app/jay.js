@@ -290,7 +290,7 @@ function indexInit(data){
                 var _pid = $this.attr('data-pid')
 				var point = new BMap.Point( Number(_relh),Number(_relv) );
 //				console.log(point)
-				bdmap.centerAndZoom(point,20);
+				bdmap.centerAndZoom(point,17);
 				var _actclass = "mapview-active"
 				if ( !$this.hasClass(_actclass) ){
 					$this.addClass(_actclass).siblings().removeClass(_actclass);
