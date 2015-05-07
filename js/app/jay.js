@@ -235,10 +235,12 @@ function indexInit(data){
 					var index = $(this).index();
 						icon_arr[2*index].hide();   
 						icon_arr[2*index+1].show();
-				},function(){})
+				},function(){
 					var index = $(this).index();
 						icon_arr[2*index+1].hide();   
 						icon_arr[2*index].show();
+				})
+					
 				})
 			
 			
