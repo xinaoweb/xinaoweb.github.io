@@ -110,7 +110,8 @@ function indexInit(data){
 	})();
 	
 	window.pageName = "index";
-
+	
+	var icon_arr = [];
 	if (typeof pageName != 'undefined' && pageName == "index") {
 		require([
 			"../lib/swiper/swiper.min",
@@ -159,7 +160,12 @@ function indexInit(data){
 					var marker2 = new BMap.Marker(point,{icon:myIcon});  // 创建标注
 					bdmap.addOverlay(marker2);     
 					
-					
+					icon_arr.push(marker2);
+					var myIcon_hover = new BMap.Icon("images/icon-location-2.png", new BMap.Size(69,102));
+					var marker3 = new BMap.Marker(point,{icon:myIcon_hover});  // 创建标注
+					icon_arr.push(marker3);
+					bdmap.addOverlay(marker3);   
+					marker3.hide();
 
 					var template =
 					//'<a class="swiper-slide irhitemsheight" href="page1.html" refh="'+_refh+'" refv="'+_refv+'" >'+
@@ -223,9 +229,17 @@ function indexInit(data){
 					mousewheelControl: true,
 					slidesPerView: 3
 				});
-
-
-			})
+				
+				//pinmingle add
+				$("#index_right_swiper .swiper-wrapper .swiper-slide").hover(function(){
+					var index = $(this).index();
+						ar[2*index].hide();   
+						ar[2*index+1].show();
+				},function(){})
+					var index = $(this).index();
+						ar[2*index+1].hide();   
+						ar[2*index].show();
+				})
 			
 			
 			
@@ -2645,4 +2659,3 @@ console.log(ajaxLoad_3)
 
 };
        
-
