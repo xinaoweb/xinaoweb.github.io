@@ -7,6 +7,12 @@ var jayfunction = function() {
 var demand
   , projectBoxIndex = 0 // 项目索引 
 
+// 日期备用
+var nowdate = new Date();
+var nowYear = nowdate.getFullYear();
+var nowMonth = nowdate.getMonth();
+var nowDay = nowdate.getDate();
+
 var jsonDataRight = {}; // 全局
 function Request() {
     this.loading = $('#loading')
@@ -303,15 +309,17 @@ function indexInit(data){
                     if($('#unityPlayer').length === 0)
                         $('.xa-con-cent').append(unityPlayer);
 
+/*
 switch(_pid) {
     case '1':builtUnity3d("obj/AirPort201500506.unity3d");break;
     case '3':builtUnity3d("obj/Hostpial20150506.unity3d");break;
     case '4':builtUnity3d("obj/Other20150506.unity3d");break;
 }
+*/
 
 
                     detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
-                   console.log('index '+detail_data_index) 
+                   //console.log('index '+detail_data_index) 
                     $(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
 					/*var a =1;
 					if(detail_data_index>=1){
@@ -394,11 +402,13 @@ switch(_pid) {
 				format:'yyyy',
 				language:"zh-CN"
 			}).on('changeDate',function(e) {
+            /*
 				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-"+dateDay.val();
-				console.log(joinDate);
+				//console.log(joinDate);
 				if ( dateYear.val() && dateMon.val() && dateDay.val()) {
-					$doc.trigger("modal_date_change",joinDate);
+					//$doc.trigger("modal_date_change",joinDate);
 				}
+                */
 			});
 			dateMon.datepicker({
 				autoclose:true,
@@ -406,12 +416,15 @@ switch(_pid) {
 				minViewMode:1,
 				format:'mm',
 				language:"zh-CN"
-			}).on('changeDate',function(e) {
+			}).on('changeDate',function(ev) {
+                console.log(ev.date.getMonth())
+                /*
 				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-" + dateDay.val();
-				console.log(joinDate);
+				//console.log(joinDate);
 				if ( dateYear.val() && dateMon.val() && dateDay.val()) {
-					$doc.trigger("modal_date_change",joinDate);
+					//$doc.trigger("modal_date_change",joinDate);
 				}
+                */
 			});
             	dateDay.datepicker({
 				autoclose:true,
@@ -420,16 +433,44 @@ switch(_pid) {
 				format:'dd',
 				language:"zh-CN"
 			}).on('changeDate', function(ev){
+            var joinDate = null
+              , y, m, d;
+                //console.log(ev.date.FullYear())
+                /*
+                console.log(dateYear.val())
+                console.log(dateMon.val())
                 console.log(ev.date.getDate())
+                if(dateYear.val() == '') console.log('hi')
+        console.log(nowYear)
+        console.log(nowMonth+1)
+        console.log(nowDay)
+        */
+                
+                y = (dateYear.val() == '') ? nowYear : dateYear.val();
+                m = (dateMon.val() == '') ? (nowMonth+1) : dateMonth.val();
+                joinDate = y + '-' + m + '-' + ev.date.getDate(); 
+                console.log(joinDate)
+if(ev.date.getDate() > nowDay ) {
+    alert('不要超过今天'); return;
+} 
+                var type = $(this).parents('.xa-modal-wrapper').attr('data-type');
+                console.log(type)
+
+            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date="+joinDate+"","financePie"]);
+
+            //costFn(["ajaxsample/pop_inc_col.js","popinc_col"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=","financePie"]);
+                /*
 				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-" + dateDay.val();
-				console.log(joinDate);
+				//console.log(joinDate);
 				if ( dateYear.val() && dateMon.val() && dateDay.val()) {
-					$doc.trigger("modal_date_change",joinDate);
+					//$doc.trigger("modal_date_change",joinDate);
 				}
 				
 					
+                */
 				//断点---------------------------------------------------------------------
 				return;
+                /*
 				// 这里示范加载3个Ajax数据，并且一起完成之后再执行之后的动作
 				// 为了后面方便，我们定义一个方法
 				var ajaxLoad_1,
@@ -461,6 +502,7 @@ switch(_pid) {
 					* [Array[3], "success", Object]
 					* [Array[3], "success", Object]
 					*/
+                    /*
 					console.log(json_a,json_b,json_c,"拿到的3个JSON数据");
 					//由于我在弹出框的时候已经把echart的实例缓存到data里面，我从这里拿到它的实例进行修改
 					getEchart = $modalinnerChartWrap.data("echart");
@@ -503,13 +545,15 @@ switch(_pid) {
 					templeopt=null;
 					
 					
-					/*$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
+					/*
+                    $modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
 					$(document.getElementById("tempss")).prepend($span1);
-					$(document.getElementById("tempss")).prepend($span2);*/
+					$(document.getElementById("tempss")).prepend($span2);
 					
 					
 				});
                
+                    */
             });
 
 	/*	})
@@ -534,22 +578,37 @@ switch(_pid) {
 	});
 	
 	
-	 $doc.on('modalshow',function(){
-		console.log('pop-up');
+	 $doc.on('modalshow',function(e,type){
+		//console.log('pop-up');
 		var date = new Date();
 		var year = date.getFullYear();
 		var month = date.getMonth();
 		var day = date.getDay();
+        //alert($xa_modal_wrapper.find('#popUpTitle').text())
+        var $title = $xa_modal_wrapper.find('#popUpTitle')
+        switch(type) {
+            case 'one': $title.text('耗气'); break;
+            case 'two': $title.text('耗水'); break;
+            case 'three': $title.text('耗电'); break;
+            case 'three': $title.text('供热'); break;
+            case 'four': $title.text('供冷'); break;
+            case 'six': $title.text('发电'); break;
+            case 'seven': $title.text('供蒸汽'); break;
+        }
+        /*
 		$(".dateinput-day").val("0"+day).datepicker("update");
 		$(".dateinput-months").val("0"+parseInt(month+1)).datepicker("update");
 		$(".dateinput-year").val(year).datepicker("update");
+        */
 	});
 	
 	
-	function showModal(callback) {
+	function showModal(type,callback) {
+        $xa_modal_wrapper.attr('data-type',type); // 增加弹出框标识
+
 		$xa_modal_wrapper.on("animationend.ane webkitAnimationEnd.ane", function() {
 			$xa_modal_wrapper.removeClass("modal-showing");
-			$doc.trigger("modalshow");
+			$doc.trigger("modalshow",[type]);
 			if (typeof callback == "function") {
 				callback();
 			}
@@ -565,6 +624,7 @@ switch(_pid) {
 	$doc.on("modal_date_change", function(e,date) {
 		var changeDate = date;
 		var chartDetail =  $modalinnerChartWrap.data();
+        
 		if ( chartDetail.chartType && chartDetail.chartType >= 1) {
 			if (chartDetail.chartType == "1") {
 				var links1 = chartDetail.chartDataURL[0][0] + chartDetail.chartDataURL[0][1] + "?timeradio=" + chartDetail.chartDateType + "&date=" + changeDate;
@@ -594,26 +654,26 @@ switch(_pid) {
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
 		function show_1_callback() {
-			console.log("show 1 call back");
+			//console.log("show 1 call back");
 			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 			modalchartobj.setOption(optionModal);
 		}
-		showModal(show_1_callback);
+		showModal('one',show_1_callback);
 	}).on("click", "#showModal_2",function() {
 		function show_2_callback() {
-			console.log("show 1 call back")
+			//console.log("show 1 call back")
 		}
-		showModal(show_2_callback);
+		showModal('two',show_2_callback);
 	}).on("click", "#showModal_3",function() {
 		function show_3_callback() {
-			console.log("show 1 call back")
+			//console.log("show 1 call back")
 		}
-		showModal(show_3_callback);
+		showModal('three',show_3_callback);
 	}).on("click", "#showModal_4",function() {
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
 		function show_4_callback() {
-			console.log("show 4 call back");
+			//console.log("show 4 call back");
 			$.ajax({
 				type : "get",
 				async:true,
@@ -622,7 +682,7 @@ switch(_pid) {
 				jsonp: "callback",
 				jsonpCallback:"popinc_line_single",
 				success : function(json){
-//					console.log(json);
+//					//console.log(json);
 					var opt = optionModal2;
 					opt.xAxis[0].data= (function() {
 						var  k = [];
@@ -663,7 +723,7 @@ switch(_pid) {
 			
 			
 		}
-		showModal(show_4_callback);
+		showModal('four',show_4_callback);
 	}).on("click", "#showModal_5",function() {
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
@@ -680,19 +740,19 @@ switch(_pid) {
 			"top":"90px"
 		});
 		function show_5_callback() {
-			console.log("show 5 call back");
+			//console.log("show 5 call back");
 			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 			modalchartobj.setOption(optionModal3);
 			
-			console.log($span1,$span2)
+			//console.log($span1,$span2)
 			$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
 			$(document.getElementById("tempss")).prepend($span1)
 			$(document.getElementById("tempss")).prepend($span2)
 		}
-		showModal(show_5_callback);
+		showModal('five',show_5_callback);
 	}).on("click", "#showModal_6",function() {
 		function show_6_callback() {
-			console.log("show 6 call back");
+			//console.log("show 6 call back");
 				$.ajax({
 					type : "get",
 					async:true,
@@ -701,7 +761,7 @@ switch(_pid) {
 					jsonp: "callback",
 					jsonpCallback:"popinc_line_muti",
 					success : function(json){
-						console.log(json)
+						//console.log(json)
 						var opt = optionModal2;
 						opt.xAxis[0].data= (function() {
 							var  k = [];
@@ -740,12 +800,12 @@ switch(_pid) {
 					}
 				});
 		}
-		showModal(show_6_callback);
+		showModal('six',show_6_callback);
 	}).on("click", "#showModal_7",function() {
 		function show_7_callback() {
-			console.log("show 1 call back")
+			//console.log("show 1 call back")
 		}
-		showModal(show_7_callback);
+		showModal('seven',show_7_callback);
 	}).on("click", "#showModal_8",function() {
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
@@ -763,7 +823,7 @@ switch(_pid) {
 		});
 		function show_8_callback() {
         costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=years&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=years&date=now","financePie"]);
-			console.log("modal8 clicked")
+			//console.log("modal8 clicked")
 			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
 			$modalinnerChartWrap.data({
 				"chartType":"1",
@@ -789,11 +849,11 @@ switch(_pid) {
 			"top":"90px"
 		});
 		function show_5_callback() {
-			console.log("show 5 call back");
+			//console.log("show 5 call back");
 			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 			modalchartobj.setOption(optionModal3);
 			
-			console.log($span1,$span2)
+			//console.log($span1,$span2)
 			$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
 			$(document.getElementById("tempss")).prepend($span1)
 			$(document.getElementById("tempss")).prepend($span2)
@@ -802,45 +862,53 @@ switch(_pid) {
 	}).on("click", "#showModal_10",function() {
 		function show_10_callback() {
             costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date=now","financePie"]);
+            /*
 			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
 			$modalinnerChartWrap.data({
 				"chartType":"1",
 				"chartDateType":"mons",
 				"chartDataURL":URLS
 			});
+            */
 		}
 		showModal(show_10_callback);
 	}).on("click", "#showModal_11",function() {
 		function show_11_callback() {
             costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date=now","financePie"]);
+            /*
 			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
 			$modalinnerChartWrap.data({
 				"chartType":"1",
 				"chartDateType":"mons",
 				"chartDataURL":URLS
 			});
+            */
 		}
 		showModal(show_11_callback);
 	}).on("click", "#showModal_12",function() {
 		function show_12_callback() {
             costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=now","financePie"]);
+            /*
 			var URLS =[["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
 			$modalinnerChartWrap.data({
 				"chartType":"1",
 				"chartDateType":"day",
 				"chartDataURL":URLS
 			});
+            */
 		}
 		showModal(show_12_callback);
 	}).on("click", "#showModal_13",function() {
 		function show_13_callback() {
             costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=now","financePie"]);
+            /*
 			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
 			$modalinnerChartWrap.data({
 				"chartType":"1",
 				"chartDateType":"day",
 				"chartDataURL":URLS
 			});
+            */
 		}
 		showModal(show_13_callback);
 	});
@@ -1578,7 +1646,7 @@ switch(_pid) {
 		
 		
 	$doc.on("leftjsonpdataReady", function(){
-		console.log(leftjsonpdata,"left Json Data load");
+		//console.log(leftjsonpdata,"left Json Data load");
 		var datalength = leftjsonpdata.length;
 //		console.log(datalength)
 		$.each(leftjsonpdata, function(index, data) {
@@ -1649,7 +1717,7 @@ switch(_pid) {
 					}
 				})
 				
-				console.log($chartel2)
+				//console.log($chartel2)
 				var myCharts2x = echarts.init($chartel2[0], defaultTheme);
 				
 				var chartOPT2 = optionsbar1;
@@ -1863,7 +1931,7 @@ var tab01chartjsonM = {};
 function bindY_M_D_data(){
 
 	$doc.on("tab01chartjsonloadM", function(e) {
-		console.log(tab01chartjsonM);
+		//console.log(tab01chartjsonM);
 		$("#cou_01").html("￥ "+tab01chartjsonM[0].costsum);
 		$("#cou_02").html("￥ "+tab01chartjsonM[0].incomesum);
 		var dates1 = [];
@@ -1883,7 +1951,7 @@ function bindY_M_D_data(){
 		mycolumnChart4.setOption(columnChartoptInit);
 
 	}).on("tab01chartjsonloadD", function(e) {
-		console.log(tab01chartjsonD);
+		//console.log(tab01chartjsonD);
 		$("#cou_03").html("￥ "+tab01chartjsonD[0].costsum);
 		$("#cou_04").html("￥ "+tab01chartjsonD[0].incomesum);
 		var dates1 = [];
@@ -1902,7 +1970,7 @@ function bindY_M_D_data(){
 		columnChartoptInit.series[1].data = dates2;
 		mycolumnChart5.setOption(columnChartoptInit);
 	}).on("tab01chartjsonloadY", function(e) {
-		console.log(tab01chartjsonY);
+		//console.log(tab01chartjsonY);
 		$("#cou_05").html("￥ "+tab01chartjsonY[0].costsum);
 		$("#cou_06").html("￥ "+tab01chartjsonY[0].incomesum);
 		var dates1 = [];
@@ -2002,7 +2070,7 @@ function mainLeft_Compelte(data){
 
 function gnhnfn_Compelte(data){
 	var d = data;
-	console.log(data,"供能耗能数据");
+	//console.log(data,"供能耗能数据");
 	$.each(d, function(index, data) {
 		var _day_name = "今日"+data.name;
 		var _month_name = "当月"+ data.name;
@@ -2483,13 +2551,7 @@ function getRandomArbitrary(min, max) {
                 //}
     }	
 
-// 成本收益弹出框调用函数
-	function costFn(){ // 只传url和jsonp
-    
-			var ajaxLoad_1,
-				ajaxLoad_2,
-				ajaxLoad_3,
-				getEchart;
+// 获取ajax
 			function ajaxget(URL,JSONP,CALLBACK_NAME) {
 				var thisAjax = $.ajax({
 					type : "get",
@@ -2501,13 +2563,41 @@ function getRandomArbitrary(min, max) {
 				});
 				return thisAjax;
 			}
+// 耗气，曲线+饼图
+function energyFn() {
+    var ajaxLoad_1
+      , ajaxLoad_2
+      , getEchart;
+
+    ajaxLoad_1 = ajaxget(arguments[0][0],arguments[0][1], "popinc_col");
+    ajaxLoad_2 = ajaxget(arguments[1][0],arguments[1][1], "popinc_pie");
+
+    $.when(ajaxLoad_1,ajaxLoad_2).done(function(json_a,json_b) {
+
+    modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
+    
+    }
+}
+// 成本收益弹出框调用函数
+	function costFn(){ // 只传url和jsonp
+			var ajaxLoad_1,
+				ajaxLoad_2,
+				ajaxLoad_3,
+				getEchart;
             //             demand.start({url:"http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now",jsonp:'mainfinance',done:function(data){console.log('dddddd '+data);ajaxLoad_1 = data}});
             //console.log('dididid '+arguments)
 			ajaxLoad_1 = ajaxget(arguments[0][0],arguments[0][1], "popinc_col");
 			ajaxLoad_2 = ajaxget(arguments[1][0],arguments[1][1], "popinc_pie");
 			ajaxLoad_3 = ajaxget(arguments[2][0],arguments[2][1], "popinc_pie2");
+
+//注意状态
+/*
+console.log(ajaxLoad_1)
+console.log(ajaxLoad_2)
+console.log(ajaxLoad_3)
+*/
 			$.when(ajaxLoad_1,ajaxLoad_2,ajaxLoad_3).done(function(json_a,json_b,json_c) {
-				console.log( json_a,json_b,json_c,"拿到JSON数据")
+				//console.log( json_a,json_b,json_c,"拿到JSON数据")
 				modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 				var opt = optionModal3;
 				var xAxisdata = [];
@@ -2534,8 +2624,8 @@ function getRandomArbitrary(min, max) {
 				});
 
 
-				console.log(colsdata01,"col1")
-				console.log(colsdata02,"col2")
+				//console.log(colsdata01,"col1")
+				//console.log(colsdata02,"col2")
 
 				opt.xAxis[0].data = xAxisdata;
 				opt.series[0].data = colsdata01;

@@ -966,7 +966,9 @@ a{text-decoration: none;}
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+    /*不知道为什么拉长
 	height: 100%;
+    */
 }
 #toggle-tabs-002 .eng-block
 {
