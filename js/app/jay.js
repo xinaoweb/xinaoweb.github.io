@@ -233,12 +233,12 @@ function indexInit(data){
 				//pinmingle add
 				$("#index_right_swiper .swiper-wrapper .swiper-slide").hover(function(){
 					var index = $(this).index();
-						ar[2*index].hide();   
-						ar[2*index+1].show();
+						icon_arr[2*index].hide();   
+						icon_arr[2*index+1].show();
 				},function(){})
 					var index = $(this).index();
-						ar[2*index+1].hide();   
-						ar[2*index].show();
+						icon_arr[2*index+1].hide();   
+						icon_arr[2*index].show();
 				})
 			
 			
