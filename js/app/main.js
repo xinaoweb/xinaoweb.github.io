@@ -11,7 +11,7 @@ require.config({
 	//配置Javascript文件映射路径
 	paths: {
 		modernizr	:"../lib/modernizr.custom",
-		jquery		:["http://cdn.bootcss.com/jquery/2.1.3/jquery.min","../lib/jquery.min"],
+		jquery		:"../lib/jquery.min",
 		datepicker	:"../lib/datepicker/bootstrap-datepicker.min",
 		datelocation:"../lib/datepicker/bootstrap-datepicker.zh-CN.min",
 		jay			:"jay"
