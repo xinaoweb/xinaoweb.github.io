@@ -165,7 +165,7 @@ function indexInit(data){
 					var marker3 = new BMap.Marker(point,{icon:myIcon_hover});  // 创建标注
 					icon_arr.push(marker3);
 					bdmap.addOverlay(marker3);   
-					//marker3.hide();
+					marker3.hide();
 
 					var template =
 					//'<a class="swiper-slide irhitemsheight" href="page1.html" refh="'+_refh+'" refv="'+_refv+'" >'+
