@@ -1350,7 +1350,6 @@ if(ev.date.getDate() > nowDay ) {
 		xAxis : [
 			{
 				type : 'category',
-				splitNumber:4,
 				boundaryGap : false,
 				axisLabel:{
 					textStyle:{
@@ -1362,6 +1361,7 @@ if(ev.date.getDate() > nowDay ) {
 		],
 		yAxis : [
 			{
+				splitNumber:4,
 				axisLabel:{
 					textStyle:{
 						fontSize:40
