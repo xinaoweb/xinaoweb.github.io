@@ -161,7 +161,7 @@ function indexInit(data){
 					bdmap.addOverlay(marker2);     
 					
 					icon_arr.push(marker2);
-					var myIcon_hover = new BMap.Icon("images/icon-location-2.png", new BMap.Size(69,102));
+					var myIcon_hover = new BMap.Icon("images/icon-location-2.png", new BMap.Size(130,193));
 					var marker3 = new BMap.Marker(point,{icon:myIcon_hover});  // 创建标注
 					icon_arr.push(marker3);
 					bdmap.addOverlay(marker3);   
