@@ -243,7 +243,12 @@ function indexInit(data){
 					
 				})
 			
-			
+			window.bottomSwiper = new Swiper('#bottomSWIPER', {
+              // Optional parameters
+              direction: 'horizontal',
+              slidesPerView:4,
+              loop: true
+            }) 
 			
             /* 已加载VPN数据，故注释
 			$.ajax({ //请求首页项目
@@ -1346,6 +1351,9 @@ if(ev.date.getDate() > nowDay ) {
 				saveAsImage : {show: true}
 			}
 		},
+		grid:{
+			x:300
+		},
 		calculable : false,
 		xAxis : [
 			{
@@ -1361,12 +1369,15 @@ if(ev.date.getDate() > nowDay ) {
 		],
 		yAxis : [
 			{
-				splitNumber:4,
 				axisLabel:{
 					textStyle:{
 						fontSize:40
-					}	
+					},
+					formatter:function(value) {
+						return value + " testing"
+					}
 				},
+				boundaryGap : true,
 				type : 'value'
 			}
 		],
