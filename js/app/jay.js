@@ -230,16 +230,6 @@ function indexInit(data){
 					slidesPerView: 3
 				});
 				
-				//pinmingle add
-				$("#index_right_swiper .swiper-wrapper .swiper-slide").hover(function(){
-					var index = $(this).index();
-						icon_arr[2*index].hide();   
-						icon_arr[2*index+1].show();
-				},function(){
-					var index = $(this).index();
-						icon_arr[2*index+1].hide();   
-						icon_arr[2*index].show();
-				})
 					
 				})
 			
@@ -321,6 +311,12 @@ function indexInit(data){
 				var _actclass = "mapview-active"
 				if ( !$this.hasClass(_actclass) ){
 					$this.addClass(_actclass).siblings().removeClass(_actclass);
+					
+					//pinmingle add
+					var index = $this.index();
+					icon_arr[2*index].hide();   
+					icon_arr[2*index+1].show();
+				
 					e.preventDefault();
 				} else {
                     window.pageName = "page01";
