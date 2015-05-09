@@ -82,7 +82,7 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	border:4px #dddddd;
-	border-style: dashed none;
+	/*border-style: dashed none;*/
 }
 .index-slider .swiper-slide .sw-tcion
 {
