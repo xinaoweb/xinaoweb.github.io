@@ -989,3 +989,7 @@ a{text-decoration: none;}
 {
 	font-size: 40px !important;
 }
+
+#index_prev,#index_next{ width:105px; height:223px; font-size:45px; color:#328dde; position:absolute; top:50%; margin-top:-112px;}
+#index_prev{ left:0;}
+#index_next{ right:0;}
