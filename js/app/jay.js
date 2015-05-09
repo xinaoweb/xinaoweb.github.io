@@ -264,7 +264,6 @@ function indexInit(data){
 			
 			var INDEX_LEFT_SWIPER = new Swiper("#index_left_swiper", {
 				slidesPerView: 1,
-				slidesPerColumn: 3,
 				paginationHide:false,
 				mousewheelControl: true,
 				paginationClickable: true,
