@@ -237,6 +237,8 @@ function indexInit(data){
               // Optional parameters
               direction: 'horizontal',
               slidesPerView:4,
+              nextButton:"#index_next",
+	      prevButton:"#index_prev",
               loop: true
             }) 
 			
