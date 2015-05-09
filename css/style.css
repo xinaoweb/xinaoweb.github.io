@@ -991,5 +991,5 @@ a{text-decoration: none;}
 }
 
 #index_prev,#index_next{ width:105px; height:223px; line-height:223px; text-align:center; font-size:125px; color:#328dde; position:absolute; top:50%; margin-top:-112px; font-family:"宋体"}
-#index_prev{ left:0;}
-#index_next{ right:0;}
+#index_prev{ left:-110px;}
+#index_next{ right:-110px;}
