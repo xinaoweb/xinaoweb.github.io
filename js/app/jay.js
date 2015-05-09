@@ -2095,13 +2095,13 @@ function gnhnfn_Compelte(data){
 	var d = data;
 	//console.log(data,"供能耗能数据");
 	$.each(d, function(index, data) {
-		var _day_name = "今日"+data.name;
-		var _month_name = "当月"+ data.name;
-		var _year_name = "当年"+ data.name;
+		var _day_name = "今日"+data.name+ " " +data.data1.unitname;
+		var _month_name = "当月"+ data.name+ " " +data.data2.unitname;
+		var _year_name = "当年"+ data.name+ " " +data.data3.unitname;
 		
-		var _day_val =data.data1.datavalue+ " " +data.data1.unitname ;
-		var _month_val = data.data2.datavalue+ " " +data.data2.unitname;
-		var _year_val = data.data3.datavalue+ " " +data.data3.unitname;
+		var _day_val =data.data1.datavalue;
+		var _month_val = data.data2.datavalue;
+		var _year_val = data.data3.datavalue;
 		
 		$(".ghn-0"+parseInt(index+1)+"-day-name").html(_day_name);
 		$(".ghn-0"+parseInt(index+1)+"-day-val").html(_day_val);
