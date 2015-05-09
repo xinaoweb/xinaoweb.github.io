@@ -89,7 +89,7 @@ a{text-decoration: none;}
 }
 .xa-sub-header
 {
-	height: 204px;
+	height: 167px;
 	border-top: solid #fff;
 	border-bottom: solid #cbcbcb;
 	border-width: 4px;
@@ -132,8 +132,8 @@ a{text-decoration: none;}
 .subhead-title
 {
 	color: #328dde;
-	margin-top: 32px;
-	margin-bottom: 34px;
+	margin-top: 16px;
+	margin-bottom: 12px;
 	font-size: 87px;
 	line-height: 136px;
 	padding: 0 0 0 84px;
@@ -223,7 +223,7 @@ a{text-decoration: none;}
 	width: 50%;
 	height: 100%;
 	text-align: center;
-	line-height: 200px;
+	line-height: 160px;
 	color: #989898;
 	font-size: 74px;
 	font-weight: bold;
@@ -237,6 +237,11 @@ a{text-decoration: none;}
 	padding-top: 4px;
 	margin-bottom: -4px;
 	cursor: pointer;
+	background : -webkit-linear-gradient(top, rgb(229, 229, 229) 00%, rgb(210, 209, 209) 100%);
+	background : -moz-linear-gradient(top, rgb(229, 229, 229) 00%, rgb(210, 209, 209) 100%);
+	background : -o-linear-gradient(top, rgb(229, 229, 229) 00%, rgb(210, 209, 209) 100%);
+	background : -ms-linear-gradient(top, rgb(229, 229, 229) 00%, rgb(210, 209, 209) 100%); 
+	background : -linear-gradient(top, rgb(229, 229, 229) 00%, rgb(210, 209, 209) 100%);
 }
 .xa-content
 {
