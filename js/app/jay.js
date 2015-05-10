@@ -1311,7 +1311,7 @@ if(ev.date.getDate() > nowDay ) {
 				calculable : true,
 				name:'意向',
 				type:'pie',
-				roseType : 'area',
+				/*roseType : 'area',*/
 				center: (function() {
 					var half = 2908/2
 					var k = [half*1.5, "50%"]
@@ -1571,7 +1571,7 @@ if(ev.date.getDate() > nowDay ) {
 				calculable : false,
 				name:'意向',
 				type:'pie',
-				roseType : 'area',
+				/*roseType : 'area',*/
 				center: (function() {
 					var half = 2908/2
 					var k = [half*1.25, "50%"]
@@ -1612,7 +1612,7 @@ if(ev.date.getDate() > nowDay ) {
 				calculable : false,
 				name:'意向',
 				type:'pie',
-				roseType : 'area',
+				/*roseType : 'area',*/
 				center: (function() {
 					var half = 2908/2
 					var k = [half*1.75, "50%"]
@@ -2725,37 +2725,42 @@ function energyFn() {
 
     $.when(ajaxLoad_1,ajaxLoad_2).done(function(json_a,json_b) {
 
-                console.log(json_b[0][0].y)
-                console.log(json_b)
+                console.log(json_b[0][0].y);
+                console.log(json_b);
     modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
-    
+    			
+				alert("ttt");
 				var opt = optionModal; // 模型
 				var xAxisdata = [];
 				var colsdata01 = [];
 				var piedata = [];
 				var piedata2 = [];
 
-                for(var i = 0, l = json_b.length; i < l; i++) {
+                /*for(var i = 0, l = json_b.length; i < l; i++) {
                     console.log(json_b[0][i]);
 					piedata[i] = {
 						value : json_b[0][0].y, name:json_b[0][0].name
 					}
-                }
-				$.each(json_a[0].list, function(index,data) {
+                }*/
+				console.log("ww");
+				console.log(json_a);
+				/*$.each(json_a[1].list, function(index,data) {
 					xAxisdata[index] = data.rectime;
 					colsdata01[index] = data.data;
-				});
-                /*
-				$.each(json_b[0][0], function(index,data) {
+				});*/
+                
+				alert(json_b[0].length);
+				$.each(json_b[0], function(index,data) {//多一层所以要00
 					piedata[index] = {
 						value : data.y, name:data.name
 					}
 				});
-                */
+                console.log(piedata);
 				opt.xAxis[0].data = xAxisdata;
 				opt.series[0].data = colsdata01;
 				//opt.series[0].barWidth = 15;
 				opt.series[1].data = piedata;
+				alert(opt.series[1].data.length);
 
 				modalchartobj.setOption(opt);
 				$modalinnerChartWrap.data("echart", modalchartobj);
@@ -2801,6 +2806,7 @@ console.log(ajaxLoad_3)
 					}
 				});
 				$.each(json_c[0], function(index,data) {
+									console.log(data);
 					piedata2[index] = {
 						value : data.y, name:data.name
 					}
