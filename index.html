@@ -830,7 +830,21 @@
 </script>
 
 <script type="text/javascript">
+	
 	window.addEventListener("load", function() {
+		/*__________________ testing map size ____________________*/
+		var maptarget = document.getElementById("Amapcontent");
+		var mapmaxwidht = 2000;
+		var userWidth = window.innerWidth;
+		var userHeight = window.innerHeight;
+		if (userWidth >= mapmaxwidht) {
+			maptarget.style.width = mapmaxwidht+"px"
+			maptarget.style.height = userHeight*(mapmaxwidht/userHeight) + "px";
+			var scalcNum = userWidth / mapmaxwidht;
+				scalcNum = scalcNum*100;
+			maptarget.style.zoom = scalcNum + "%";
+		}
+		/*__________________ testing map size ____________________*/
 		window.bdmap = new BMap.Map("Amapcontent");          // 创建地图实例  
 		var point = new BMap.Point(121.484,31.204);  // 创建点坐标  
 		var shpoint = new BMap.Point("上海");
