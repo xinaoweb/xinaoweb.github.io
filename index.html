@@ -834,13 +834,15 @@
 	window.addEventListener("load", function() {
 		/*__________________ testing map size ____________________*/
 		var maptarget = document.getElementById("Amapcontent");
-		var mapmaxwidht = 2000;
+		var mapmaxwidth = 1536;
+		var mapmaxheight = "";
 		var userWidth = window.innerWidth;
 		var userHeight = window.innerHeight;
-		if (userWidth >= mapmaxwidht) {
-			maptarget.style.width = mapmaxwidht+"px"
-			maptarget.style.height = userHeight*(mapmaxwidht/userHeight) + "px";
-			var scalcNum = userWidth / mapmaxwidht;
+		mapmaxheight = userHeight*(mapmaxwidth/userWidth);
+		if (userWidth >= mapmaxwidth) {
+			maptarget.style.width = mapmaxwidth+"px"
+			maptarget.style.height = mapmaxheight+"px"
+			var scalcNum = userWidth / mapmaxwidth;
 				scalcNum = scalcNum*100;
 			maptarget.style.zoom = scalcNum + "%";
 		}
