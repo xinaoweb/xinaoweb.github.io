@@ -7,6 +7,7 @@ var jayfunction = function() {
 var demand
   , projectBoxIndex = 0 // 项目索引 
   , contTitle = $('#contSubTitle') 
+var interId
 
 // 日期备用
 var nowdate = new Date();
@@ -323,6 +324,8 @@ function indexInit(data){
                     window.pageName = "index";
 
                     if(window.pageName == "index") {
+                        clearInterval(interId);
+
                         $('#unityPlayer').remove();
                         $('#unityPlayer').css({'visibility':'hidden'}) // 隐藏3d
                     }
@@ -358,6 +361,8 @@ function indexInit(data){
 				} else {
                     window.pageName = "page01";
                     if(window.pageName == "page01")
+                        clearInterval(interId);
+
                         $('#unityPlayer').css({'visibility':'visible'}) // 隐藏3d
 
                     if($('#unityPlayer').length === 0)
@@ -369,9 +374,24 @@ q
                     switchPage(function(){
 
 switch(_pid) {
-    case '1':builtUnity3d("obj/AirPort201500506.unity3d"); contTitle.text(name);break;
-    case '3':builtUnity3d("obj/Hostpial20150506.unity3d"); contTitle.text(name);break;
-    case '4':builtUnity3d("obj/Other20150506.unity3d"); contTitle.text(name);break;
+    case '1':
+        builtUnity3d("obj/AirPort20150510.unity3d");
+        interId = setInterval(function(){
+            demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=100', jsonp: 'labeldataAll', done:sent3dData});
+        },600);
+        break;
+    case '3':
+        builtUnity3d("obj/Hostpial20150510.unity3d");
+        interId = setInterval(function(){
+            demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=101', jsonp: 'labeldataAll', done:sent3dData});
+        },600);
+        break;
+    case '4':
+        builtUnity3d("obj/Other20150510.unity3d");
+        interId = setInterval(function(){
+            demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=102', jsonp: 'labeldataAll', done:sent3dData});
+        },600);
+        break;
 }
 
 
@@ -2648,8 +2668,6 @@ function getRandomArbitrary(min, max) {
 	init();
 
 // unity3d
-	function builtUnity3d(name) {
-    
 			var config = {
 				width: 3100, 
 				//height: 2180,
@@ -2658,6 +2676,11 @@ function getRandomArbitrary(min, max) {
 				
 			};
 			var u = new UnityObject2(config);
+            var f3d = 0;
+            var model = null;
+
+	function builtUnity3d(name) {
+    
 
 
 				var $missingScreen = jQuery("#unityPlayer").find(".missing");
@@ -2689,6 +2712,8 @@ function getRandomArbitrary(min, max) {
 							$missingScreen.remove();
 						break;
 						case "first":
+                            f3d = 1;
+
 						break;
 					}
 				});
@@ -2699,6 +2724,16 @@ function getRandomArbitrary(min, max) {
                     u.initPlugin(jQuery("#unityPlayer")[0], name); // 初始化3d
                 //}
     }	
+   //传送3d数据
+    function sent3dData(data) {
+        var d = '{"3dData":' + JSON.stringify(data) + '}'; 
+        RecvMsgFormUnity(d);
+    }
+
+// 3d callback
+function RecvMsgFormUnity(str) {
+    u.getUnity().SendMessage("AnchorPoint", "RecvMessage",str);
+}
 
 // 获取ajax
 			function ajaxget(URL,JSONP,CALLBACK_NAME) {
