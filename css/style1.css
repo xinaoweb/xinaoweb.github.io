@@ -93,6 +93,10 @@
 }
 .index-slider .swiper-slide
 {
+/*
+	height: 33.33%;
+	padding: 0 120px;
+    */
 	height: 100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -150,9 +154,10 @@
 	font-size: 50px;
 	line-height: 96px;
 	color: #484848;
-	text-align:left; 
-	text-indent:2em;
+    text-align: left;
+    text-indent: 2em;
 }
+.dashed_line{ border-bottom:1px dashed #b3bbc2; padding-bottom:20px; margin-bottom:40px;}
 .index-slider .sw-title.has-img-icon
 {
 	position: relative;
@@ -163,6 +168,9 @@
 	display: inline-block;
 	height: 164px;
 	line-height: 164px;
+    /*
+	font-size: 74px;
+*/
 	font-size: 68px;
 	color: #328dde;
 	

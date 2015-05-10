@@ -6,6 +6,7 @@ var jayfunction = function() {
 	// 链接VPN数据
 var demand
   , projectBoxIndex = 0 // 项目索引 
+  , contTitle = $('#contSubTitle') 
 
 // 日期备用
 var nowdate = new Date();
@@ -156,12 +157,12 @@ function indexInit(data){
 					
 					//百度地图
 					var point = new BMap.Point(_refh,_refv);  // 创建点坐标  
-					var myIcon = new BMap.Icon("images/icon-location-1.png", new BMap.Size(69,102));
+					var myIcon = new BMap.Icon("images/icon-map_1.png", new BMap.Size(18,27));
 					var marker2 = new BMap.Marker(point,{icon:myIcon});  // 创建标注
 					bdmap.addOverlay(marker2);     
 					
 					icon_arr.push(marker2);
-					var myIcon_hover = new BMap.Icon("images/icon-location-2.png", new BMap.Size(130,193));
+					var myIcon_hover = new BMap.Icon("images/icon-map_2.png", new BMap.Size(32,47));
 					var marker3 = new BMap.Marker(point,{icon:myIcon_hover});  // 创建标注
 					icon_arr.push(marker3);
 					bdmap.addOverlay(marker3);   
@@ -207,7 +208,9 @@ function indexInit(data){
 					'				<img src="images/icon-bulid-1.png" alt="">'+
 					'			</div>'+
 					'			<div class="text-date flexmid">'+
+					/*
 					'				<h2>'+_m+'</h2>'+
+					*/
 					'				<p>'+_y+'</p>'+
 					'			</div>'+
 					'		</div>'+
@@ -218,7 +221,6 @@ function indexInit(data){
 					$div.append(template);
 					template = ""
 				})
-				
 				$("#index_right_swiper .swiper-wrapper").html($div.html())
 				$div = null;
 				jsonDataRight = null;
@@ -230,17 +232,37 @@ function indexInit(data){
 					slidesPerView: 3
 				});
 				
+				//pinmingle add
+                /*
+				$("#index_right_swiper .swiper-wrapper .swiper-slide").hover(function(){
+					var index = $(this).index();
+						icon_arr[2*index].hide();   
+						icon_arr[2*index+1].show();
+				},function(){
+					var index = $(this).index();
+						icon_arr[2*index+1].hide();   
+						icon_arr[2*index].show();
+				})
+                */
 					
 				})
-			
+
 			window.bottomSwiper = new Swiper('#bottomSWIPER', {
               // Optional parameters
               direction: 'horizontal',
               slidesPerView:4,
               nextButton:"#index_next",
-	      prevButton:"#index_prev",
+	      	  prevButton:"#index_prev",
               loop: true
             }) 
+			
+			/*内页顶部滚动*/
+			var header_swiper = new Swiper('#header_gonggao', {
+				direction: 'vertical',
+				autoplay:3000,
+				autoplayDisableOnInteraction:false,
+				loop:true
+			});
 			
             /* 已加载VPN数据，故注释
 			$.ajax({ //请求首页项目
@@ -258,12 +280,20 @@ function indexInit(data){
 					alert('加载数据失败');
 				}
 			});
-            */
 		
 			
 			
 			
 			
+			var INDEX_LEFT_SWIPER = new Swiper("#index_left_swiper", {
+				slidesPerView: 1,
+				slidesPerColumn: 3,
+				paginationHide:false,
+				mousewheelControl: true,
+				paginationClickable: true,
+				pagination:"#ils_pages"
+			});
+            */
 			var INDEX_LEFT_SWIPER = new Swiper("#index_left_swiper", {
 				slidesPerView: 1,
 				paginationHide:false,
@@ -289,8 +319,6 @@ function indexInit(data){
 			
 		    $('#goHome').on('click', function(e) {
             		
-					$(".mapview-active").removeClass("mapview-active");
-					bdmap.centerAndZoom("北京",7);
 				
                     window.pageName = "index";
 
@@ -298,7 +326,16 @@ function indexInit(data){
                         $('#unityPlayer').remove();
                         $('#unityPlayer').css({'visibility':'hidden'}) // 隐藏3d
                     }
-                    switchPage(); //切换页面         
+                    switchPage(function(){
+                        $(".mapview-active").removeClass("mapview-active");
+                        bdmap.centerAndZoom(new BMap.Point(103.404, 39.915),5); //修改地图的中心点
+					if(icon_arr && icon_arr.length>=1){
+						for(var i=0; i<icon_arr.length; i++){	
+							icon_arr[2*i].show();   
+							icon_arr[2*i+1].hide();
+						}
+					}
+                    }); //切换页面         
             });	
             var detail_data_index = 0; //内页图表数据索引 pinmingle add
 			$("#index_right_swiper").on("click", ".swiper-slide", function(e) {
@@ -307,47 +344,44 @@ function indexInit(data){
 				var _relv = $this.attr("refv");
                 var _pid = $this.attr('data-pid')
 				var point = new BMap.Point( Number(_relh),Number(_relv) );
+                var name = $this.find('.mv-localname').text();
 //				console.log(point)
-				bdmap.centerAndZoom(point,17);
+				bdmap.centerAndZoom(point,12); //地图的缩放比
 				var _actclass = "mapview-active"
 				if ( !$this.hasClass(_actclass) ){
 					$this.addClass(_actclass).siblings().removeClass(_actclass);
-					
-					//pinmingle add
+                    					//pinmingle add
 					var index = $this.index();
 					icon_arr[2*index].hide();   
 					icon_arr[2*index+1].show();
-				
 					e.preventDefault();
 				} else {
                     window.pageName = "page01";
                     if(window.pageName == "page01")
                         $('#unityPlayer').css({'visibility':'visible'}) // 隐藏3d
-                    switchPage(); //切换页面   
+
                     if($('#unityPlayer').length === 0)
                         $('.xa-con-cent').append(unityPlayer);
 
 /*
-switch(_pid) {
-    case '1':builtUnity3d("obj/AirPort201500506.unity3d");break;
-    case '3':builtUnity3d("obj/Hostpial20150506.unity3d");break;
-    case '4':builtUnity3d("obj/Other20150506.unity3d");break;
-}
+q
 */
+                    switchPage(function(){
+
+switch(_pid) {
+    case '1':builtUnity3d("obj/AirPort201500506.unity3d"); contTitle.text(name);break;
+    case '3':builtUnity3d("obj/Hostpial20150506.unity3d"); contTitle.text(name);break;
+    case '4':builtUnity3d("obj/Other20150506.unity3d"); contTitle.text(name);break;
+}
 
 
                     detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
-                   //console.log('index '+detail_data_index) 
                     $(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
-					/*var a =1;
-					if(detail_data_index>=1){
-						a = detail_data_index+2;
-					
-					}
-					alert(a);
-					demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+a,jsonp: 'setProject' ,done:setCompelte});
-					bindY_M_D_data(); //pinmingle add
-					*/
+	$doc.trigger("loadRightTab2JSON",[_pid]); // 加载供能耗能
+    getWeather();// 加载气象信息
+}); //切换页面   
+
+
                 }
 			});
 			
@@ -473,8 +507,32 @@ if(ev.date.getDate() > nowDay ) {
 } 
                 var type = $(this).parents('.xa-modal-wrapper').attr('data-type');
                 console.log(type)
-
-            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date="+joinDate+"","financePie"]);
+                switch(type) {
+                    case 'one': 
+                        energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid=551&timeradio=days&date='+joinDate+'','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid=551&timeradio=days&date='+joinDate+'','energyPie']);
+                        break;
+                    case 'two':
+                        break;
+                    case 'three':
+                        break;
+                    case 'four':
+                        break;
+                    case 'five':
+                        break;
+                    case 'six':
+                        break;
+                    case 'seven':
+                        break;
+                    case 'eight':
+                        costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=years&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=years&date="+joinDate+"","financePie"]);
+                        break;
+                    case 'nine':
+                        costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date="+joinDate+"","financePie"]);
+                        break;
+                    case 'ten':
+                        costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date="+joinDate+"","financePie"]);
+                        break;
+                }
 
             //costFn(["ajaxsample/pop_inc_col.js","popinc_col"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=","financePie"]);
                 /*
@@ -608,11 +666,21 @@ if(ev.date.getDate() > nowDay ) {
             case 'one': $title.text('耗气'); break;
             case 'two': $title.text('耗水'); break;
             case 'three': $title.text('耗电'); break;
-            case 'three': $title.text('供热'); break;
-            case 'four': $title.text('供冷'); break;
-            case 'six': $title.text('发电'); break;
-            case 'seven': $title.text('供蒸汽'); break;
+            /*
+            case 'four': $title.text('供热'); break;
+            case 'five': $title.text('供冷'); break;
+            */
+            case 'six': $title.text('多项供能对比'); break;
+
+            //case 'seven': $title.text('供蒸汽'); break;
+
+            case 'eight': $title.text('当年成本收益'); break;
+            case 'nine': $title.text('当月成本收益'); break;
+            case 'ten': $title.text('当日成本收益'); break;
         }
+		$(".dateinput-day").val("").datepicker("update");
+		$(".dateinput-months").val("").datepicker("update");
+		$(".dateinput-year").val("").datepicker("update");
         /*
 		$(".dateinput-day").val("0"+day).datepicker("update");
 		$(".dateinput-months").val("0"+parseInt(month+1)).datepicker("update");
@@ -687,7 +755,9 @@ if(ev.date.getDate() > nowDay ) {
 			//console.log("show 1 call back")
 		}
 		showModal('three',show_3_callback);
-	}).on("click", "#showModal_4",function() {
+	})
+    /*
+    .on("click", "#showModal_4",function() {
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
 		function show_4_callback() {
@@ -768,15 +838,17 @@ if(ev.date.getDate() > nowDay ) {
 			$(document.getElementById("tempss")).prepend($span2)
 		}
 		showModal('five',show_5_callback);
-	}).on("click", "#showModal_6",function() {
+	})
+    */
+    .on("click", "#showModal_g",function() {
 		function show_6_callback() {
 			//console.log("show 6 call back");
 				$.ajax({
 					type : "get",
 					async:true,
-					url : "ajaxsample/pop_inc_line_muti.js",
+					url : "http://10.36.128.73:8080/reds/ds/multiEnergy?type=0&timeradio=days&date=2015-04-01",
 					dataType : "jsonp",
-					jsonp: "callback",
+					jsonp: "multiEnergy",
 					jsonpCallback:"popinc_line_muti",
 					success : function(json){
 						//console.log(json)
@@ -819,12 +891,16 @@ if(ev.date.getDate() > nowDay ) {
 				});
 		}
 		showModal('six',show_6_callback);
-	}).on("click", "#showModal_7",function() {
+	})
+    /*
+    .on("click", "#showModal_7",function() {
 		function show_7_callback() {
 			//console.log("show 1 call back")
 		}
 		showModal('seven',show_7_callback);
-	}).on("click", "#showModal_8",function() {
+	})
+    */
+    .on("click", "#showModal_8",function() {
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
 		var $span1 = $("<span>").html("成本能源结构图").css({
@@ -842,15 +918,17 @@ if(ev.date.getDate() > nowDay ) {
 		function show_8_callback() {
         costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=years&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=years&date=now","financePie"]);
 			//console.log("modal8 clicked")
+            /*
 			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
 			$modalinnerChartWrap.data({
 				"chartType":"1",
 				"chartDateType":"years",
 				"chartDataURL":URLS
 			});
+            */
 		}
 		
-		showModal(show_8_callback);
+		showModal('eight',show_8_callback);
 	}).on("click", "#showModal_9",function() {
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
@@ -867,19 +945,12 @@ if(ev.date.getDate() > nowDay ) {
 			"top":"90px"
 		});
 		function show_5_callback() {
-			//console.log("show 5 call back");
-			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
-			modalchartobj.setOption(optionModal3);
-			
-			//console.log($span1,$span2)
-			$modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
-			$(document.getElementById("tempss")).prepend($span1)
-			$(document.getElementById("tempss")).prepend($span2)
+            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date=now","financePie"]);
 		}
-		showModal(show_5_callback);
+		showModal('nine',show_5_callback);
 	}).on("click", "#showModal_10",function() {
 		function show_10_callback() {
-            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date=now","financePie"]);
+            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=now","financePie"]);
             /*
 			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
 			$modalinnerChartWrap.data({
@@ -889,46 +960,7 @@ if(ev.date.getDate() > nowDay ) {
 			});
             */
 		}
-		showModal(show_10_callback);
-	}).on("click", "#showModal_11",function() {
-		function show_11_callback() {
-            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date=now","financePie"]);
-            /*
-			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
-			$modalinnerChartWrap.data({
-				"chartType":"1",
-				"chartDateType":"mons",
-				"chartDataURL":URLS
-			});
-            */
-		}
-		showModal(show_11_callback);
-	}).on("click", "#showModal_12",function() {
-		function show_12_callback() {
-            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=now","financePie"]);
-            /*
-			var URLS =[["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
-			$modalinnerChartWrap.data({
-				"chartType":"1",
-				"chartDateType":"day",
-				"chartDataURL":URLS
-			});
-            */
-		}
-		showModal(show_12_callback);
-	}).on("click", "#showModal_13",function() {
-		function show_13_callback() {
-            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=now","financePie"]);
-            /*
-			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
-			$modalinnerChartWrap.data({
-				"chartType":"1",
-				"chartDateType":"day",
-				"chartDataURL":URLS
-			});
-            */
-		}
-		showModal(show_13_callback);
+		showModal('ten',show_10_callback);
 	});
 	
 	
@@ -947,7 +979,7 @@ if(ev.date.getDate() > nowDay ) {
 	var mycolumnChart4 = echarts.init(document.getElementById('columnChart4'), defaultTheme);
 	var mycolumnChart5 = echarts.init(document.getElementById('columnChart5'), defaultTheme);
 //	var myModalChart = echarts.init(document.getElementById('chartinner'), defaultTheme);
-	var radius = [130,158];
+	var radius = [130,160];
 	var labelTop = {
 		normal : {
 			label : {
@@ -1253,12 +1285,13 @@ if(ev.date.getDate() > nowDay ) {
 		],
 		series : [
 			{
-				name:'成交',
+				name:'累计',
 				type:'line',
 				smooth:true,
 				itemStyle: {normal: {areaStyle: {type: 'default'}}},
-				data:[10, 12, 21, 54, 260, 830, 710]
+				data:[1000, 12, 21, 54, 260, 830, 710]
 			},
+            /*
 			{
 				name:'预购',
 				type:'line',
@@ -1273,6 +1306,7 @@ if(ev.date.getDate() > nowDay ) {
 				itemStyle: {normal: {areaStyle: {type: 'default'}}},
 				data:[1320, 1132, 601, 234, 120, 90, 20]
 			},
+            */
 			{
 				calculable : true,
 				name:'意向',
@@ -1348,9 +1382,6 @@ if(ev.date.getDate() > nowDay ) {
 				saveAsImage : {show: true}
 			}
 		},
-		grid:{
-			x:300
-		},
 		calculable : false,
 		xAxis : [
 			{
@@ -1369,12 +1400,8 @@ if(ev.date.getDate() > nowDay ) {
 				axisLabel:{
 					textStyle:{
 						fontSize:40
-					},
-					formatter:function(value) {
-						return value + " testing"
-					}
+					}	
 				},
-				boundaryGap : true,
 				type : 'value'
 			}
 		],
@@ -1442,7 +1469,12 @@ if(ev.date.getDate() > nowDay ) {
 		},
 		legend: {
 			x:"45%",
-			data:['当年成本','当年收益']
+			data:['当年成本','当年收益'],
+			textStyle:{
+				fontSize:40//图例的字号
+			},
+      		itemWidth :70,//图例的宽
+       		itemHeight :40//图例的高
 		},
 		toolbox: {
 			show : false,
@@ -1457,7 +1489,8 @@ if(ev.date.getDate() > nowDay ) {
 		grid:{
 			y:200,
 			y2:200,
-			x2:"50%"
+			x2:"50%",
+			x:150 //Y轴左边距设置
 		},
 		calculable : false,
 		xAxis : [
@@ -1490,7 +1523,7 @@ if(ev.date.getDate() > nowDay ) {
 					textStyle:{
 						color: '#989898',
 						fontWeight: 'bolder',
-						fontSize: 24
+						fontSize: 34
 					}
 				}
 			}
@@ -1564,7 +1597,7 @@ if(ev.date.getDate() > nowDay ) {
 							lineStyle:{
 								width:4
 							},
-							length : 50
+							length : 150
 						}
 					}
 				},
@@ -2093,68 +2126,156 @@ function mainLeft_Compelte(data){
 	$doc.trigger("leftjsonpdataReady")
 }
 
-function gnhnfn_Compelte(data){
-	var d = data;
+
+
+function gnhnfn_Compelte(data, projectid){
+var costEnergy = $('#costEnergy')
+  , supplyEnergy = $('#supplyEnergy')
+  ,	d = data
+  , checkTypeNum = 0
+  , colorNum = 1
+  , logo = 'thunder'
+  , indexNum = 0
+
+// 清空列表
+costEnergy.empty()
+supplyEnergy.empty()
+
 	//console.log(data,"供能耗能数据");
 	$.each(d, function(index, data) {
+        if(data.name === '供热水') return;
+        var energyClass = data.name.substring(1,2);
+
+        if(data.name.substring(0,1) === '耗' ) checkTypeNum++; //分类耗与供
+
+        if(index < checkTypeNum) {
+            switch(energyClass) {
+                case '气':
+                    colorNum = 1;
+                    logo = 'fire';
+                    indexNum = 1;
+                break;
+                case '水':
+                    colorNum = 2;
+                    logo = 'wth2';
+                    indexNum = 2;
+                break;
+                case '电':
+                    colorNum = 3;
+                    logo = 'thunder'
+                    indexNum = 3;
+                break;
+            }     
+        } else {
+            switch(energyClass) {
+                case '热':
+                    colorNum = 'ab5150';
+                    logo = 'fire2';
+                break;
+                case '冷':
+                    colorNum = '71538a';
+                    logo = 'cup';
+                break;
+                case '电':
+                    colorNum = '838d58';
+                    logo = 'spr';
+                break;
+                case '蒸':
+                    colorNum = 'b59142';
+                    logo = '9dots';
+                break;
+                }
+        }     
+
 		var _day_name = "今日"+data.name+ " " +data.data1.unitname;
 		var _month_name = "当月"+ data.name+ " " +data.data2.unitname;
 		var _year_name = "当年"+ data.name+ " " +data.data3.unitname;
-		
-		var _day_val =data.data1.datavalue;
+		var _day_val =data.data1.datavalue ;
 		var _month_val = data.data2.datavalue;
 		var _year_val = data.data3.datavalue;
 		
-		$(".ghn-0"+parseInt(index+1)+"-day-name").html(_day_name);
-		$(".ghn-0"+parseInt(index+1)+"-day-val").html(_day_val);
-		$(".ghn-0"+parseInt(index+1)+"-month-name").html(_month_name);
-		$(".ghn-0"+parseInt(index+1)+"-month-val").html(_month_val);
-		$(".ghn-0"+parseInt(index+1)+"-year-name").html(_year_name);
-		$(".ghn-0"+parseInt(index+1)+"-year-val").html(_year_val);
+var gnhnTemp = '<div class="eng-bp" id="showModal_'+indexNum+'">' +
+               '     <div class="eng-block color-'+colorNum+'">' +
+               '           <div class="eng-b-top clearfix">' +
+               '                <div class="eng-icon">'+
+'                                            <img src="images/icon-'+logo+'.png" alt="">'+
+'                                        </div>'+
+'                                        <div class="eng-text">'+
+'                                            <div>'+
+'                                                <p class="ghn-01-day-name">'+_day_name+'</p>'+
+'                                                <p class="ghn-01-day-val">'+_day_val+'</p>'+
+'                                            </div>'+
+'                                        </div>'+
+'                                    </div>'+
+'                                    <div class="eng-b-con">'+
+'                                        <div class="eng-bcin">'+
+'                                            <p class="ghn-01-month-name">'+_month_name+'</p>'+
+'                                            <p class="ghn-01-month-val">'+_month_val+'</p>'+
+'                                        </div>'+
+'                                        <div class="eng-bcin">'+
+'                                            <p class="ghn-01-year-name">'+_year_name+'</p>'+
+'                                            <p class="ghn-01-year-val">'+_year_val+'</p>'+
+'                                        </div>'+
+'                                    </div>'+
+'                                </div>'+
+'                            </div>';
 		
+        if(index < checkTypeNum) {
+            costEnergy.append(gnhnTemp);		
+        }
+        else {
+            supplyEnergy.append(gnhnTemp)
+        }
 		
 	});
+        // 对齐
+                switch(projectid) {
+                    case '1':
+						$('.part-3 .eng-bp').css('width','33.33%');
+                    break;
+                    case '3':
+						$('.part-3 .eng-bp').css('width','33.33%');
+                    break;
+                    case '4':
+                        $('.part-3 .eng-bp').css('width','50%');
+                    break;
+                }
 }
 	
-	function gnhnfn() {
-		/*$.ajax({
-			type : "get",
-			async:true,
-			url : "ajaxsample/gnhn.js",
-			dataType : "jsonp",
-			jsonp: "callback",
-			jsonpCallback:"gnhn",
-			success : function(json){
-				console.log(json,"供能耗能数据");
-				$.each(json, function(index, data) {
-					var _day_name = "今日"+data.name;
-					var _month_name = "当月"+ data.name;
-					var _year_name = "当年"+ data.name;
-					
-					var _day_val =data.data1.datavalue+ " " +data.data1.unitname ;
-					var _month_val = data.data2.datavalue+ " " +data.data2.unitname;
-					var _year_val = data.data3.datavalue+ " " +data.data3.unitname;
-					
-					$(".ghn-0"+parseInt(index+1)+"-day-name").html(_day_name);
-					$(".ghn-0"+parseInt(index+1)+"-day-val").html(_day_val);
-					$(".ghn-0"+parseInt(index+1)+"-month-name").html(_month_name);
-					$(".ghn-0"+parseInt(index+1)+"-month-val").html(_month_val);
-					$(".ghn-0"+parseInt(index+1)+"-year-name").html(_year_name);
-					$(".ghn-0"+parseInt(index+1)+"-year-val").html(_year_val);
-					
-					
-				});
-			},
-				error:function(){
-				alert('供能耗能数据失败');
-			}
-		});	*/
+	function gnhnfn(e,projectid) {
 		
-			demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainRight?timeradio=days',jsonp: 'mainRight' ,done:gnhnfn_Compelte});
+			demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+projectid+'',jsonp: 'setProject' ,done:setCompelte});
+			demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainRight?timeradio=days',jsonp: 'mainRight' ,done:function(data){
+                gnhnfn_Compelte(data, projectid);
+            }
+        });
 	}
 	$doc.on("loadRightTab2JSON", gnhnfn);
-	$doc.trigger("loadRightTab2JSON");
-	
+	//$doc.trigger("loadRightTab2JSON",[1]);
+
+// 获取环境信息
+function getWeather() {
+    demand.start({url:'http://10.36.128.73:8080/reds/ds/weather',jsonp: 'weather' ,done:setWeather});
+}
+function setWeather(data){
+   var d = data
+     , irradiance = $('#irradiance') 
+     , irradianceIcon = $('#irradianceIcon')
+   if(data.length === 2){
+        irradiance.hide();
+        irradianceIcon.hide();
+    } else {
+        irradiance.show();
+        irradianceIcon.show();
+    }
+   $.each(d, function(index, data) {
+        switch(index) {
+            case 0: $('#temperature').find('.highlight').text(data.datavalue + '°C');break;
+            case 1: $('#humidity').find('.highlight').text(data.datavalue + '%');break;
+            case 2: irradiance.find('.highlight').text(data.datavalue + 'w/㎡');break;
+        }        
+   });
+}
 	
 	//RecvMsgFormUnity();
 		function RecvMsgFormUnity(str, callback)
@@ -2490,14 +2611,16 @@ function getRandomArbitrary(min, max) {
 			}
 		} );
 
-		$nextPage.addClass( inClass ).on( animEndEventName, function() {
+		$nextPage.addClass( inClass ).on( animEndEventName, {fn: callback},function(event) { //callback
 			$nextPage.off( animEndEventName );
 			endNextPage = true;
+            //console.log(event.data.fn)
 			if( endCurrPage ) {
-				onEndAnimation( $currPage, $nextPage );
+				onEndAnimation( $currPage, $nextPage, event.data.fn);
 			}
 		} );
-        //callback();
+            //console.log(callback)
+        callback();
 
 		if( !support ) {
 			onEndAnimation( $currPage, $nextPage );
@@ -2509,16 +2632,17 @@ function getRandomArbitrary(min, max) {
 
 		endCurrPage = false;
 		endNextPage = false;
-		resetPage( $outpage, $inpage );
+		resetPage( $outpage, $inpage ,callback);
 		isAnimating = false;
-        //if(callback !== null)
-        //callback();
 	}
 
 	function resetPage( $outpage, $inpage ) {
 		$outpage.attr( 'class', $outpage.data( 'originalClassList' ) );
 		$inpage.attr( 'class', $inpage.data( 'originalClassList' ) + ' pt-page-current' );
 
+        if(typeof callback !== 'undefined') {
+            callback();
+        }
 	}
 
 	init();
@@ -2589,6 +2713,8 @@ function getRandomArbitrary(min, max) {
 				return thisAjax;
 			}
 // 耗气，曲线+饼图
+/*********************************************************生成饼图错误******************************/
+
 function energyFn() {
     var ajaxLoad_1
       , ajaxLoad_2
@@ -2599,9 +2725,41 @@ function energyFn() {
 
     $.when(ajaxLoad_1,ajaxLoad_2).done(function(json_a,json_b) {
 
+                console.log(json_b[0][0].y)
+                console.log(json_b)
     modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
     
-    })
+				var opt = optionModal; // 模型
+				var xAxisdata = [];
+				var colsdata01 = [];
+				var piedata = [];
+				var piedata2 = [];
+
+                for(var i = 0, l = json_b.length; i < l; i++) {
+                    console.log(json_b[0][i]);
+					piedata[i] = {
+						value : json_b[0][0].y, name:json_b[0][0].name
+					}
+                }
+				$.each(json_a[0].list, function(index,data) {
+					xAxisdata[index] = data.rectime;
+					colsdata01[index] = data.data;
+				});
+                /*
+				$.each(json_b[0][0], function(index,data) {
+					piedata[index] = {
+						value : data.y, name:data.name
+					}
+				});
+                */
+				opt.xAxis[0].data = xAxisdata;
+				opt.series[0].data = colsdata01;
+				//opt.series[0].barWidth = 15;
+				opt.series[1].data = piedata;
+
+				modalchartobj.setOption(opt);
+				$modalinnerChartWrap.data("echart", modalchartobj);
+    });
 }
 // 成本收益弹出框调用函数
 	function costFn(){ // 只传url和jsonp
@@ -2622,7 +2780,7 @@ console.log(ajaxLoad_2)
 console.log(ajaxLoad_3)
 */
 			$.when(ajaxLoad_1,ajaxLoad_2,ajaxLoad_3).done(function(json_a,json_b,json_c) {
-				//console.log( json_a,json_b,json_c,"拿到JSON数据")
+				console.log( json_a,json_b,json_c,"拿到JSON数据")
 				modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 				var opt = optionModal3;
 				var xAxisdata = [];
