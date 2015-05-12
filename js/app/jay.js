@@ -135,9 +135,9 @@ function indexInit(data){
 					var _protype = data.industryclassname;
                     */
 					var _protype = data.industrytypename;
-                    var _co2 = (data.data1===null) ? 0 : data.data1;
-                    var _cost = (data.data2===null) ? 0 : data.data2;
-                    var _electric = (data.data3===null) ? 0 : data.data3;
+                    var _renew = (data.data1===null) ? 0 : data.data1;
+                    var _co2 = (data.data2===null) ? 0 : data.data2;
+                    var _energySaving = (data.data3===null) ? 0 : data.data3;
 					var _pic =  (function() {
 						var defimg = "images/loacationimg00.jpg"
 						if (data.projectid == "1") {
@@ -213,12 +213,12 @@ var re = new RegExp(reg);
 					'	<div class="mapview-cycle-wrap">'+
 					'		<div class="mapview-cycle"><img src="'+_pic+'" alt="">'+
 					'			<div class="mpv-cycle-detail flexmid">'+
-					'				<h3>二氧化碳减排总量（率） (kg)</h3>'+
+					'				<h3>二氧化碳减排率</h3>'+
 					'				<p>'+_co2+'</p>'+
 					'				<h3>可再生能源利用率</h3>'+
-					'				<p>'+_cost+'</p>'+
-					'				<h3>节能总量（率）</h3>'+
-					'				<p>'+_electric+'</p>'+
+					'				<p>'+_renew+'</p>'+
+					'				<h3>节能总量率</h3>'+
+					'				<p>'+_energySaving+'</p>'+
 					'			</div>'+
 					'		</div>'+
 					'		<div class="mapview-cycle-tips">'+
@@ -398,19 +398,19 @@ switch(_pid) {
         builtUnity3d("obj/AirPort20150510.unity3d");
         interId = setInterval(function(){
             demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=100', jsonp: 'labeldataAll', done:sent3dData});
-        },600);
+        },60000);
         break;
     case '3':
         builtUnity3d("obj/Hostpial20150510.unity3d");
         interId = setInterval(function(){
             demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=101', jsonp: 'labeldataAll', done:sent3dData});
-        },600);
+        },60000);
         break;
     case '4':
         builtUnity3d("obj/Other20150510.unity3d");
         interId = setInterval(function(){
             demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=102', jsonp: 'labeldataAll', done:sent3dData});
-        },600);
+        },60000);
         break;
 }
 
@@ -419,15 +419,25 @@ switch(_pid) {
                     $(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
 	$doc.trigger("loadRightTab2JSON",[_pid]); // 加载供能耗能
     getWeather();// 加载气象信息
-     
+     contTitle.text(name);
 
 //console.log(sumProjectData)
+var innerWrap = $('#xinaoProjects')
+innerWrap.empty();
 $.each(sumProjectData, function(index, data){
-
-    var innerProjects = '<div index="'+index+'" class="selector cur swiper-slide">'+
-                            '<img src="images/sampleimg-1.jpg" alt="">'+
+var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="selector swiper-slide"'
+  , img = 0
+  switch(index) {
+    case '1': img = 1; break; 
+    case '3': img = 2; break;
+    case '4': img = 3; break;
+    default: img = 4; break;
+  }
+    var innerProjects = '<div index="'+index+'" '+cur+'>'+
+                            '<img src="images/sampleimg-'+img+'.jpg" alt="">'+
                             '<p>'+data+'</p>'+
                          '</div>';
+                         innerWrap.append(innerProjects);
 
 });
 
@@ -1110,7 +1120,7 @@ if(ev.date.getDate() > nowDay ) {
 				itemStyle : labelFromatter,
 				data : [
 					{name:'', value:60, itemStyle : labelBottom},
-					{name:'CO2减排率', value:40,itemStyle : labelTop}
+					{name:'减排率', value:40,itemStyle : labelTop}
 				]
 			}
 		]
@@ -1756,7 +1766,7 @@ if(ev.date.getDate() > nowDay ) {
 		
 		
 	$doc.on("leftjsonpdataReady", function(){
-		//console.log(leftjsonpdata,"left Json Data load");
+		console.log(leftjsonpdata,"left Json Data load");
 		var datalength = leftjsonpdata.length;
 //		console.log(datalength)
 		$.each(leftjsonpdata, function(index, data) {
@@ -1835,7 +1845,10 @@ if(ev.date.getDate() > nowDay ) {
 					return params.value + "\n" + data_2_unit;
 				};
 				chartOPT2.series[0].data = [data_2_val,data_3_val];
-				chartOPT2.xAxis[0].data = [data_2_name,data_3_name];
+                var newData2Name = data_2_name.substring(0,2) + data_2_name.substring(5); // 去掉co2
+                var newData3Name = data_3_name.substring(0,2) + data_3_name.substring(5); // 去掉co2
+
+				chartOPT2.xAxis[0].data = [newData2Name,newData3Name];
 				if (index == "0") {
 					chartOPT2.series[0].itemStyle.normal.color = "#f8ae3b";
 					
@@ -1970,6 +1983,7 @@ if(ev.date.getDate() > nowDay ) {
 		});
 	});
 		
+        // left jsonp ready end
 		
 		
 		
