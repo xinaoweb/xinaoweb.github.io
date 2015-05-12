@@ -393,26 +393,7 @@ var re = new RegExp(reg);
 q
 */
                     switchPage(function(){// 切换后回调
-switch(_pid) {
-    case '1':
-        builtUnity3d("obj/AirPort20150510.unity3d");
-        interId = setInterval(function(){
-            demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=100', jsonp: 'labeldataAll', done:sent3dData});
-        },60000);
-        break;
-    case '3':
-        builtUnity3d("obj/Hostpial20150510.unity3d");
-        interId = setInterval(function(){
-            demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=101', jsonp: 'labeldataAll', done:sent3dData});
-        },60000);
-        break;
-    case '4':
-        builtUnity3d("obj/Other20150510.unity3d");
-        interId = setInterval(function(){
-            demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=102', jsonp: 'labeldataAll', done:sent3dData});
-        },60000);
-        break;
-}
+                    change3d(_pid);
 
 
                     detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
@@ -2028,6 +2009,7 @@ if(ev.date.getDate() > nowDay ) {
 		});*/
 		
 		 projectid = $(this).attr("index");
+         change3d(projectid);
 		
 		//alert("bbb"+a);
 		
@@ -2912,6 +2894,31 @@ console.log(ajaxLoad_3)
 				$modalinnerChartWrap.data("echart", modalchartobj);
 			})
     }	
+    // 切换3d模型 
+
+         function change3d(id) {
+         
+            switch(id) {
+                case '1':
+                    builtUnity3d("obj/AirPort20150510.unity3d");
+                    interId = setInterval(function(){
+                        demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=100', jsonp: 'labeldataAll', done:sent3dData});
+                    },60000);
+                    break;
+                case '3':
+                    builtUnity3d("obj/Hostpial20150510.unity3d");
+                    interId = setInterval(function(){
+                        demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=101', jsonp: 'labeldataAll', done:sent3dData});
+                    },60000);
+                    break;
+                case '4':
+                    builtUnity3d("obj/Other20150510.unity3d");
+                    interId = setInterval(function(){
+                        demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=102', jsonp: 'labeldataAll', done:sent3dData});
+                    },60000);
+                    break;
+            }
+         }
 
 };
        
