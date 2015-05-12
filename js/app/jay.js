@@ -7,7 +7,9 @@ var jayfunction = function() {
 var demand
   , projectBoxIndex = 0 // 项目索引 
   , contTitle = $('#contSubTitle') 
-var interId
+  , interId // 清重复
+  , sumProjectid = 0
+  , sumProjectData =  {}
 
 // 日期备用
 var nowdate = new Date();
@@ -111,6 +113,7 @@ function indexInit(data){
 		});
 	})();
 	
+
 	window.pageName = "index";
 	
 	var icon_arr = [];
@@ -128,7 +131,10 @@ function indexInit(data){
 				$.each(jsonDataRight, function(i,data){
 					var _location = data.address;
 					var _locationName = data.projectname;
+                    /*
 					var _protype = data.industryclassname;
+                    */
+					var _protype = data.industrytypename;
                     var _co2 = (data.data1===null) ? 0 : data.data1;
                     var _cost = (data.data2===null) ? 0 : data.data2;
                     var _electric = (data.data3===null) ? 0 : data.data3;
@@ -145,11 +151,16 @@ function indexInit(data){
 						}
 						return defimg
 					})();
-					var _m = 12,_y =2015
+                    var date = new Date(); 
+                    
+					var _m = 12,_y = date.getFullYear();
 					//var _m = data.rectime.substring(1,4),_y =data.rectime.substring(6,7)
 					
 					var _buildingarea = data.buildingarea;
+                    _buildingarea = Number(_buildingarea/10000).toFixed(1);
+                    
 					var _supplyarea = data.supplyarea;
+					_supplyarea = Number(_supplyarea/10000).toFixed(1);
 					
 					var _refh = data.longitude;
 					var _refv = data.latitude;
@@ -169,9 +180,15 @@ function indexInit(data){
 					bdmap.addOverlay(marker3);   
 					marker3.hide();
 
+/*
+var reg = /^\d{5,}$/;
+var re = new RegExp(reg);
+*/
+
+
 					var template =
 					//'<a class="swiper-slide irhitemsheight" href="page1.html" refh="'+_refh+'" refv="'+_refv+'" >'+
-					'<div class="swiper-slide irhitemsheight" refh="'+_refh+'" refv="'+_refv+'" data-pid="'+_pid+'" >'+
+					'<div class="swiper-slide irhitemsheight" data-name="'+_locationName+'" refh="'+_refh+'" refv="'+_refv+'" data-pid="'+_pid+'" >'+
 					'	<div class="mapview-line-hov">'+
 					'		<div class="mapview-line-cycle">'+
 					'			<div class="icon-loaction"></div>'+
@@ -181,26 +198,26 @@ function indexInit(data){
 					'	</div>'+
 					'	<div class="mapview-right-text-wrap">'+
 					'		<div class="inner-cycle-top flexmid">'+
-					'			<p>'+_buildingarea+' ㎡</p>'+
+					'			<p>'+_buildingarea+' 万</p>'+
 					'			<h2>建筑</h2>'+
 					'		</div>'+
 					'		<div class="inner-cycle-bot flexmid">'+
 					'			<h2>供能</h2>'+
-					'			<p>'+_supplyarea+' ㎡</p>'+
+					'			<p>'+_supplyarea+' 万</p>'+
 					'		</div>'+
 					'		<span class="inner-text">'+
 					'			<i class="it-line-hov"></i>'+
-					'			<em>'+_protype+'</em>'+
+					'			<em>'+_protype+' ㎡</em>'+
 					'		</span>'+
 					'	</div>'+
 					'	<div class="mapview-cycle-wrap">'+
 					'		<div class="mapview-cycle"><img src="'+_pic+'" alt="">'+
 					'			<div class="mpv-cycle-detail flexmid">'+
-					'				<h3>二氧化碳排放总量 (kg)</h3>'+
+					'				<h3>二氧化碳减排总量（率） (kg)</h3>'+
 					'				<p>'+_co2+'</p>'+
-					'				<h3>成本总量 (rmb)</h3>'+
+					'				<h3>可再生能源利用率</h3>'+
 					'				<p>'+_cost+'</p>'+
-					'				<h3>用电总量 (kwh)</h3>'+
+					'				<h3>节能总量（率）</h3>'+
 					'				<p>'+_electric+'</p>'+
 					'			</div>'+
 					'		</div>'+
@@ -221,6 +238,9 @@ function indexInit(data){
 					//'</a>';
 					$div.append(template);
 					template = ""
+
+                sumProjectData[_pid] = _locationName
+
 				})
 				$("#index_right_swiper .swiper-wrapper").html($div.html())
 				$div = null;
@@ -233,6 +253,7 @@ function indexInit(data){
 					slidesPerView: 3
 				});
 				
+
 				//pinmingle add
                 /*
 				$("#index_right_swiper .swiper-wrapper .swiper-slide").hover(function(){
@@ -371,8 +392,7 @@ function indexInit(data){
 /*
 q
 */
-                    switchPage(function(){
-
+                    switchPage(function(){// 切换后回调
 switch(_pid) {
     case '1':
         builtUnity3d("obj/AirPort20150510.unity3d");
@@ -399,6 +419,18 @@ switch(_pid) {
                     $(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
 	$doc.trigger("loadRightTab2JSON",[_pid]); // 加载供能耗能
     getWeather();// 加载气象信息
+     
+
+//console.log(sumProjectData)
+$.each(sumProjectData, function(index, data){
+
+    var innerProjects = '<div index="'+index+'" class="selector cur swiper-slide">'+
+                            '<img src="images/sampleimg-1.jpg" alt="">'+
+                            '<p>'+data+'</p>'+
+                         '</div>';
+
+});
+
 }); //切换页面   
 
 

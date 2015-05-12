@@ -180,7 +180,6 @@
 	position: absolute;
 	right: 185px;
 	top: 286px;
-	bottom: 200px;
 	width: 1670px;
 }
 .index-slider-right .swiper-container
@@ -528,7 +527,10 @@
 .index-slider-right .mapview-right-text-wrap .inner-cycle-bot h2, 
 .index-slider-right .mapview-right-text-wrap .inner-cycle-top h2
 {
+/*
 	line-height: 58px;
+    */
+	line-height: 70px;
 	font-size: 40px;
 }
 

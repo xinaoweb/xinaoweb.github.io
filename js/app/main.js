@@ -41,7 +41,7 @@ require(
 );
 //加载对应css模块
 require([
-	//"css!../../css/style1",
+	"css!../../css/style1",
 	"css!../../css/animations",
 	"css!../../css/style2"
 ]);
