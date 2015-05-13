@@ -50,7 +50,7 @@ a{text-decoration: none;}
 }
 .xa-header
 {
-	height: 168px;
+	height: 128px;
 	background-color: #3189d7;
 }
 .header-all
@@ -67,7 +67,7 @@ a{text-decoration: none;}
 .xa-logo-text span
 {
 	height: 100%;
-	line-height: 168px;
+	line-height: 128px;
 	font-size: 60px;
 	color: #fff;
 	font-weight: bold;
@@ -92,7 +92,7 @@ a{text-decoration: none;}
 /*
 	height: 204px;
     */
-	height: 167px;
+	height: 107px;
 	border-top: solid #fff;
 	border-bottom: solid #cbcbcb;
 	border-width: 4px;
@@ -135,14 +135,14 @@ a{text-decoration: none;}
 .subhead-title
 {
 	color: #328dde;
-	margin-top: 16px;
+	margin-top: 24px;
     /*
 	margin-top: 32px;
 	margin-bottom: 34px;
-    */
-	margin-bottom: 12px;
 	font-size: 87px;
 	line-height: 136px;
+    */
+	margin-bottom: 12px;
 	padding: 0 0 0 84px;
 	float: left;
 	border-right: solid 4px #fff;
@@ -230,9 +230,11 @@ a{text-decoration: none;}
 	width: 50%;
 	height: 100%;
 	text-align: center;
-	line-height: 160px;
+	line-height: 100px;
 	color: #989898;
+    /*
 	font-size: 74px;
+    */
 	font-weight: bold;
 }
 .subhead-tab-warp
@@ -257,11 +259,12 @@ a{text-decoration: none;}
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	height: 100%;
-	padding-top: 340px;
+    /*调整内页高度*/
+	padding-top: 240px;
+	top: -240px;
 /*	margin-top: -380px;*/
 	overflow: hidden;
 	position: relative;
-	top: -340px;
     background: #fff;
 }
 
@@ -965,7 +968,7 @@ a{text-decoration: none;}
 	justify-content: space-around;
 }
 
-#toggle-tabs-002 .boxin { height: 50%;}
+ .boxinbottom{ margin-top: -400px;}
 
 #toggle-tabs-002 .eng-block-wrap
 {
@@ -1005,5 +1008,5 @@ a{text-decoration: none;}
 #index_next{ right:-110px;}
 
 #header_slide{ width:50%; height:100%; overflow:hidden; position:absolute; top:0; left:50%; margin-left:-25%;}
-#header_slide .swiper-container{ width:100%; height:168px;}
-#header_slide .swiper-slide{ font-size:48px; line-height:168px; color:#fff; text-align:center;}
+#header_slide .swiper-container{ width:100%; height:128px;}
+#header_slide .swiper-slide{ font-size:48px; line-height:128px; color:#fff; text-align:center;}

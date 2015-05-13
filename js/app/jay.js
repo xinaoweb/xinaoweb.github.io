@@ -781,23 +781,32 @@ if(ev.date.getDate() > nowDay ) {
 	$doc.on("click", "#showModal_1", function() {
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
+        var classpropertyid = $(this).attr('data-classpropertyid')
 		function show_1_callback() {
 			//console.log("show 1 call back");
             /*
 			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 			modalchartobj.setOption(optionModal);
             */
-                        energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid=551&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid=551&timeradio=days&date=now','energyPie']);
+            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie']);
 		}
 		showModal('one',show_1_callback);
 	}).on("click", "#showModal_2",function() {
+		modalchartobj = null;
+		$modalinnerChartWrap[0].innerHTML= "";
+            var classpropertyid = $(this).attr('data-classpropertyid')
 		function show_2_callback() {
 			//console.log("show 1 call back")
+            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie']);
 		}
 		showModal('two',show_2_callback);
 	}).on("click", "#showModal_3",function() {
+		modalchartobj = null;
+		$modalinnerChartWrap[0].innerHTML= "";
+            var classpropertyid = $(this).attr('data-classpropertyid')
 		function show_3_callback() {
 			//console.log("show 1 call back")
+            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie']);
 		}
 		showModal('three',show_3_callback);
 	})
@@ -1731,7 +1740,7 @@ if(ev.date.getDate() > nowDay ) {
 		
 		
 	$doc.on("leftjsonpdataReady", function(){
-		console.log(leftjsonpdata,"left Json Data load");
+		//console.log(leftjsonpdata,"left Json Data load");
 		var datalength = leftjsonpdata.length;
 //		console.log(datalength)
 		$.each(leftjsonpdata, function(index, data) {
@@ -1766,8 +1775,16 @@ if(ev.date.getDate() > nowDay ) {
 
 				classGroup = ".leftGruop_" + index;
 				var $classGroup = $(classGroup)
-				$classGroup.find(".chart-text-block").find("p").eq(0).html(data_1_name)
-				$classGroup.find(".chart-text-block").find("p").eq(1).html(data_1_val+ " " +data_1_unit)
+
+                //console.log(index, data_1_name)
+                if(index == 0) // 0为节能量 1为co2减排量 
+                    $classGroup.find(".chart-text-block").find("p").eq(0).html(data_1_name);
+                else if(index == 1)
+                    $classGroup.find(".chart-text-block").find("p").eq(0).html('CO2减排量');
+
+                var dNum = Number(data_2_val - data_3_val).toFixed(1); //计算节能量和减排量
+				//$classGroup.find(".chart-text-block").find("p").eq(1).html(data_1_val+ " " +data_1_unit)
+				$classGroup.find(".chart-text-block").find("p").eq(1).html(dNum+ " " +data_1_unit)
 				
 				var $chartel = $classGroup.filter(function() {
 					var $this = $(this);
@@ -1810,8 +1827,12 @@ if(ev.date.getDate() > nowDay ) {
 					return params.value + "\n" + data_2_unit;
 				};
 				chartOPT2.series[0].data = [data_2_val,data_3_val];
+                /*
                 var newData2Name = data_2_name.substring(0,2) + data_2_name.substring(5); // 去掉co2
                 var newData3Name = data_3_name.substring(0,2) + data_3_name.substring(5); // 去掉co2
+                */
+                var newData2Name = data_2_name.substring(0,2) ; // 去掉co2
+                var newData3Name = data_3_name.substring(0,2) ; // 去掉co2
 
 				chartOPT2.xAxis[0].data = [newData2Name,newData3Name];
 				if (index == "0") {
@@ -1928,11 +1949,17 @@ if(ev.date.getDate() > nowDay ) {
 						if (_name == "可再生能源利用率") return "可再生能源\n利用率"
 					})();
 					chartOPT.series[0].data[1].itemStyle.normal.label.textStyle.fontSize =36;
+
+
+                var renewNum = Number(data_1_val * _percent / 100).toFixed(1); 
+				$classGroupBlock_p.eq(3).find("font").html(renewNum)
 				}
 				myCharts.setOption(chartOPT)
 				
 				
 				
+                console.log(index)
+                console.log(data_1_val)
 				
 				$classGroupBlock_p.eq(0).html( data_1_name )
 				$classGroupBlock_p.eq(2).html( data_2_name )
@@ -1940,8 +1967,11 @@ if(ev.date.getDate() > nowDay ) {
 				$classGroupBlock_p.eq(1).find("font").html(data_1_val)
 				$classGroupBlock_p.eq(1).find("span").html(data_1_unit)
 				
+
+                if(index != 3 ) // 除了可再生能源 
 				$classGroupBlock_p.eq(3).find("font").html(data_2_val)
-				$classGroupBlock_p.eq(3).find("span").html(data_2_unit)
+
+				$classGroupBlock_p.eq(3).find("span").html(data_1_unit)
 				
 			}
 			
@@ -2777,8 +2807,10 @@ function energyFn() {
 
     $.when(ajaxLoad_1,ajaxLoad_2).done(function(json_a,json_b) {
 
+/*
                 console.log(json_b[0][0].y);
                 console.log(json_b);
+                */
 
     modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
     			
@@ -2905,19 +2937,19 @@ console.log(ajaxLoad_3)
                     builtUnity3d("obj/AirPort20150513.unity3d");
                     interId = setInterval(function(){
                         demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=100', jsonp: 'labeldataAll', done:sent3dData});
-                    },60000);
+                    },6000);
                     break;
                 case '3':
                     builtUnity3d("obj/Hostpial20150513.unity3d");
                     interId = setInterval(function(){
                         demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=101', jsonp: 'labeldataAll', done:sent3dData});
-                    },60000);
+                    },6000);
                     break;
                 case '4':
                     builtUnity3d("obj/Other20150513.unity3d");
                     interId = setInterval(function(){
                         demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=102', jsonp: 'labeldataAll', done:sent3dData});
-                    },60000);
+                    },6000);
                     break;
             }
          }
