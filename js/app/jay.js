@@ -783,8 +783,11 @@ if(ev.date.getDate() > nowDay ) {
 		$modalinnerChartWrap[0].innerHTML= "";
 		function show_1_callback() {
 			//console.log("show 1 call back");
+            /*
 			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 			modalchartobj.setOption(optionModal);
+            */
+                        energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid=551&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid=551&timeradio=days&date=now','energyPie']);
 		}
 		showModal('one',show_1_callback);
 	}).on("click", "#showModal_2",function() {
@@ -2776,9 +2779,10 @@ function energyFn() {
 
                 console.log(json_b[0][0].y);
                 console.log(json_b);
+
     modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
     			
-				alert("ttt");
+				//alert("ttt");
 				var opt = optionModal; // 模型
 				var xAxisdata = [];
 				var colsdata01 = [];
@@ -2793,23 +2797,35 @@ function energyFn() {
                 }*/
 				console.log("ww");
 				console.log(json_a);
-				/*$.each(json_a[1].list, function(index,data) {
+                for(var i = 0, l = json_a[0][0].list.length; i < l; i++) {
+					xAxisdata[i] = json_a[0][0].list[i].rectime;
+					colsdata01[i] = json_a[0][0].list[i].data;
+                }
+                for(var j = 0, k = json_b[0].length; j < k; j++) {
+					piedata[j] = {
+						value : json_b[0][j].y, name:json_b[0][j].name
+					}
+                }
+                /*
+				$.each(json_a[1].list, function(index,data) {
 					xAxisdata[index] = data.rectime;
 					colsdata01[index] = data.data;
-				});*/
+				});
                 
-				alert(json_b[0].length);
+                console.log('xAxisdata  ',xAxisdata);
+			//	alert(json_b[0].length);
 				$.each(json_b[0], function(index,data) {//多一层所以要00
 					piedata[index] = {
 						value : data.y, name:data.name
 					}
 				});
-                console.log(piedata);
+                console.log('piedata  ',piedata);
+                */
 				opt.xAxis[0].data = xAxisdata;
 				opt.series[0].data = colsdata01;
 				//opt.series[0].barWidth = 15;
 				opt.series[1].data = piedata;
-				alert(opt.series[1].data.length);
+			//	alert(opt.series[1].data.length);
 
 				modalchartobj.setOption(opt);
 				$modalinnerChartWrap.data("echart", modalchartobj);
@@ -2958,7 +2974,7 @@ console.log(ajaxLoad_3)
 					alert('加载单条曲线数据失败');
 				}
 			});	
-            }
+        }
 /**************end*************/
 };
        
