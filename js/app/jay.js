@@ -709,13 +709,12 @@ if(ev.date.getDate() > nowDay ) {
             case 'one': $title.text('耗气'); break;
             case 'two': $title.text('耗水'); break;
             case 'three': $title.text('耗电'); break;
-            /*
             case 'four': $title.text('供热'); break;
             case 'five': $title.text('供冷'); break;
-            */
-            case 'six': $title.text('多项供能对比'); break;
+            //case 'six': $title.text('多项供能对比'); break;
+            case 'six': $title.text('发电'); break;
 
-            //case 'seven': $title.text('供蒸汽'); break;
+            case 'seven': $title.text('供蒸汽'); break;
 
             case 'eight': $title.text('当年成本收益'); break;
             case 'nine': $title.text('当月成本收益'); break;
@@ -732,14 +731,14 @@ if(ev.date.getDate() > nowDay ) {
 	});
 	
 	
-	function showModal(type,callback) {
+	function showModal(type,callback,url, jsonp) {
         $xa_modal_wrapper.attr('data-type',type); // 增加弹出框标识
 
 		$xa_modal_wrapper.on("animationend.ane webkitAnimationEnd.ane", function() {
 			$xa_modal_wrapper.removeClass("modal-showing");
 			$doc.trigger("modalshow",[type]);
 			if (typeof callback == "function") {
-				callback();
+				callback(url, jsonp);
 			}
 			$xa_modal_wrapper.off(".ane");
 		});
@@ -799,63 +798,33 @@ if(ev.date.getDate() > nowDay ) {
 		}
 		showModal('three',show_3_callback);
 	})
-    /*
     .on("click", "#showModal_4",function() {
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
-		function show_4_callback() {
-			//console.log("show 4 call back");
-			$.ajax({
-				type : "get",
-				async:true,
-				url : "ajaxsample/pop_inc_line_single.js",
-				dataType : "jsonp",
-				jsonp: "callback",
-				jsonpCallback:"popinc_line_single",
-				success : function(json){
-//					//console.log(json);
-					var opt = optionModal2;
-					opt.xAxis[0].data= (function() {
-						var  k = [];
-						$.each(json[0].list , function(index,data) {
-							k[index] = data.rectime.split(" ")[0];
-						});
-						return k
-					})();
-					opt.series = [];
-					opt.series[0] = (function() {
-						var sd = {
-							name: (function() {
-								return json[0].div.name;
-							})(),
-							type:'line',
-							symbolSize:10,
-							stack: '总量',
-							itemStyle:optionModal2itemsty,
-							data:(function() {
-								var k = [];
-								$.each(json[0].list, function(index, data) {
-									k[index] = data.data;
-								});
-								return k;
-							})()
-						}
-						return sd;
-					})();
-					modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
-					modalchartobj.setOption(opt);
-				},
-					error:function(){
-					alert('加载单条曲线数据失败');
-				}
-			});	
-			
-			
-			
-			
-		}
-		showModal('four',show_4_callback);
-	}).on("click", "#showModal_5",function() {
+        var classpropertyid = $(this).attr('data-classpropertyid')
+
+		showModal('four',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy');
+	})
+    .on("click", "#showModal_5",function() {
+		modalchartobj = null;
+		$modalinnerChartWrap[0].innerHTML= "";
+        var classpropertyid = $(this).attr('data-classpropertyid')
+		showModal('five',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy');
+	})
+    .on("click", "#showModal_6",function() {
+		modalchartobj = null;
+		$modalinnerChartWrap[0].innerHTML= "";
+        var classpropertyid = $(this).attr('data-classpropertyid')
+		showModal('six',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy');
+	})
+    .on("click", "#showModal_7",function() {
+		modalchartobj = null;
+		$modalinnerChartWrap[0].innerHTML= "";
+        var classpropertyid = $(this).attr('data-classpropertyid')
+		showModal('seven',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy');
+	})
+    /*
+    .on("click", "#showModal_5",function() {
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
 		var $span1 = $("<span>").html("成本能源结构图").css({
@@ -883,6 +852,7 @@ if(ev.date.getDate() > nowDay ) {
 		showModal('five',show_5_callback);
 	})
     */
+    /*
     .on("click", "#showModal_g",function() {
 		function show_6_callback() {
 			//console.log("show 6 call back");
@@ -935,6 +905,7 @@ if(ev.date.getDate() > nowDay ) {
 		}
 		showModal('six',show_6_callback);
 	})
+    */
     /*
     .on("click", "#showModal_7",function() {
 		function show_7_callback() {
@@ -1407,14 +1378,16 @@ if(ev.date.getDate() > nowDay ) {
 			show:false,
 			trigger: 'axis'
 		},
+        /*
 		legend: {
 			itemWidth:80,
 			itemHeight:40,
 			textStyle:{
 				fontSize:40
 			},
-			data:['供电','供热','供热水','供蒸汽']
+			data:['供热','供冷','发电','供蒸汽']
 		},
+        */
 		toolbox: {
 			show : false,
 			feature : {
@@ -1424,6 +1397,14 @@ if(ev.date.getDate() > nowDay ) {
 				restore : {show: true},
 				saveAsImage : {show: true}
 			}
+		},
+		grid:{
+        /*
+			y:200,
+			y2:200,
+			x2:"50%",
+            */
+			x:150 //Y轴左边距设置
 		},
 		calculable : false,
 		xAxis : [
@@ -2196,7 +2177,7 @@ supplyEnergy.empty()
 
         if(data.name.substring(0,1) === '耗' ) checkTypeNum++; //分类耗与供
 
-        if(index < checkTypeNum) {
+        if(index < checkTypeNum) { //判断耗能还是供能
             switch(energyClass) {
                 case '气':
                     colorNum = 1;
@@ -2219,18 +2200,22 @@ supplyEnergy.empty()
                 case '热':
                     colorNum = 'ab5150';
                     logo = 'fire2';
+                    indexNum = 4;
                 break;
                 case '冷':
                     colorNum = '71538a';
                     logo = 'cup';
+                    indexNum = 5;
                 break;
                 case '电':
                     colorNum = '838d58';
                     logo = 'spr';
+                    indexNum = 6;
                 break;
                 case '蒸':
                     colorNum = 'b59142';
                     logo = '9dots';
+                    indexNum = 7;
                 break;
                 }
         }     
@@ -2241,8 +2226,9 @@ supplyEnergy.empty()
 		var _day_val =data.data1.datavalue ;
 		var _month_val = data.data2.datavalue;
 		var _year_val = data.data3.datavalue;
+        var _classpropertyid = data.classpropertyid;
 		
-var gnhnTemp = '<div class="eng-bp" id="showModal_'+indexNum+'">' +
+var gnhnTemp = '<div class="eng-bp" id="showModal_'+indexNum+'" data-classpropertyid="'+_classpropertyid+'">' +
                '     <div class="eng-block color-'+colorNum+'">' +
                '           <div class="eng-b-top clearfix">' +
                '                <div class="eng-icon">'+
@@ -2920,5 +2906,59 @@ console.log(ajaxLoad_3)
             }
          }
 
+// 单曲线回调函数
+		function singleEnergy_callback(url, callback) {
+			//console.log("show 4 call back");
+			//console.log(url);
+			//console.log(callback);
+			$.ajax({
+				type : "get",
+				async:true,
+				//url : "ajaxsample/pop_inc_line_single.js",
+				//url : "http://10.36.128.73:8080/reds/ds/singleEnergy?pid=473&timeradio=mons&date=now",
+				url : url,
+				dataType : "jsonp",
+				//jsonp: "singleEnergy",
+				jsonp: callback,
+				jsonpCallback:"popinc_line_single",
+				success : function(json){
+					//console.log(json);
+					var opt = optionModal2;
+					opt.xAxis[0].data= (function() {
+						var  k = [];
+						$.each(json[0].list , function(index,data) {
+							k[index] = data.rectime.split(" ")[0];
+						});
+						return k
+					})();
+					opt.series = [];
+					opt.series[0] = (function() {
+						var sd = {
+							name: (function() {
+								return json[0].div.name;
+							})(),
+							type:'line',
+							symbolSize:10,
+							stack: '总量',
+							itemStyle:optionModal2itemsty,
+							data:(function() {
+								var k = [];
+								$.each(json[0].list, function(index, data) {
+									k[index] = data.data;
+								});
+								return k;
+							})()
+						}
+						return sd;
+					})();
+					modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
+					modalchartobj.setOption(opt);
+				},
+					error:function(){
+					alert('加载单条曲线数据失败');
+				}
+			});	
+            }
+/**************end*************/
 };
        
