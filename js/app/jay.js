@@ -1005,7 +1005,7 @@ if(ev.date.getDate() > nowDay ) {
 	var mycolumnChart4 = echarts.init(document.getElementById('columnChart4'), defaultTheme);
 	var mycolumnChart5 = echarts.init(document.getElementById('columnChart5'), defaultTheme);
 //	var myModalChart = echarts.init(document.getElementById('chartinner'), defaultTheme);
-	var radius = [130,160];
+	var radius = [130,150];
 	var labelTop = {
 		normal : {
 			label : {
@@ -1058,12 +1058,6 @@ if(ev.date.getDate() > nowDay ) {
 	var optionsPie1 = {
 		animationDuration: animationDurationAll,
 		color : ['#faaf3b'],
-		grid:{
-			y:'40px',
-			y2:'40px',
-			x2:'40px',
-			x:'40px' //Y轴左边距设置
-		},
 		series : [
 			{
 				type : 'pie',
