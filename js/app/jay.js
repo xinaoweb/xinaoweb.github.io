@@ -1058,6 +1058,12 @@ if(ev.date.getDate() > nowDay ) {
 	var optionsPie1 = {
 		animationDuration: animationDurationAll,
 		color : ['#faaf3b'],
+		grid:{
+			x:20,
+			y:20,
+			x2:10,
+			y2:20
+		},
 		series : [
 			{
 				type : 'pie',
