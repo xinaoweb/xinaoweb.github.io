@@ -1005,7 +1005,7 @@ if(ev.date.getDate() > nowDay ) {
 	var mycolumnChart4 = echarts.init(document.getElementById('columnChart4'), defaultTheme);
 	var mycolumnChart5 = echarts.init(document.getElementById('columnChart5'), defaultTheme);
 //	var myModalChart = echarts.init(document.getElementById('chartinner'), defaultTheme);
-	var radius = [120,140];
+	var radius = [130,160];
 	var labelTop = {
 		normal : {
 			label : {
@@ -1063,7 +1063,10 @@ if(ev.date.getDate() > nowDay ) {
 				type : 'pie',
 				center : ['50%', '50%'],
 				radius : radius,
-				x: '0%', // for funnel
+				x: 30, // for funnel
+				x2:30,
+				y:30,
+				y2:30,
 				itemStyle : labelFromatter,
 				data : [
 					{name:'', value: 30, itemStyle : labelBottom},
