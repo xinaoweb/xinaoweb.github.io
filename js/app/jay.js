@@ -1005,7 +1005,7 @@ if(ev.date.getDate() > nowDay ) {
 	var mycolumnChart4 = echarts.init(document.getElementById('columnChart4'), defaultTheme);
 	var mycolumnChart5 = echarts.init(document.getElementById('columnChart5'), defaultTheme);
 //	var myModalChart = echarts.init(document.getElementById('chartinner'), defaultTheme);
-	var radius = [130,160];
+	var radius = [120,140];
 	var labelTop = {
 		normal : {
 			label : {
