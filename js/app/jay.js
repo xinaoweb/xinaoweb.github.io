@@ -2901,7 +2901,7 @@ console.log(ajaxLoad_2)
 console.log(ajaxLoad_3)
 */
 			$.when(ajaxLoad_1,ajaxLoad_2,ajaxLoad_3).done(function(json_a,json_b,json_c) {
-				console.log( json_a,json_b,json_c,"拿到JSON数据")
+				//console.log( json_a,json_b,json_c,"拿到JSON数据")
 				modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 
 				var opt = optionModal3;
@@ -2923,7 +2923,7 @@ console.log(ajaxLoad_3)
 					}
 				});
 				$.each(json_c[0], function(index,data) {
-									console.log(data);
+									//console.log(data);
 					piedata2[index] = {
 						value : data.y, name:data.name
 					}
