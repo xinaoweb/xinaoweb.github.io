@@ -217,7 +217,7 @@ var re = new RegExp(reg);
 					'				<p>'+_co2+'</p>'+
 					'				<h3>可再生能源利用率</h3>'+
 					'				<p>'+_renew+'</p>'+
-					'				<h3>节能总量率</h3>'+
+					'				<h3>节能率</h3>'+
 					'				<p>'+_energySaving+'</p>'+
 					'			</div>'+
 					'		</div>'+
@@ -373,6 +373,12 @@ var re = new RegExp(reg);
 				bdmap.centerAndZoom(point,12); //地图的缩放比
 				var _actclass = "mapview-active"
 				if ( !$this.hasClass(_actclass) ){
+                    if(_pid != '1' && _pid != '3' && _pid != '4') {
+                        $(".mapview-active").removeClass("mapview-active"); //取消高亮
+                        bdmap.centerAndZoom(new BMap.Point(103.404, 39.915),5); //修改地图的中心点
+                        alert(name +'还在建造中');
+                        return;
+                    }
 					$this.addClass(_actclass).siblings().removeClass(_actclass);
                     					//pinmingle add
 					var index = $this.index();
@@ -1005,7 +1011,7 @@ if(ev.date.getDate() > nowDay ) {
 	var mycolumnChart4 = echarts.init(document.getElementById('columnChart4'), defaultTheme);
 	var mycolumnChart5 = echarts.init(document.getElementById('columnChart5'), defaultTheme);
 //	var myModalChart = echarts.init(document.getElementById('chartinner'), defaultTheme);
-	var radius = [130,150];
+	var radius = [130,150];//修改圆
 	var labelTop = {
 		normal : {
 			label : {
@@ -1956,11 +1962,6 @@ if(ev.date.getDate() > nowDay ) {
 				}
 				myCharts.setOption(chartOPT)
 				
-				
-				
-                console.log(index)
-                console.log(data_1_val)
-				
 				$classGroupBlock_p.eq(0).html( data_1_name )
 				$classGroupBlock_p.eq(2).html( data_2_name )
 				
@@ -2050,10 +2051,12 @@ var tab01chartjsonM = {};
 	
 function bindY_M_D_data(){
 
-	$doc.on("tab01chartjsonloadM", function(e) {
+	$doc.on("tab01chartjsonloadM", function(e) { // 收益成本月
+        mycolumnChart4.dispose();
+	    mycolumnChart4 = echarts.init(document.getElementById('columnChart4'), defaultTheme);
 		//console.log(tab01chartjsonM);
-		$("#cou_01").html("￥ "+tab01chartjsonM[0].costsum);
-		$("#cou_02").html("￥ "+tab01chartjsonM[0].incomesum);
+		$("#cou_03").html("￥ "+tab01chartjsonM[0].costsum);
+		$("#cou_04").html("￥ "+tab01chartjsonM[0].incomesum);
 		var dates1 = [];
 		var dates2 = [];
 		var dateX = [];
@@ -2068,12 +2071,16 @@ function bindY_M_D_data(){
 		columnChartoptInit.xAxis[0].data = dateX;
 		columnChartoptInit.series[0].data = dates1;
 		columnChartoptInit.series[1].data = dates2;
+
+        //mycolumnChart4.clear();
 		mycolumnChart4.setOption(columnChartoptInit);
 
-	}).on("tab01chartjsonloadD", function(e) {
+	}).on("tab01chartjsonloadD", function(e) { // 收益成本日
+        mycolumnChart5.dispose();// 刷新图表
+	    mycolumnChart5 = echarts.init(document.getElementById('columnChart5'), defaultTheme);
 		//console.log(tab01chartjsonD);
-		$("#cou_03").html("￥ "+tab01chartjsonD[0].costsum);
-		$("#cou_04").html("￥ "+tab01chartjsonD[0].incomesum);
+		$("#cou_05").html("￥ "+tab01chartjsonD[0].costsum);
+		$("#cou_06").html("￥ "+tab01chartjsonD[0].incomesum);
 		var dates1 = [];
 		var dates2 = [];
 		var dateX = [];
@@ -2088,11 +2095,15 @@ function bindY_M_D_data(){
 		columnChartoptInit.xAxis[0].data = dateX;
 		columnChartoptInit.series[0].data = dates1;
 		columnChartoptInit.series[1].data = dates2;
+
+        //mycolumnChart5.clear();
 		mycolumnChart5.setOption(columnChartoptInit);
-	}).on("tab01chartjsonloadY", function(e) {
+	}).on("tab01chartjsonloadY", function(e) { // 收益成本年
+        mycolumnChart3.dispose(); // 刷新图表
+	    mycolumnChart3 = echarts.init(document.getElementById('columnChart3'), defaultTheme);
 		//console.log(tab01chartjsonY);
-		$("#cou_05").html("￥ "+tab01chartjsonY[0].costsum);
-		$("#cou_06").html("￥ "+tab01chartjsonY[0].incomesum);
+		$("#cou_01").html("￥ "+tab01chartjsonY[0].costsum);
+		$("#cou_02").html("￥ "+tab01chartjsonY[0].incomesum);
 		var dates1 = [];
 		var dates2 = [];
 		var dateX = [];
@@ -2107,6 +2118,8 @@ function bindY_M_D_data(){
 		columnChartoptInit.xAxis[0].data = dateX;
 		columnChartoptInit.series[0].data = dates1;
 		columnChartoptInit.series[1].data = dates2;
+
+        //mycolumnChart3.clear();
 		mycolumnChart3.setOption(columnChartoptInit);
 	});
 		
@@ -2884,6 +2897,7 @@ console.log(ajaxLoad_3)
 			$.when(ajaxLoad_1,ajaxLoad_2,ajaxLoad_3).done(function(json_a,json_b,json_c) {
 				console.log( json_a,json_b,json_c,"拿到JSON数据")
 				modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
+
 				var opt = optionModal3;
 				var xAxisdata = [];
 				var colsdata01 = [];
@@ -2934,19 +2948,19 @@ console.log(ajaxLoad_3)
          
             switch(id) {
                 case '1':
-                    builtUnity3d("obj/AirPort20150514.unity3d");
+                    builtUnity3d("obj/AirPort20150514_1.unity3d");
                     interId = setInterval(function(){
                         demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=100', jsonp: 'labeldataAll', done:sent3dData});
                     },6000);
                     break;
                 case '3':
-                    builtUnity3d("obj/Hostpial20150514.unity3d");
+                    builtUnity3d("obj/Hostpial20150514_1.unity3d");
                     interId = setInterval(function(){
                         demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=101', jsonp: 'labeldataAll', done:sent3dData});
                     },6000);
                     break;
                 case '4':
-                    builtUnity3d("obj/Other20150514.unity3d");
+                    builtUnity3d("obj/Other20150514_1.unity3d");
                     interId = setInterval(function(){
                         demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=102', jsonp: 'labeldataAll', done:sent3dData});
                     },6000);
