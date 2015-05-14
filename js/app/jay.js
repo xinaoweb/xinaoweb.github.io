@@ -281,7 +281,7 @@ var re = new RegExp(reg);
 			/*内页顶部滚动*/
 			var header_swiper = new Swiper('#header_gonggao', {
 				direction: 'vertical',
-				autoplay:3000,
+				autoplay:10000,
 				autoplayDisableOnInteraction:false,
 				loop:true
 			});
@@ -2718,7 +2718,7 @@ function getRandomArbitrary(min, max) {
 			var config = {
 				width: 3100, 
 				//height: 2180,
-				height: 2100,
+				height: 1920,
 				params: { enableDebugging:"0" }
 				
 			};
@@ -2934,19 +2934,19 @@ console.log(ajaxLoad_3)
          
             switch(id) {
                 case '1':
-                    builtUnity3d("obj/AirPort20150513.unity3d");
+                    builtUnity3d("obj/AirPort20150514.unity3d");
                     interId = setInterval(function(){
                         demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=100', jsonp: 'labeldataAll', done:sent3dData});
                     },6000);
                     break;
                 case '3':
-                    builtUnity3d("obj/Hostpial20150513.unity3d");
+                    builtUnity3d("obj/Hostpial20150514.unity3d");
                     interId = setInterval(function(){
                         demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=101', jsonp: 'labeldataAll', done:sent3dData});
                     },6000);
                     break;
                 case '4':
-                    builtUnity3d("obj/Other20150513.unity3d");
+                    builtUnity3d("obj/Other20150514.unity3d");
                     interId = setInterval(function(){
                         demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=102', jsonp: 'labeldataAll', done:sent3dData});
                     },6000);

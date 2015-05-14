@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 /* CSS 格式书写开发人员约束规范 ****************************************************************** 
 
 1.所有CSS属性，除了空属性可以单行之外，即使只有一个属性，也必须换行,但是后期发布版本压缩什么的请随意压缩。
@@ -141,7 +141,10 @@ a{text-decoration: none;}
 	margin-bottom: 34px;
 	font-size: 87px;
 	line-height: 136px;
+
+标题字体大小
     */
+	font-size:58px;
 	margin-bottom: 12px;
 	padding: 0 0 0 84px;
 	float: left;
@@ -233,8 +236,10 @@ a{text-decoration: none;}
 	line-height: 100px;
 	color: #989898;
     /*
+成本收益耗能供能
 	font-size: 74px;
     */
+font-size:58px;
 	font-weight: bold;
 }
 .subhead-tab-warp
@@ -768,8 +773,10 @@ a{text-decoration: none;}
 }
 .eng-block .eng-b-con .eng-bcin
 {
+
+/*耗能供能高度*/
 	padding: 10px 0;
-	line-height: 80px;
+	line-height: 60px;
 }
 .eng-block .eng-b-con
 {
@@ -968,7 +975,9 @@ a{text-decoration: none;}
 	justify-content: space-around;
 }
 
+/*del
  .boxinbottom{ margin-top: -400px;}
+*/
 
 #toggle-tabs-002 .eng-block-wrap
 {
