@@ -1058,15 +1058,18 @@ if(ev.date.getDate() > nowDay ) {
 	var optionsPie1 = {
 		animationDuration: animationDurationAll,
 		color : ['#faaf3b'],
+		grid:{
+			y:'40px',
+			y2:'40px',
+			x2:'40px',
+			x:'40px' //Y轴左边距设置
+		},
 		series : [
 			{
 				type : 'pie',
 				center : ['50%', '50%'],
 				radius : radius,
-				x: 30, // for funnel
-				x2:30,
-				y:30,
-				y2:30,
+				x: '0%', // for funnel
 				itemStyle : labelFromatter,
 				data : [
 					{name:'', value: 30, itemStyle : labelBottom},
