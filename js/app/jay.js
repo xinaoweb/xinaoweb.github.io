@@ -1175,13 +1175,19 @@ if(ev.date.getDate() > nowDay ) {
 
 	};
 	
+
 	var columnChartopt = {
 		grid:{
 			x:"100px",
-			x0:"10px"
+			x0:"10px",
+			x:150 //Y轴左边距设置
 		},
 		legend: {
 			x:"right",
+			y:"50px",
+			textStyle:{
+				fontSize:40
+			},
 			data:['当年成本','当年收益']
 		},
 		xAxis : [
@@ -1195,7 +1201,7 @@ if(ev.date.getDate() > nowDay ) {
 					textStyle:{
 						color: '#989898',
 						fontWeight: 'bolder',
-						fontSize: 24
+						fontSize: 34// x轴字体大小
 					}
 				},
 				type : 'category',
@@ -1214,7 +1220,7 @@ if(ev.date.getDate() > nowDay ) {
 					textStyle:{
 						color: '#989898',
 						fontWeight: 'bolder',
-						fontSize: 24
+						fontSize: 34 // y轴字体大小
 					}
 				}
 			}
