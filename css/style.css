@@ -587,11 +587,11 @@ font-size:58px;
 }
 .eng-block-wrap
 {
-	text-align: left;
+	text-align: left; /* 供能耗能对齐方式 */
 	font-size: 0;
 	width: 1386px;
 	margin: 0 auto; 
-	text-align:center;
+
 }
 .eng-bp
 {

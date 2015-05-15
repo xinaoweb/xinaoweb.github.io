@@ -10,6 +10,9 @@ var demand
   , interId // 清重复
   , sumProjectid = 0
   , sumProjectData =  {}
+  , intervalWeather
+  , intervalInnerRight
+  , intervalLeftRight
 
 // 日期备用
 var nowdate = new Date();
@@ -110,6 +113,12 @@ function indexInit(data){
 			index = $this.index();
 			$this.addClass("cur").siblings().removeClass("cur");
 			$target.eq(index).addClass("cur").siblings().removeClass("cur");
+            //alert(projectBoxIndex);
+            //alert(typeof index);
+            //$doc.trigger("loadRightTab2JSON",[_pid]); // 加载供能耗能
+
+            if(index == 0) bindY_M_D_data(); //pinmingle add 右边年月日数据绑定
+
 		});
 	})();
 	
@@ -135,9 +144,9 @@ function indexInit(data){
 					var _protype = data.industryclassname;
                     */
 					var _protype = data.industrytypename;
-                    var _renew = (data.data1===null) ? 0 : data.data1;
-                    var _co2 = (data.data2===null) ? 0 : data.data2;
-                    var _energySaving = (data.data3===null) ? 0 : data.data3;
+                    var _renew = (data.data1===null || data.data1 == 0) ? '0.0' : data.data1;
+                    var _co2 = (data.data2===null || data.data2 == 0) ? '0.0' : data.data2;
+                    var _energySaving = (data.data3===null || data.data3 == 0) ? '0.0' : data.data3;
 					var _pic =  (function() {
 						var defimg = "images/loacationimg00.jpg"
 						if (data.projectid == "1") {
@@ -152,7 +161,6 @@ function indexInit(data){
 						return defimg
 					})();
                     var date = new Date(); 
-                    
 					var _m = 12,_y = date.getFullYear();
 					//var _m = data.rectime.substring(1,4),_y =data.rectime.substring(6,7)
 					
@@ -286,36 +294,6 @@ var re = new RegExp(reg);
 				loop:true
 			});
 			
-            /* 已加载VPN数据，故注释
-			$.ajax({ //请求首页项目
-				type : "get",
-				async:true,
-				url : "ajaxsample/gislist.js",
-				dataType : "jsonp",
-				jsonp: "callback",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(默认为:callback)
-				jsonpCallback:"define",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
-				success : function(json){
-					jsonDataRight = json;
-					$doc.trigger("index_jsonload")
-				},
-					error:function(){
-					alert('加载数据失败');
-				}
-			});
-		
-			
-			
-			
-			
-			var INDEX_LEFT_SWIPER = new Swiper("#index_left_swiper", {
-				slidesPerView: 1,
-				slidesPerColumn: 3,
-				paginationHide:false,
-				mousewheelControl: true,
-				paginationClickable: true,
-				pagination:"#ils_pages"
-			});
-            */
 			var INDEX_LEFT_SWIPER = new Swiper("#index_left_swiper", {
 				slidesPerView: 1,
 				paginationHide:false,
@@ -323,8 +301,6 @@ var re = new RegExp(reg);
 				paginationClickable: true,
 				pagination:"#ils_pages"
 			});
-			
-			
 			
             var unityPlayer = '<div id="unityPlayer">'+
                     '<div class="missing">'+
@@ -345,7 +321,9 @@ var re = new RegExp(reg);
                     window.pageName = "index";
 
                     if(window.pageName == "index") {
-                        clearInterval(interId);
+                        clearInterval(interId); // 清3d
+                        clearInterval(intervalWeather); // 清气象更新
+                        clearInterval(intervalInnerRight); // 清内页右侧更新
 
                         $('#unityPlayer').remove();
                         $('#unityPlayer').css({'visibility':'hidden'}) // 隐藏3d
@@ -395,17 +373,25 @@ var re = new RegExp(reg);
                     if($('#unityPlayer').length === 0)
                         $('.xa-con-cent').append(unityPlayer);
 
-/*
-q
-*/
                     switchPage(function(){// 切换后回调
+                        demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+_pid,jsonp: 'setProject' ,done:setCompelte}); // 设置projectid
+
                     change3d(_pid);
+loadLeftRight(_pid); //加载左右
+intervalLeftRight = setInterval(innerLeftRight(_pid),3600000);
 
+//和下方联动函数，现注释
+                    //detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
+                    //$(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
+                    //$(".inner-selector-i .selector").eq(_pid).trigger("click"); //pinmingle add
 
-                    detail_data_index = $this.index(); // 获取图表数据索引 pinmingle add 
-                    $(".inner-selector-i .selector").eq(detail_data_index).trigger("click"); //pinmingle add
+projectBoxIndex = _pid; //为了内页切换重载成本收益
+
 	$doc.trigger("loadRightTab2JSON",[_pid]); // 加载供能耗能
-    getWeather();// 加载气象信息
+    intervalInnerRight = setInterval(innerRight(_pid), 3600000); //小时更新供能耗能 
+    getWeather(); 
+    intervalWeather = setInterval(getWeather,3600000);// 加载气象信息
+
      contTitle.text(name);
 
 //console.log(sumProjectData)
@@ -435,47 +421,6 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
 			});
 			
 		});
-		
-		/*var mapchartoption = {
-			color:["#f3f8fe"],
-			tooltip : {
-				show:false,
-				trigger: 'item',
-        		showDelay: 0
-			},
-			series:[
-				{
-					
-					type: 'map',
-					mapType: 'china',
-					roam: false,
-					itemStyle:{
-						normal:{
-							color:["#f3f8fe"],	
-							borderWidth:4,
-							borderColor:"#7a8ea8",
-							label:{
-								show:true,
-								textStyle: {
-									fontWeight:'normal',
-									fontSize:48
-								}
-							}
-						},
-						emphasis:{
-							color:["#328dde"],
-							label:{
-								
-								show:true
-							}
-						}
-					},
-					data:[]
-				}
-			]
-		}
-		var mapchart= echarts.init(document.getElementById('Amapcontent'));
-		mapchart.setOption(mapchartoption)*/
 		
 	}//index end
 	
@@ -518,7 +463,7 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
 				format:'mm',
 				language:"zh-CN"
 			}).on('changeDate',function(ev) {
-                console.log(ev.date.getMonth())
+                //console.log(ev.date.getMonth())
                 /*
 				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-" + dateDay.val();
 				//console.log(joinDate);
@@ -550,12 +495,12 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
                 y = (dateYear.val() == '') ? nowYear : dateYear.val();
                 m = (dateMon.val() == '') ? (nowMonth+1) : dateMonth.val();
                 joinDate = y + '-' + m + '-' + ev.date.getDate(); 
-                console.log(joinDate)
+                //console.log(joinDate)
 if(ev.date.getDate() > nowDay ) {
     alert('不要超过今天'); return;
 } 
                 var type = $(this).parents('.xa-modal-wrapper').attr('data-type');
-                console.log(type)
+                //console.log(type)
                 switch(type) {
                     case 'one': 
                         energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid=551&timeradio=days&date='+joinDate+'','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid=551&timeradio=days&date='+joinDate+'','energyPie']);
@@ -1157,7 +1102,7 @@ if(ev.date.getDate() > nowDay ) {
 						},
 						label: {
 							textStyle:{
-								fontSize:24
+								fontSize: 30 //节能量co2减排量字体大小 
 							},
 							show: true,
 							position: 'top',
@@ -1185,6 +1130,8 @@ if(ev.date.getDate() > nowDay ) {
 		legend: {
 			x:"right",
 			y:"50px",
+			itemWidth:80,
+			itemHeight:40,
 			textStyle:{
 				fontSize:40
 			},
@@ -1552,7 +1499,7 @@ if(ev.date.getDate() > nowDay ) {
 					textStyle:{
 						color: '#989898',
 						fontWeight: 'bolder',
-						fontSize: 24
+						fontSize: 34
 					}
 				},
 				type : 'category',
@@ -1607,7 +1554,8 @@ if(ev.date.getDate() > nowDay ) {
 						color: '#00a89c',
 						borderRadius: 5,
 						label : {
-							show: false,
+							//show: false, //是否显示tips 
+							show: true, //是否显示tips 
 							position: 'left',
 							formatter: '{b}'
 						}
@@ -1625,27 +1573,31 @@ if(ev.date.getDate() > nowDay ) {
 					var k = [half*1.25, "50%"]
 					return k
 				})(),
-				radius :[120, (function() {
-					return 995/2 - 180
+				radius :[80, (function() {
+					//return 995/2 - 180 //外半径
+					return 995/2 - 330 //外半径
 				})()],
 				itemStyle :　{
 					normal : {
 						label:{
-							show:false,
+							//show:false,
+							show: true, //是否显示tips 
 							 formatter :function (params){
 								//  console.log(params)
 									return params.name + '\n' + (params.percent + '%')
 								},
 							textStyle:{
-								fontSize:40
+								fontSize:34
 							}
 						},
 						labelLine : {
-							show:false,
+							//show:false,
+							show: true, //是否显示tips 
 							lineStyle:{
 								width:4
 							},
-							length : 150
+							//length : 150
+							length : 10 // tips 线长度
 						}
 					}
 				},
@@ -1666,27 +1618,31 @@ if(ev.date.getDate() > nowDay ) {
 					var k = [half*1.75, "50%"]
 					return k
 				})(),
-				radius :[120, (function() {
-					return 995/2 - 180
+				radius :[80, (function() { // 内半径
+					//return 995/2 - 180
+					return 995/2 - 330 //外半径
 				})()],
 				itemStyle :　{
 					normal : {
 						label:{
-							show:false,
+							//show:false,
+							show: true, //是否显示tips 
 							 formatter :function (params){
 								//  console.log(params)
 									return params.name + '\n' + (params.percent + '%')
 								},
 							textStyle:{
-								fontSize:40
+								fontSize:34 //字体大小
 							}
 						},
 						labelLine : {
-							show:false,
+							//show:false,
+							show: true, //是否显示tips 
 							lineStyle:{
 								width:4
 							},
-							length : 50
+							//length : 50
+							length : 10 // tips 线长度
 						}
 					}
 				},
@@ -1834,7 +1790,7 @@ if(ev.date.getDate() > nowDay ) {
 				//console.log($chartel2)
 				var myCharts2x = echarts.init($chartel2[0], defaultTheme);
 				
-				var chartOPT2 = optionsbar1;
+				var chartOPT2 = optionsbar1; //co2减排量
 				chartOPT2.series[0].itemStyle.normal.label.formatter = function(params) {
 					return params.value + "\n" + data_2_unit;
 				};
@@ -1856,34 +1812,6 @@ if(ev.date.getDate() > nowDay ) {
 				myCharts2x.setOption(chartOPT2)
 				
 				
-				/*var optionsbar2 = optionsbar1;
-				optionsbar2.series[0].itemStyle.normal.color = "#f8ae3b";
-				optionsbar2.series[0].itemStyle.normal.label.formatter = function(params) {
-					return params.value + "\n" + "标煤(kg)";
-				};
-				optionsbar2.series[0].data = [5406,16406];
-				optionsbar2.xAxis[0].data = ["常规碳排放","常规能耗"];
-				myCharts4.setOption(optionsbar2);*/
-				
-				
-				
-				
-				
-				
-				/*console.log(
-					_name,
-					_percent,
-					data_1_name,
-					data_1_val,
-					data_1_unit,
-					data_2_name,
-					data_2_val,
-					data_2_unit,
-					data_3_name,
-					data_3_val,
-					data_3_unit,
-					classGroup
-				)*/
 			} else {
 				var _name,
 					_percent,
@@ -1912,18 +1840,6 @@ if(ev.date.getDate() > nowDay ) {
 				classGroup = ".leftGruop_" + index; 
 
 
-				/*console.log(
-					_name,
-					_percent,
-					data_1_name,
-					data_1_val,
-					data_1_unit,
-					data_2_name,
-					data_2_val,
-					data_2_unit,
-					classGroup
-				)*/
-				
 				classGroup = ".leftGruop_" + index;
 				var $classGroup = $(classGroup);
 				var $classGroupBlock = $classGroup.find(".hov-line-chartblock");
@@ -1964,7 +1880,8 @@ if(ev.date.getDate() > nowDay ) {
 
 
                 var renewNum = Number(data_1_val * _percent / 100).toFixed(1); 
-				$classGroupBlock_p.eq(3).find("font").html(renewNum)
+				$classGroupBlock_p.eq(3).find("font").html(renewNum) // 可再生能源
+
 				}
 				myCharts.setOption(chartOPT)
 				
@@ -1975,9 +1892,10 @@ if(ev.date.getDate() > nowDay ) {
 				$classGroupBlock_p.eq(1).find("span").html(data_1_unit)
 				
 
-                if(index != 3 ) // 除了可再生能源 
-				$classGroupBlock_p.eq(3).find("font").html(data_2_val)
-
+                if(index != 3 ){ // 除了可再生能源 
+                    $classGroupBlock_p.eq(3).find("font").html(data_2_val)
+                    $classGroupBlock_p.eq(3).find("span").html(data_2_unit)
+                }
 				$classGroupBlock_p.eq(3).find("span").html(data_1_unit)
 				
 			}
@@ -1993,41 +1911,11 @@ if(ev.date.getDate() > nowDay ) {
 	var leftjsonpdata = {};
 	//pinmingle add
 	var data_Jsonp = ["leftjsonp.js","leftjsonp_2.js","leftjsonp_3.js","leftjsonp_4.js"];
-	/*$.ajax({
-			type : "get",
-			async:true,
-			url : "http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=days",
-			dataType : "jsonp",
-			jsonp: "callback",
-			jsonpCallback:"leftjsonp",
-			success : function(json){
-				leftjsonpdata = json;
-				$doc.trigger("leftjsonpdataReady")
-			},
-				error:function(){
-				alert('加载左侧图表数据失败');
-			}
-		});*/
-		//demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=days',jsonp: 'mainLeft' ,done:mainLeft_Compelte});
         var projectid
+
 	$doc.on("click", ".inner-selector-i .selector", function() {
 		detail_data_index = $(this).index(); //pinmingle add
 		$(this).addClass("cur").siblings().removeClass("cur");
-		/*$.ajax({
-			type : "get",
-			async:true,
-			url : "ajaxsample/"+data_Jsonp[detail_data_index],
-			dataType : "jsonp",
-			jsonp: "callback",
-			jsonpCallback:"leftjsonp",
-			success : function(json){
-				leftjsonpdata = json;
-				$doc.trigger("leftjsonpdataReady")
-			},
-				error:function(){
-				alert('加载左侧图表数据失败');
-			}
-		});*/
 		
 		 projectid = $(this).attr("index");
          change3d(projectid);
@@ -2035,11 +1923,15 @@ if(ev.date.getDate() > nowDay ) {
 		//alert("bbb"+a);
 		
 		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+projectid,jsonp: 'setProject' ,done:setCompelte});
-		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=days',jsonp: 'mainLeft' ,done:mainLeft_Compelte}); //pinmingle add 左侧数据绑定
+		demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=hours',jsonp: 'mainLeft' ,done:mainLeft_Compelte}); //pinmingle add 左侧数据绑定
 		bindY_M_D_data(); //pinmingle add 右边年月日数据绑定
 	
 	});
 		
+        function loadLeftRight(id) {
+            demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainLeft?timeradio=hours',jsonp: 'mainLeft' ,done:mainLeft_Compelte}); //pinmingle add 左侧数据绑定
+            bindY_M_D_data(); //pinmingle add 右边年月日数据绑定
+        }
 		
 }		
 		
@@ -2329,7 +2221,6 @@ var gnhnTemp = '<div class="eng-bp" id="showModal_'+indexNum+'" data-classproper
 }
 	
 	function gnhnfn(e,projectid) {
-		
 			demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+projectid+'',jsonp: 'setProject' ,done:setCompelte});
 			demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/mainRight?timeradio=days',jsonp: 'mainRight' ,done:function(data){
                 gnhnfn_Compelte(data, projectid);
@@ -2792,7 +2683,9 @@ function getRandomArbitrary(min, max) {
     }	
    //传送3d数据
     function sent3dData(data) {
+        if(data.length == 0) return;
         var d = '{"3dData":' + JSON.stringify(data) + '}'; 
+        //console.log(d)
         RecvMsgFormUnity(d);
     }
 
@@ -3027,6 +2920,16 @@ console.log(ajaxLoad_3)
 				}
 			});	
         }
+    function innerRight(id) {
+        return function(){
+            $doc.trigger("loadRightTab2JSON",[id]); // 加载供能耗能
+        } 
+    }
+function innerLeftRight(id) {
+   return function(){
+       loadLeftRight(id);
+   } 
+} 
 /**************end*************/
 };
        
