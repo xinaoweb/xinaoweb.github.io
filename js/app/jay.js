@@ -347,6 +347,7 @@ var re = new RegExp(reg);
                 var _pid = $this.attr('data-pid')
 				var point = new BMap.Point( Number(_relh),Number(_relv) );
                 var name = $this.find('.mv-localname').text();
+sumProjectid = _pid; // 为了3d属性
 //				console.log(point)
 				bdmap.centerAndZoom(point,12); //地图的缩放比
 				var _actclass = "mapview-active"
@@ -978,6 +979,8 @@ if(ev.date.getDate() > nowDay ) {
 			label : {
 				formatter : function (params){
 					//保留小数点后面1位
+                    //console.log('params ',params)
+                    // 圆环参数公式
 					return  Math.floor((100 - params.value)*10)/10 + '%';
 				},
 				textStyle: {
@@ -1017,8 +1020,8 @@ if(ev.date.getDate() > nowDay ) {
 				x: '0%', // for funnel
 				itemStyle : labelFromatter,
 				data : [
-					{name:'', value: 30, itemStyle : labelBottom},
-					{name:'节能率', value: 70,itemStyle : labelTop}
+					{name:'', value: 0, itemStyle : labelBottom},
+					{name:'节能率', value: 0,itemStyle : labelTop}
 				]
 			}
 		]
@@ -1772,12 +1775,17 @@ if(ev.date.getDate() > nowDay ) {
 				}
 				
 				
-				var secVal = 100 - _percent;
-				chartOPT.series[0].data[0].value = secVal
+				//var secVal = 100 - _percent;
+				var secVal =  _percent;
+                //console.log(_percent)
+                //console.log(secVal)
+				//chartOPT.series[0].data[0].value = secVal
+				chartOPT.series[0].data[0].value = 100 - _percent 
 				chartOPT.series[0].data[1].value = _percent
 				chartOPT.series[0].data[1].name = _name
 				myCharts.setOption(chartOPT);
-				
+
+			console.log('01 ',_percent)	
 				
 				
 				var $chartel2 = $classGroup.filter(function() {
@@ -1824,6 +1832,7 @@ if(ev.date.getDate() > nowDay ) {
 					data_3_name,
 					data_3_val,
 					data_3_unit,
+                    sysRat = null,
 					classGroup;
 
 				_name = data.name;
@@ -1856,9 +1865,16 @@ if(ev.date.getDate() > nowDay ) {
 				var myCharts = echarts.init($chartel[0], defaultTheme);
 				var chartOPT;
 				if (index == "2") {
+                //if(_percent > 100) (sysRat == null) ? (sysRat = _percent) : (sysRat = 100);
+                //console.log(_percent)
 					chartOPT = optionsPie1;
 					chartOPT.color = ['#ec1e79'];
+					//chartOPT.series[0].data[0].value = 100 - _percent;
+                    //console.log(sysRat)
+					//chartOPT.series[0].data[0].value = sysRat;
 					chartOPT.series[0].data[0].value = 100 - _percent;
+					//chartOPT.series[0].data[1].value = 100; 
+                    //console.log(chartOPT.series[0].data[1].value)
 					chartOPT.series[0].data[1].value = (function() {
 						if (_percent > 100) {
 							return 100;
@@ -1867,10 +1883,12 @@ if(ev.date.getDate() > nowDay ) {
 						}
 					})();
 					chartOPT.series[0].data[1].name = _name;
+			console.log('22 ',_percent)	
 					
 				} else if (index == "3") {
 					chartOPT = optionsPie1
 					chartOPT.color = ['#92278e'];
+
 					chartOPT.series[0].data[0].value = 100 - _percent;
 					chartOPT.series[0].data[1].value = _percent;
 					chartOPT.series[0].data[1].name = (function() {
@@ -1882,6 +1900,7 @@ if(ev.date.getDate() > nowDay ) {
                 var renewNum = Number(data_1_val * _percent / 100).toFixed(1); 
 				$classGroupBlock_p.eq(3).find("font").html(renewNum) // 可再生能源
 
+			console.log('33 ',_percent)	
 				}
 				myCharts.setOption(chartOPT)
 				
@@ -2670,7 +2689,8 @@ function getRandomArbitrary(min, max) {
 						break;
 						case "first":
                             f3d = 1;
-
+                            //console.log(sumProjectid)
+                            property3d(sumProjectid);
 						break;
 					}
 				});
@@ -2685,6 +2705,12 @@ function getRandomArbitrary(min, max) {
     function sent3dData(data) {
         if(data.length == 0) return;
         var d = '{"3dData":' + JSON.stringify(data) + '}'; 
+        //console.log(d)
+        RecvMsgFormUnity(d);
+    }
+    function sent3dProperty(data) {
+        if(data.length == 0) return;
+        var d = '{"3DUI":' + JSON.stringify(data) + '}'; 
         //console.log(d)
         RecvMsgFormUnity(d);
     }
@@ -2847,22 +2873,37 @@ console.log(ajaxLoad_3)
          
             switch(id) {
                 case '1':
-                    builtUnity3d("obj/AirPort20150514_1.unity3d");
+                    builtUnity3d("obj/AirPort20150515.unity3d");
                     interId = setInterval(function(){
                         demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=100', jsonp: 'labeldataAll', done:sent3dData});
                     },6000);
                     break;
                 case '3':
-                    builtUnity3d("obj/Hostpial20150514_1.unity3d");
+                    builtUnity3d("obj/Hostpial20150515.unity3d");
                     interId = setInterval(function(){
                         demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=101', jsonp: 'labeldataAll', done:sent3dData});
                     },6000);
                     break;
                 case '4':
-                    builtUnity3d("obj/Other20150514_1.unity3d");
+                    builtUnity3d("obj/Other20150515.unity3d");
                     interId = setInterval(function(){
                         demand.start({url:'http://10.36.128.73:8080/reds/ds/labeldataAll?pageid=102', jsonp: 'labeldataAll', done:sent3dData});
                     },6000);
+                    break;
+            }
+         }
+         // 3d per
+         function property3d(id) {
+         
+            switch(id) {
+                case '1':
+                        demand.start({url:'http://10.36.128.73:8080/reds/ds/labellist?pageid=100', jsonp: 'labellist', done:sent3dProperty});
+                    break;
+                case '3':
+                        demand.start({url:'http://10.36.128.73:8080/reds/ds/labellist?pageid=101', jsonp: 'labellist', done:sent3dProperty});
+                    break;
+                case '4':
+                        demand.start({url:'http://10.36.128.73:8080/reds/ds/labellist?pageid=102', jsonp: 'labellist', done:sent3dProperty});
                     break;
             }
          }
