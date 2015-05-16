@@ -447,189 +447,74 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
 				startView:2,
 				minViewMode:2,
 				format:'yyyy',
+                endDate: '+0y',
 				language:"zh-CN"
-			}).on('changeDate',function(e) {
-            /*
-				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-"+dateDay.val();
-				//console.log(joinDate);
-				if ( dateYear.val() && dateMon.val() && dateDay.val()) {
-					//$doc.trigger("modal_date_change",joinDate);
-				}
-                */
+			}).on('changeDate',function(ev) {
+                var joinDate = null
+                  , y, m, d
+                  , $this = $(this)
+                  , wrap = $(this).parents('.xa-modal-wrapper')
+                  , type = wrap.attr('data-type')
+                  , pid = wrap.attr('data-pid')
+                
+                m = (dateMon.val() == '') ? (nowMonth+1) : dateMon.val();
+                d = (dateDay.val() == '') ? nowDay : dateDay.val();
+                joinDate = ev.date.getFullYear() + '-' + m + '-' + d; // 选择的年 
+
+
+               selectDate(type, pid, joinDate); 
 			});
 			dateMon.datepicker({
 				autoclose:true,
 				startView:1,
 				minViewMode:1,
 				format:'mm',
+                endDate: '+0m',
 				language:"zh-CN"
 			}).on('changeDate',function(ev) {
-                //console.log(ev.date.getMonth())
-                /*
-				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-" + dateDay.val();
-				//console.log(joinDate);
-				if ( dateYear.val() && dateMon.val() && dateDay.val()) {
-					//$doc.trigger("modal_date_change",joinDate);
-				}
-                */
+                var joinDate = null
+                  , y, m, d
+                  , $this = $(this)
+                  , wrap = $(this).parents('.xa-modal-wrapper')
+                  , type = wrap.attr('data-type')
+                  , pid = wrap.attr('data-pid')
+                
+                y = (dateYear.val() == '') ? nowYear : dateYear.val();
+                d = (dateDay.val() == '') ? nowDay : dateDay.val();
+                joinDate = y + '-' + (ev.date.getMonth()+1) + '-' + d; // 选择的月 
+
+               selectDate(type, pid, joinDate); 
 			});
             	dateDay.datepicker({
 				autoclose:true,
 				startView:0,
 				minViewMode:0,
 				format:'dd',
+                endDate: '+0d',
 				language:"zh-CN"
 			}).on('changeDate', function(ev){
-            var joinDate = null
-              , y, m, d;
-                //console.log(ev.date.FullYear())
-                /*
-                console.log(dateYear.val())
-                console.log(dateMon.val())
-                console.log(ev.date.getDate())
-                if(dateYear.val() == '') console.log('hi')
-        console.log(nowYear)
-        console.log(nowMonth+1)
-        console.log(nowDay)
-        */
+            
+                var joinDate = null
+                  , y, m, d
+                  , $this = $(this)
+                  , wrap = $(this).parents('.xa-modal-wrapper')
+                  , type = wrap.attr('data-type')
+                  , pid = wrap.attr('data-pid')
                 
                 y = (dateYear.val() == '') ? nowYear : dateYear.val();
                 m = (dateMon.val() == '') ? (nowMonth+1) : dateMonth.val();
-                joinDate = y + '-' + m + '-' + ev.date.getDate(); 
-                //console.log(joinDate)
-if(ev.date.getDate() > nowDay ) {
-    alert('不要超过今天'); return;
-} 
-                var type = $(this).parents('.xa-modal-wrapper').attr('data-type');
-                //console.log(type)
-                switch(type) {
-                    case 'one': 
-                        energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid=551&timeradio=days&date='+joinDate+'','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid=551&timeradio=days&date='+joinDate+'','energyPie']);
-                        break;
-                    case 'two':
-                        break;
-                    case 'three':
-                        break;
-                    case 'four':
-                        break;
-                    case 'five':
-                        break;
-                    case 'six':
-                        break;
-                    case 'seven':
-                        break;
-                    case 'eight':
-                        costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=years&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=years&date="+joinDate+"","financePie"]);
-                        break;
-                    case 'nine':
-                        costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date="+joinDate+"","financePie"]);
-                        break;
-                    case 'ten':
-                        costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date="+joinDate+"","financePie"]);
-                        break;
-                }
+                joinDate = y + '-' + m + '-' + ev.date.getDate(); // 选择的日 
 
-            //costFn(["ajaxsample/pop_inc_col.js","popinc_col"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=","financePie"]);
-                /*
-				var joinDate = dateYear.val()+ "-" + dateMon.val() + "-" + dateDay.val();
-				//console.log(joinDate);
-				if ( dateYear.val() && dateMon.val() && dateDay.val()) {
-					//$doc.trigger("modal_date_change",joinDate);
-				}
-				
-					
+/*
+                if(ev.date.getDate() > nowDay ) {
+                    alert('不要超过今天'); return;
+                } 
                 */
-				//断点---------------------------------------------------------------------
-				return;
-                /*
-				// 这里示范加载3个Ajax数据，并且一起完成之后再执行之后的动作
-				// 为了后面方便，我们定义一个方法
-				var ajaxLoad_1,
-					ajaxLoad_2,
-					ajaxLoad_3,
-					getEchart;
-				function ajaxget(URL,CALLBACK_NAME) {
-					var thisAjax = $.ajax({
-						type : "get",
-						async:true,
-						url : URL,
-						dataType : "jsonp",
-						jsonp: "callback",
-						jsonpCallback:CALLBACK_NAME
-					});
-					return thisAjax;
-				}
+               selectDate(type, pid, joinDate); 
 
-				ajaxLoad_1 = ajaxget("ajaxsample/pop_inc_col.js", "popinc_col");
-				ajaxLoad_2 = ajaxget("ajaxsample/pop_inc_pie.js", "popinc_pie");
-				ajaxLoad_3 = ajaxget("ajaxsample/pop_inc_pie2.js", "popinc_pie2");
-				$.when(ajaxLoad_1,ajaxLoad_2,ajaxLoad_3).done(function(json_a,json_b,json_c){
-					/*
-					* 返回的数据例如 json_a
-					* 包括3个数据：
-					* [数据,状态, 数据的type]
-					* 例如这里返回的是
-					* [Array[1], "success", Object]
-					* [Array[3], "success", Object]
-					* [Array[3], "success", Object]
-					*/
-                    /*
-					console.log(json_a,json_b,json_c,"拿到的3个JSON数据");
-					//由于我在弹出框的时候已经把echart的实例缓存到data里面，我从这里拿到它的实例进行修改
-					getEchart = $modalinnerChartWrap.data("echart");
-					var templeopt = optionModal3;
-					var xAxisdata = [];
-					var colsdata01 = [];
-					var colsdata02 = [];
-					var piedata = [];
-					var piedata2 = [];
-					$.each(json_a[0][0].costdatas, function(index,data) {
-						xAxisdata[index] = data.rectime;
-						colsdata01[index] = data.data;
-					});
-					$.each(json_a[0][0].incomedatas, function(index,data) {
-						colsdata02[index] = parseInt(data.data + Math.random()*100) ;
-					});
-					$.each(json_b[0], function(index,data) {
-						piedata[index] = {
-							value : parseInt(Math.random()*1000), name:data.name
-						}
-					});
-					$.each(json_c[0], function(index,data) {
-						piedata2[index] = {
-							value :parseInt(Math.random()*1000), name:data.name
-						}
-					});
-					//templeopt.series = [];
-					templeopt.xAxis[0].data = xAxisdata;
-					templeopt.series[0].data = colsdata01;
-					templeopt.series[0].barWidth = 15;
-					templeopt.series[1].data = colsdata02;
-					templeopt.series[1].barWidth = 15;
-					templeopt.series[2].data = piedata;
-					templeopt.series[3].data = piedata2;
-					
-					console.log(piedata)
-					console.log(piedata2)
-					
-					modalchartobj.setOption(templeopt);
-					templeopt=null;
-					
-					
-					/*
-                    $modalinnerChartWrap.prepend( $("<div>").attr("id", "tempss").css("position", "relative") )
-					$(document.getElementById("tempss")).prepend($span1);
-					$(document.getElementById("tempss")).prepend($span2);
-					
-					
-				});
-               
-                    */
+
             });
 
-	/*	})
-
-	});*/
 	
 	var $xa_modal_overlay = $(".xa-modal-overlay"),
 		$xa_modal_wrapper = $(".xa-modal-wrapper");
@@ -683,8 +568,9 @@ if(ev.date.getDate() > nowDay ) {
 	});
 	
 	
-	function showModal(type,callback,url, jsonp) {
+	function showModal(type,callback,url, jsonp, pid) {
         $xa_modal_wrapper.attr('data-type',type); // 增加弹出框标识
+        $xa_modal_wrapper.attr('data-pid',pid); // 增加classpropertyid
 
 		$xa_modal_wrapper.on("animationend.ane webkitAnimationEnd.ane", function() {
 			$xa_modal_wrapper.removeClass("modal-showing");
@@ -731,6 +617,7 @@ if(ev.date.getDate() > nowDay ) {
 	window.$modalinnerChartWrap = $("#chartinner");
 	var modalchartobj ;
 	$doc.on("click", "#showModal_1", function() {
+dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
         var classpropertyid = $(this).attr('data-classpropertyid')
@@ -740,10 +627,12 @@ if(ev.date.getDate() > nowDay ) {
 			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 			modalchartobj.setOption(optionModal);
             */
+            console.log(classpropertyid)
             energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie']);
 		}
-		showModal('one',show_1_callback);
+		showModal('one',show_1_callback,'','',classpropertyid); // 参数为type, callback, url, jsonp, pid
 	}).on("click", "#showModal_2",function() {
+dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
             var classpropertyid = $(this).attr('data-classpropertyid')
@@ -751,8 +640,9 @@ if(ev.date.getDate() > nowDay ) {
 			//console.log("show 1 call back")
             energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie']);
 		}
-		showModal('two',show_2_callback);
+		showModal('two',show_2_callback,'','',classpropertyid);
 	}).on("click", "#showModal_3",function() {
+dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
             var classpropertyid = $(this).attr('data-classpropertyid')
@@ -760,32 +650,36 @@ if(ev.date.getDate() > nowDay ) {
 			//console.log("show 1 call back")
             energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie']);
 		}
-		showModal('three',show_3_callback);
+		showModal('three',show_3_callback,'','',classpropertyid);
 	})
     .on("click", "#showModal_4",function() {
+dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
         var classpropertyid = $(this).attr('data-classpropertyid')
 
-		showModal('four',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy');
+		showModal('four',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid);
 	})
     .on("click", "#showModal_5",function() {
+dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
         var classpropertyid = $(this).attr('data-classpropertyid')
-		showModal('five',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy');
+		showModal('five',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid);
 	})
     .on("click", "#showModal_6",function() {
+dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
         var classpropertyid = $(this).attr('data-classpropertyid')
-		showModal('six',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy');
+		showModal('six',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid);
 	})
     .on("click", "#showModal_7",function() {
+dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
         var classpropertyid = $(this).attr('data-classpropertyid')
-		showModal('seven',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy');
+		showModal('seven',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid);
 	})
     /*
     .on("click", "#showModal_5",function() {
@@ -879,6 +773,12 @@ if(ev.date.getDate() > nowDay ) {
 	})
     */
     .on("click", "#showModal_8",function() {
+
+      // 年成本收益
+      dateYear.parents('.selector').show();
+      dateMon.parents('.selector').hide();
+      dateDay.parents('.selector').hide();
+
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
 		var $span1 = $("<span>").html("成本能源结构图").css({
@@ -908,6 +808,12 @@ if(ev.date.getDate() > nowDay ) {
 		
 		showModal('eight',show_8_callback);
 	}).on("click", "#showModal_9",function() {
+
+      // 月成本收益
+      dateYear.parents('.selector').hide();
+      dateMon.parents('.selector').show();
+      dateDay.parents('.selector').hide();
+
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
 		var $span1 = $("<span>").html("成本能源结构图").css({
@@ -928,6 +834,12 @@ if(ev.date.getDate() > nowDay ) {
 		showModal('nine',show_5_callback);
 	}).on("click", "#showModal_10",function() {
 		function show_10_callback() {
+
+      // 日成本收益
+      dateYear.parents('.selector').hide();
+      dateMon.parents('.selector').hide();
+      dateDay.parents('.selector').show();
+
             costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=now","financePie"]);
             /*
 			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
@@ -1883,7 +1795,7 @@ if(ev.date.getDate() > nowDay ) {
 						}
 					})();
 					chartOPT.series[0].data[1].name = _name;
-			console.log('22 ',_percent)	
+			//console.log('22 ',_percent)	
 					
 				} else if (index == "3") {
 					chartOPT = optionsPie1
@@ -1900,7 +1812,7 @@ if(ev.date.getDate() > nowDay ) {
                 var renewNum = Number(data_1_val * _percent / 100).toFixed(1); 
 				$classGroupBlock_p.eq(3).find("font").html(renewNum) // 可再生能源
 
-			console.log('33 ',_percent)	
+			//console.log('33 ',_percent)	
 				}
 				myCharts.setOption(chartOPT)
 				
@@ -2733,7 +2645,6 @@ function RecvMsgFormUnity(str) {
 				return thisAjax;
 			}
 // 耗气，曲线+饼图
-/*********************************************************生成饼图错误******************************/
 
 function energyFn() {
     var ajaxLoad_1
@@ -2764,9 +2675,10 @@ function energyFn() {
 					piedata[i] = {
 						value : json_b[0][0].y, name:json_b[0][0].name
 					}
-                }*/
+                }
 				console.log("ww");
 				console.log(json_a);
+*/
                 for(var i = 0, l = json_a[0][0].list.length; i < l; i++) {
 					xAxisdata[i] = json_a[0][0].list[i].rectime;
 					colsdata01[i] = json_a[0][0].list[i].data;
@@ -2971,6 +2883,42 @@ function innerLeftRight(id) {
        loadLeftRight(id);
    } 
 } 
+
+                function selectDate(type, pid, joinDate) {
+                    switch(type) {
+                        case 'one': // 耗气 
+                            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=days&date='+joinDate+'','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+pid+'&timeradio=days&date='+joinDate+'','energyPie']);
+                            break;
+                        case 'two': // 耗水
+                            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=days&date='+joinDate+'','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+pid+'&timeradio=days&date='+joinDate+'','energyPie']);
+                            break;
+                        case 'three': // 耗电
+                            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=days&date='+joinDate+'','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+pid+'&timeradio=days&date='+joinDate+'','energyPie']);
+                            break;
+                        case 'four':
+                        case 'five':
+                        case 'six':
+                        case 'seven':
+                            singleEnergy_callback('http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=mons&date='+joinDate+'', 'singleEnergy');
+                            break;
+                        case 'eight':
+                            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=years&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=years&date="+joinDate+"","financePie"]);
+                            break;
+                        case 'nine':
+                            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date="+joinDate+"","financePie"]);
+                            break;
+                        case 'ten':
+                            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date="+joinDate+"","financePie"]);
+                            break;
+                    }
+                
+                }
+function dateAllShow() {
+  dateYear.parents('.selector').show();
+  dateMon.parents('.selector').show();
+  dateDay.parents('.selector').show();
+}
+
 /**************end*************/
 };
        
