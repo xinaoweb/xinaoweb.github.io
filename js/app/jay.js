@@ -117,7 +117,7 @@ function indexInit(data){
             //alert(typeof index);
             //$doc.trigger("loadRightTab2JSON",[_pid]); // 加载供能耗能
 
-            if(index == 0) bindY_M_D_data(); //pinmingle add 右边年月日数据绑定
+            if(index == 1) bindY_M_D_data(); //pinmingle add 右边年月日数据绑定
 
 		});
 	})();
@@ -222,11 +222,11 @@ var re = new RegExp(reg);
 					'		<div class="mapview-cycle"><img src="'+_pic+'" alt="">'+
 					'			<div class="mpv-cycle-detail flexmid">'+
 					'				<h3>二氧化碳减排率</h3>'+
-					'				<p>'+_co2+'</p>'+
+					'				<p>'+_co2+'%</p>'+
 					'				<h3>可再生能源利用率</h3>'+
-					'				<p>'+_renew+'</p>'+
+					'				<p>'+_renew+'%</p>'+
 					'				<h3>节能率</h3>'+
-					'				<p>'+_energySaving+'</p>'+
+					'				<p>'+_energySaving+'%</p>'+
 					'			</div>'+
 					'		</div>'+
 					'		<div class="mapview-cycle-tips">'+
@@ -355,7 +355,7 @@ sumProjectid = _pid; // 为了3d属性
                     if(_pid != '1' && _pid != '3' && _pid != '4') {
                         $(".mapview-active").removeClass("mapview-active"); //取消高亮
                         bdmap.centerAndZoom(new BMap.Point(103.404, 39.915),5); //修改地图的中心点
-                        alert(name +'还在建造中');
+                        //alert(name +'还在建造中');
                         return;
                     }
 					$this.addClass(_actclass).siblings().removeClass(_actclass);
@@ -502,7 +502,7 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
                   , pid = wrap.attr('data-pid')
                 
                 y = (dateYear.val() == '') ? nowYear : dateYear.val();
-                m = (dateMon.val() == '') ? (nowMonth+1) : dateMonth.val();
+                m = (dateMon.val() == '') ? (nowMonth+1) : dateMon.val();
                 joinDate = y + '-' + m + '-' + ev.date.getDate(); // 选择的日 
 
 /*
@@ -536,10 +536,6 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
 	
 	 $doc.on('modalshow',function(e,type){
 		//console.log('pop-up');
-		var date = new Date();
-		var year = date.getFullYear();
-		var month = date.getMonth();
-		var day = date.getDay();
         //alert($xa_modal_wrapper.find('#popUpTitle').text())
         var $title = $xa_modal_wrapper.find('#popUpTitle')
         switch(type) {
@@ -557,14 +553,11 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
             case 'nine': $title.text('当月成本收益'); break;
             case 'ten': $title.text('当日成本收益'); break;
         }
-		$(".dateinput-day").val("").datepicker("update");
-		$(".dateinput-months").val("").datepicker("update");
-		$(".dateinput-year").val("").datepicker("update");
-        /*
-		$(".dateinput-day").val("0"+day).datepicker("update");
-		$(".dateinput-months").val("0"+parseInt(month+1)).datepicker("update");
-		$(".dateinput-year").val(year).datepicker("update");
-        */
+
+// 时间控件显示当前时间
+		$(".dateinput-day").val(nowDay).datepicker("update");
+		$(".dateinput-months").val(parseInt(nowMonth+1)).datepicker("update");
+		$(".dateinput-year").val(nowYear).datepicker("update");
 	});
 	
 	
@@ -627,7 +620,7 @@ dateAllShow(); // show all datepicker
 			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 			modalchartobj.setOption(optionModal);
             */
-            console.log(classpropertyid)
+            //console.log(classpropertyid)
             energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie']);
 		}
 		showModal('one',show_1_callback,'','',classpropertyid); // 参数为type, callback, url, jsonp, pid
@@ -1038,15 +1031,15 @@ dateAllShow(); // show all datepicker
 
 	var columnChartopt = {
 		grid:{
-			x:"100px",
-			x0:"10px",
-			x:150 //Y轴左边距设置
+			//x:"100px",
+			x0:"10px"
+			,x:200 //Y轴左边距设置
 		},
 		legend: {
 			x:"right",
-			y:"50px",
+			y:"30px",
 			itemWidth:80,
-			itemHeight:40,
+			itemHeight:30,
 			textStyle:{
 				fontSize:40
 			},
@@ -1157,7 +1150,8 @@ dateAllShow(); // show all datepicker
 			}
 		},
 		grid:{
-			x2:"50%"
+			x2:"50%",
+			x:250 //Y轴左边距设置
 		},
 		calculable : false,
 		xAxis : [
@@ -1290,7 +1284,8 @@ dateAllShow(); // show all datepicker
 			y2:200,
 			x2:"50%",
             */
-			x:150 //Y轴左边距设置
+			x:150,  //左边到Y轴距离
+            x2: 150 // 右边到Y轴距离
 		},
 		calculable : false,
 		xAxis : [
@@ -1400,7 +1395,7 @@ dateAllShow(); // show all datepicker
 			y:200,
 			y2:200,
 			x2:"50%",
-			x:150 //Y轴左边距设置
+			x:200 //Y轴左边距设置
 		},
 		calculable : false,
 		xAxis : [
@@ -1697,7 +1692,6 @@ dateAllShow(); // show all datepicker
 				chartOPT.series[0].data[1].name = _name
 				myCharts.setOption(chartOPT);
 
-			console.log('01 ',_percent)	
 				
 				
 				var $chartel2 = $classGroup.filter(function() {
@@ -1712,7 +1706,8 @@ dateAllShow(); // show all datepicker
 				
 				var chartOPT2 = optionsbar1; //co2减排量
 				chartOPT2.series[0].itemStyle.normal.label.formatter = function(params) {
-					return params.value + "\n" + data_2_unit;
+					//return params.value + "\n" + data_2_unit;
+					return params.value ; //节能量减排量去单位
 				};
 				chartOPT2.series[0].data = [data_2_val,data_3_val];
                 /*
@@ -1777,21 +1772,19 @@ dateAllShow(); // show all datepicker
 				var myCharts = echarts.init($chartel[0], defaultTheme);
 				var chartOPT;
 				if (index == "2") {
-                //if(_percent > 100) (sysRat == null) ? (sysRat = _percent) : (sysRat = 100);
-                //console.log(_percent)
+                //console.log(sumProjectid)
 					chartOPT = optionsPie1;
 					chartOPT.color = ['#ec1e79'];
-					//chartOPT.series[0].data[0].value = 100 - _percent;
-                    //console.log(sysRat)
-					//chartOPT.series[0].data[0].value = sysRat;
-					chartOPT.series[0].data[0].value = 100 - _percent;
-					//chartOPT.series[0].data[1].value = 100; 
-                    //console.log(chartOPT.series[0].data[1].value)
+					chartOPT.series[0].data[0].value = (function(){
+                        if(sumProjectid == 1){  return (100 - (_percent * 100)); } // 黄花机场系统能耗乘100  
+                        else return (100 - _percent);
+                    })();
 					chartOPT.series[0].data[1].value = (function() {
 						if (_percent > 100) {
 							return 100;
 						} else {
-							return _percent;
+                            if(sumProjectid == 1){ return _percent *= 100; }// 黄花机场系统能耗乘100  
+                            else return _percent;
 						}
 					})();
 					chartOPT.series[0].data[1].name = _name;
@@ -2602,7 +2595,7 @@ function getRandomArbitrary(min, max) {
 						case "first":
                             f3d = 1;
                             //console.log(sumProjectid)
-                            property3d(sumProjectid);
+                            //property3d(sumProjectid); //暂时用本地文件
 						break;
 					}
 				});
@@ -2678,9 +2671,13 @@ function energyFn() {
                 }
 				console.log("ww");
 				console.log(json_a);
+
 */
+if(json_a[0][0].list == null) json_a[0][0].list = [{'rectime':'0','data':'0'},{'rectime':'0','data':'0'}]; // 若数据无则默认输出 
+//if(json_b[0] == null) json_b[0] = []; 
+
                 for(var i = 0, l = json_a[0][0].list.length; i < l; i++) {
-					xAxisdata[i] = json_a[0][0].list[i].rectime;
+					xAxisdata[i] = json_a[0][0].list[i].rectime.substring(0,10);// 过滤小时
 					colsdata01[i] = json_a[0][0].list[i].data;
                 }
                 for(var j = 0, k = json_b[0].length; j < k; j++) {
@@ -2885,6 +2882,7 @@ function innerLeftRight(id) {
 } 
 
                 function selectDate(type, pid, joinDate) {
+
                     switch(type) {
                         case 'one': // 耗气 
                             energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=days&date='+joinDate+'','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+pid+'&timeradio=days&date='+joinDate+'','energyPie']);

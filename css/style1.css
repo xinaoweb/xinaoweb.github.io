@@ -72,7 +72,7 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	padding: 0 60px;
-	background-color: rgba(255, 255, 255, 0.6);
+	background-color: rgba(255, 255, 255, 0.8);
 	border-radius: 20px;
 	box-shadow: 0 16px 64px 0 rgba(0, 0, 0, 0.33);
 }
@@ -292,7 +292,7 @@
 }
 .mapview-active .mapview-cycle-tips .text-date p 
 {
-	font-size: 16px;
+	font-size: 21px;
 	line-height: 18px;
 }
 .mapview-active .mapview-cycle-tips .text-date h2
