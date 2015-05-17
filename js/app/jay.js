@@ -555,13 +555,15 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
         }
 
 // 时间控件显示当前时间
+/*
 		$(".dateinput-day").val(nowDay).datepicker("update");
 		$(".dateinput-months").val(parseInt(nowMonth+1)).datepicker("update");
 		$(".dateinput-year").val(nowYear).datepicker("update");
+        */
 	});
 	
 	
-	function showModal(type,callback,url, jsonp, pid) {
+	function showModal(type,callback,url, jsonp, pid,unitname) {
         $xa_modal_wrapper.attr('data-type',type); // 增加弹出框标识
         $xa_modal_wrapper.attr('data-pid',pid); // 增加classpropertyid
 
@@ -569,7 +571,7 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
 			$xa_modal_wrapper.removeClass("modal-showing");
 			$doc.trigger("modalshow",[type]);
 			if (typeof callback == "function") {
-				callback(url, jsonp);
+				callback(url, jsonp, unitname); // pass unitname
 			}
 			$xa_modal_wrapper.off(".ane");
 		});
@@ -613,35 +615,40 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
 dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
-        var classpropertyid = $(this).attr('data-classpropertyid')
+        var $this = $(this)
+          , classpropertyid = $this.attr('data-classpropertyid')
+          , unitname = $this.attr('data-unitname')
 		function show_1_callback() {
 			//console.log("show 1 call back");
             /*
 			modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
 			modalchartobj.setOption(optionModal);
             */
-            //console.log(classpropertyid)
-            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie']);
+            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie'],unitname);
 		}
-		showModal('one',show_1_callback,'','',classpropertyid); // 参数为type, callback, url, jsonp, pid
+		showModal('one',show_1_callback,'','',classpropertyid); // 参数为type, callback, url, jsonp, pid, unitname
 	}).on("click", "#showModal_2",function() {
 dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
-            var classpropertyid = $(this).attr('data-classpropertyid')
+        var $this = $(this)
+          , classpropertyid = $this.attr('data-classpropertyid')
+          , unitname = $this.attr('data-unitname')
 		function show_2_callback() {
 			//console.log("show 1 call back")
-            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie']);
+            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie'],unitname);
 		}
 		showModal('two',show_2_callback,'','',classpropertyid);
 	}).on("click", "#showModal_3",function() {
 dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
-            var classpropertyid = $(this).attr('data-classpropertyid')
+        var $this = $(this)
+          , classpropertyid = $this.attr('data-classpropertyid')
+          , unitname = $this.attr('data-unitname')
 		function show_3_callback() {
 			//console.log("show 1 call back")
-            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie']);
+            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie'],unitname);
 		}
 		showModal('three',show_3_callback,'','',classpropertyid);
 	})
@@ -649,30 +656,38 @@ dateAllShow(); // show all datepicker
 dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
-        var classpropertyid = $(this).attr('data-classpropertyid')
+        var $this = $(this)
+          , classpropertyid = $this.attr('data-classpropertyid')
+          , unitname = $this.attr('data-unitname')
 
-		showModal('four',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid);
+		showModal('four',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid,unitname);
 	})
     .on("click", "#showModal_5",function() {
 dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
-        var classpropertyid = $(this).attr('data-classpropertyid')
-		showModal('five',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid);
+        var $this = $(this)
+          , classpropertyid = $this.attr('data-classpropertyid')
+          , unitname = $this.attr('data-unitname')
+		showModal('five',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid,unitname);
 	})
     .on("click", "#showModal_6",function() {
 dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
-        var classpropertyid = $(this).attr('data-classpropertyid')
-		showModal('six',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid);
+        var $this = $(this)
+          , classpropertyid = $this.attr('data-classpropertyid')
+          , unitname = $this.attr('data-unitname')
+		showModal('six',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid,unitname );
 	})
     .on("click", "#showModal_7",function() {
 dateAllShow(); // show all datepicker
 		modalchartobj = null;
 		$modalinnerChartWrap[0].innerHTML= "";
-        var classpropertyid = $(this).attr('data-classpropertyid')
-		showModal('seven',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid);
+        var $this = $(this)
+          , classpropertyid = $this.attr('data-classpropertyid')
+          , unitname = $this.attr('data-unitname')
+		showModal('seven',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid, unitname);
 	})
     /*
     .on("click", "#showModal_5",function() {
@@ -1170,6 +1185,7 @@ dateAllShow(); // show all datepicker
 			{
 				type : 'value',
 				axisLabel:{
+                    formatter: '￥{value}',
 					textStyle:{
 						fontSize:40
 					}	
@@ -1284,7 +1300,7 @@ dateAllShow(); // show all datepicker
 			y2:200,
 			x2:"50%",
             */
-			x:150,  //左边到Y轴距离
+			x:250,  //左边到Y轴距离
             x2: 150 // 右边到Y轴距离
 		},
 		calculable : false,
@@ -1425,6 +1441,7 @@ dateAllShow(); // show all datepicker
 					}
 				},
 				axisLabel:{
+                    formatter: '￥{value}',
 					textStyle:{
 						color: '#989898',
 						fontWeight: 'bolder',
@@ -2096,7 +2113,7 @@ supplyEnergy.empty()
 		var _year_val = data.data3.datavalue;
         var _classpropertyid = data.classpropertyid;
 		
-var gnhnTemp = '<div class="eng-bp" id="showModal_'+indexNum+'" data-classpropertyid="'+_classpropertyid+'">' +
+var gnhnTemp = '<div class="eng-bp" id="showModal_'+indexNum+'" data-classpropertyid="'+_classpropertyid+'" data-unitname="'+data.data1.unitname+'">' +
                '     <div class="eng-block color-'+colorNum+'">' +
                '           <div class="eng-b-top clearfix">' +
                '                <div class="eng-icon">'+
@@ -2633,7 +2650,7 @@ function RecvMsgFormUnity(str) {
 					url : URL,
 					dataType : "jsonp",
 					jsonp: JSONP,
-					jsonpCallback:CALLBACK_NAME
+					//jsonpCallback:CALLBACK_NAME
 				});
 				return thisAjax;
 			}
@@ -2642,12 +2659,15 @@ function RecvMsgFormUnity(str) {
 function energyFn() {
     var ajaxLoad_1
       , ajaxLoad_2
-      , getEchart;
+      , getEchart
+      , unitname = arguments[2]
 
     ajaxLoad_1 = ajaxget(arguments[0][0],arguments[0][1], "popinc_col");
     ajaxLoad_2 = ajaxget(arguments[1][0],arguments[1][1], "popinc_pie");
 
-    $.when(ajaxLoad_1,ajaxLoad_2).done(function(json_a,json_b) {
+
+
+    $.when(ajaxLoad_1,ajaxLoad_2,unitname).done(function(json_a,json_b,unitname) { // add passing unit
 
 /*
                 console.log(json_b[0][0].y);
@@ -2701,6 +2721,7 @@ if(json_a[0][0].list == null) json_a[0][0].list = [{'rectime':'0','data':'0'},{'
                 console.log('piedata  ',piedata);
                 */
 				opt.xAxis[0].data = xAxisdata;
+				opt.yAxis[0].axisLabel.formatter = '{value}'+unitname; // unitname
 				opt.series[0].data = colsdata01;
 				//opt.series[0].barWidth = 15;
 				opt.series[1].data = piedata;
@@ -2818,7 +2839,7 @@ console.log(ajaxLoad_3)
          }
 
 // 单曲线回调函数
-		function singleEnergy_callback(url, callback) {
+		function singleEnergy_callback(url, callback, unitname) {
 			//console.log("show 4 call back");
 			//console.log(url);
 			//console.log(callback);
@@ -2835,6 +2856,7 @@ console.log(ajaxLoad_3)
 				success : function(json){
 					//console.log(json);
 					var opt = optionModal2;
+                    opt.yAxis[0].axisLabel.formatter = '{value}'+unitname; // unitname
 					opt.xAxis[0].data= (function() {
 						var  k = [];
 						$.each(json[0].list , function(index,data) {
