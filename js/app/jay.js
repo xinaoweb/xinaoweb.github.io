@@ -13,6 +13,7 @@ var demand
   , intervalWeather
   , intervalInnerRight
   , intervalLeftRight
+  , isWan = null
 
 // 日期备用
 var nowdate = new Date();
@@ -59,7 +60,8 @@ $.extend(Request.prototype, {
             done(d);
         })
         .fail(function(jqXHR, textStatus) {
-            if(textStatus == 'timeout') { alert('timeout'); }
+            if(textStatus == 'timeout') { //alert('timeout'); 
+            }
             fail(jqXHR, textStatus);
         });
     }
@@ -71,7 +73,7 @@ demand = new Request(); // 统一调用ajax
 demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/login?USERNAME=ennshow&PASSWORD=ennshow0311',jsonp: 'login' ,done:remsLogin}); // 请求登录
 function remsLogin(data) {
     if(data[0].login === 'true') demand.start({url:'http://10.36.128.73:8080/reds/ds/gislist', jsonp: 'gislist',done:indexInit}); // 登录成功加载项目
-    else alert('数据库出错')
+    //else alert('数据库出错')
 }
 function indexInit(data){
     jsonDataRight = data;
@@ -165,10 +167,11 @@ function indexInit(data){
 					//var _m = data.rectime.substring(1,4),_y =data.rectime.substring(6,7)
 					
 					var _buildingarea = data.buildingarea;
-                    _buildingarea = Number(_buildingarea/10000).toFixed(1);
+                    //_buildingarea = Number(_buildingarea/10000).toFixed(1);
+                    _buildingarea = filterUnit(_buildingarea); // 过滤万分位
                     
 					var _supplyarea = data.supplyarea;
-					_supplyarea = Number(_supplyarea/10000).toFixed(1);
+					_supplyarea = filterUnit(_supplyarea);
 					
 					var _refh = data.longitude;
 					var _refv = data.latitude;
@@ -453,16 +456,17 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
                 var joinDate = null
                   , y, m, d
                   , $this = $(this)
-                  , wrap = $(this).parents('.xa-modal-wrapper')
+                  , wrap = $this.parents('.xa-modal-wrapper')
                   , type = wrap.attr('data-type')
                   , pid = wrap.attr('data-pid')
+                  , unitname = wrap.attr('data-unitname')
                 
                 m = (dateMon.val() == '') ? (nowMonth+1) : dateMon.val();
                 d = (dateDay.val() == '') ? nowDay : dateDay.val();
                 joinDate = ev.date.getFullYear() + '-' + m + '-' + d; // 选择的年 
 
 
-               selectDate(type, pid, joinDate); 
+               selectDate(type, pid, joinDate, unitname); 
 			});
 			dateMon.datepicker({
 				autoclose:true,
@@ -475,15 +479,16 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
                 var joinDate = null
                   , y, m, d
                   , $this = $(this)
-                  , wrap = $(this).parents('.xa-modal-wrapper')
+                  , wrap = $this.parents('.xa-modal-wrapper')
                   , type = wrap.attr('data-type')
                   , pid = wrap.attr('data-pid')
+                  , unitname = wrap.attr('data-unitname')
                 
                 y = (dateYear.val() == '') ? nowYear : dateYear.val();
                 d = (dateDay.val() == '') ? nowDay : dateDay.val();
                 joinDate = y + '-' + (ev.date.getMonth()+1) + '-' + d; // 选择的月 
 
-               selectDate(type, pid, joinDate); 
+               selectDate(type, pid, joinDate, unitname); 
 			});
             	dateDay.datepicker({
 				autoclose:true,
@@ -497,10 +502,12 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
                 var joinDate = null
                   , y, m, d
                   , $this = $(this)
-                  , wrap = $(this).parents('.xa-modal-wrapper')
+                  , wrap = $this.parents('.xa-modal-wrapper')
                   , type = wrap.attr('data-type')
                   , pid = wrap.attr('data-pid')
+                  , unitname = wrap.attr('data-unitname')
                 
+                console.log('unitname ',unitname)
                 y = (dateYear.val() == '') ? nowYear : dateYear.val();
                 m = (dateMon.val() == '') ? (nowMonth+1) : dateMon.val();
                 joinDate = y + '-' + m + '-' + ev.date.getDate(); // 选择的日 
@@ -510,7 +517,7 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
                     alert('不要超过今天'); return;
                 } 
                 */
-               selectDate(type, pid, joinDate); 
+               selectDate(type, pid, joinDate, unitname); 
 
 
             });
@@ -555,17 +562,16 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
         }
 
 // 时间控件显示当前时间
-/*
 		$(".dateinput-day").val(nowDay).datepicker("update");
 		$(".dateinput-months").val(parseInt(nowMonth+1)).datepicker("update");
 		$(".dateinput-year").val(nowYear).datepicker("update");
-        */
 	});
 	
 	
 	function showModal(type,callback,url, jsonp, pid,unitname) {
         $xa_modal_wrapper.attr('data-type',type); // 增加弹出框标识
         $xa_modal_wrapper.attr('data-pid',pid); // 增加classpropertyid
+        $xa_modal_wrapper.attr('data-unitname',unitname); // 增加unitname
 
 		$xa_modal_wrapper.on("animationend.ane webkitAnimationEnd.ane", function() {
 			$xa_modal_wrapper.removeClass("modal-showing");
@@ -626,7 +632,7 @@ dateAllShow(); // show all datepicker
             */
             energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie'],unitname);
 		}
-		showModal('one',show_1_callback,'','',classpropertyid); // 参数为type, callback, url, jsonp, pid, unitname
+		showModal('one',show_1_callback,'','',classpropertyid,unitname); // 参数为type, callback, url, jsonp, pid, unitname
 	}).on("click", "#showModal_2",function() {
 dateAllShow(); // show all datepicker
 		modalchartobj = null;
@@ -638,7 +644,7 @@ dateAllShow(); // show all datepicker
 			//console.log("show 1 call back")
             energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie'],unitname);
 		}
-		showModal('two',show_2_callback,'','',classpropertyid);
+		showModal('two',show_2_callback,'','',classpropertyid,unitname);
 	}).on("click", "#showModal_3",function() {
 dateAllShow(); // show all datepicker
 		modalchartobj = null;
@@ -650,7 +656,7 @@ dateAllShow(); // show all datepicker
 			//console.log("show 1 call back")
             energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+classpropertyid+'&timeradio=days&date=now','energyPie'],unitname);
 		}
-		showModal('three',show_3_callback,'','',classpropertyid);
+		showModal('three',show_3_callback,'','',classpropertyid,unitname);
 	})
     .on("click", "#showModal_4",function() {
 dateAllShow(); // show all datepicker
@@ -660,7 +666,7 @@ dateAllShow(); // show all datepicker
           , classpropertyid = $this.attr('data-classpropertyid')
           , unitname = $this.attr('data-unitname')
 
-		showModal('four',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid,unitname);
+		showModal('four',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now', 'singleEnergy',classpropertyid,unitname);
 	})
     .on("click", "#showModal_5",function() {
 dateAllShow(); // show all datepicker
@@ -669,7 +675,7 @@ dateAllShow(); // show all datepicker
         var $this = $(this)
           , classpropertyid = $this.attr('data-classpropertyid')
           , unitname = $this.attr('data-unitname')
-		showModal('five',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid,unitname);
+		showModal('five',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now', 'singleEnergy',classpropertyid,unitname);
 	})
     .on("click", "#showModal_6",function() {
 dateAllShow(); // show all datepicker
@@ -678,7 +684,7 @@ dateAllShow(); // show all datepicker
         var $this = $(this)
           , classpropertyid = $this.attr('data-classpropertyid')
           , unitname = $this.attr('data-unitname')
-		showModal('six',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid,unitname );
+		showModal('six',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now', 'singleEnergy',classpropertyid,unitname );
 	})
     .on("click", "#showModal_7",function() {
 dateAllShow(); // show all datepicker
@@ -687,7 +693,7 @@ dateAllShow(); // show all datepicker
         var $this = $(this)
           , classpropertyid = $this.attr('data-classpropertyid')
           , unitname = $this.attr('data-unitname')
-		showModal('seven',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=mons&date=now', 'singleEnergy',classpropertyid, unitname);
+		showModal('seven',singleEnergy_callback, 'http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+classpropertyid+'&timeradio=days&date=now', 'singleEnergy',classpropertyid, unitname);
 	})
     /*
     .on("click", "#showModal_5",function() {
@@ -1099,7 +1105,8 @@ dateAllShow(); // show all datepicker
 			{
 				name:"当年成本",
 				type:'bar',
-				barWidth : 20,
+				//barWidth : 20,
+				barWidth : 10,
 				barCategoryGap:'40%',
 				itemStyle : 
 				{
@@ -1118,7 +1125,7 @@ dateAllShow(); // show all datepicker
 			{
 				name:"当年收益",
 				type:"bar",
-				barWidth : 20,
+				barWidth : 10,
 				barCategoryGap:'40%',
 				itemStyle : { 
 					normal: 
@@ -1785,27 +1792,37 @@ dateAllShow(); // show all datepicker
 						return $this;
 					}
 				})
-//				console.log($chartel)
 				var myCharts = echarts.init($chartel[0], defaultTheme);
 				var chartOPT;
 				if (index == "2") {
-                //console.log(sumProjectid)
 					chartOPT = optionsPie1;
 					chartOPT.color = ['#ec1e79'];
 					chartOPT.series[0].data[0].value = (function(){
+                    /*
                         if(sumProjectid == 1){  return (100 - (_percent * 100)); } // 黄花机场系统能耗乘100  
                         else return (100 - _percent);
+                        */
+                        //return (100 - _percent);
+                        return (100 - 87.9);
                     })();
 					chartOPT.series[0].data[1].value = (function() {
-						if (_percent > 100) {
-							return 100;
+						if (_percent > 80) {
+							//return 100;
+							return 87.9;
 						} else {
-                            if(sumProjectid == 1){ return _percent *= 100; }// 黄花机场系统能耗乘100  
+                        /*
+                            if(sumProjectid == 1){ 
+                                var huanghuaP = _percent * 100;
+                                if( huanghuaP > 100 ) return 100;
+                                else return _percent *= 100
+                            }// 黄花机场系统能耗乘100  
                             else return _percent;
+                            */
+                        //return _percent;
+                        return 87.9;
 						}
 					})();
 					chartOPT.series[0].data[1].name = _name;
-			//console.log('22 ',_percent)	
 					
 				} else if (index == "3") {
 					chartOPT = optionsPie1
@@ -1819,25 +1836,29 @@ dateAllShow(); // show all datepicker
 					chartOPT.series[0].data[1].itemStyle.normal.label.textStyle.fontSize =36;
 
 
+/*
                 var renewNum = Number(data_1_val * _percent / 100).toFixed(1); 
 				$classGroupBlock_p.eq(3).find("font").html(renewNum) // 可再生能源
+                */
 
-			//console.log('33 ',_percent)	
 				}
+                var renewNum = Number(data_1_val * _percent / 100).toFixed(1); 
+
 				myCharts.setOption(chartOPT)
 				
 				$classGroupBlock_p.eq(0).html( data_1_name )
 				$classGroupBlock_p.eq(2).html( data_2_name )
 				
-				$classGroupBlock_p.eq(1).find("font").html(data_1_val)
+				$classGroupBlock_p.eq(1).find("font").html(data_1_val) 
 				$classGroupBlock_p.eq(1).find("span").html(data_1_unit)
 				
 
-                if(index != 3 ){ // 除了可再生能源 
+                //if(index != 3 ){ // 除了可再生能源 
                     $classGroupBlock_p.eq(3).find("font").html(data_2_val)
+                    //$classGroupBlock_p.eq(3).find("font").html(renewNum) //综合供能和可再生能源
                     $classGroupBlock_p.eq(3).find("span").html(data_2_unit)
-                }
-				$classGroupBlock_p.eq(3).find("span").html(data_1_unit)
+                //}
+				//$classGroupBlock_p.eq(3).find("span").html(data_1_unit)
 				
 			}
 			
@@ -2660,7 +2681,7 @@ function energyFn() {
     var ajaxLoad_1
       , ajaxLoad_2
       , getEchart
-      , unitname = arguments[2]
+      , unitname = (typeof arguments[2] == 'undefined') ? '' : arguments[2]
 
     ajaxLoad_1 = ajaxget(arguments[0][0],arguments[0][1], "popinc_col");
     ajaxLoad_2 = ajaxget(arguments[1][0],arguments[1][1], "popinc_pie");
@@ -2697,8 +2718,10 @@ if(json_a[0][0].list == null) json_a[0][0].list = [{'rectime':'0','data':'0'},{'
 //if(json_b[0] == null) json_b[0] = []; 
 
                 for(var i = 0, l = json_a[0][0].list.length; i < l; i++) {
-					xAxisdata[i] = json_a[0][0].list[i].rectime.substring(0,10);// 过滤小时
-					colsdata01[i] = json_a[0][0].list[i].data;
+					//xAxisdata[i] = json_a[0][0].list[i].rectime.substring(0,10);// 过滤小时
+					xAxisdata[i] = json_a[0][0].list[i].rectime.split(' ')[1].split(':')[0]; // 过滤年月日，变为小时
+
+					colsdata01[i] = filterUnit(json_a[0][0].list[i].data);
                 }
                 for(var j = 0, k = json_b[0].length; j < k; j++) {
 					piedata[j] = {
@@ -2721,7 +2744,10 @@ if(json_a[0][0].list == null) json_a[0][0].list = [{'rectime':'0','data':'0'},{'
                 console.log('piedata  ',piedata);
                 */
 				opt.xAxis[0].data = xAxisdata;
-				opt.yAxis[0].axisLabel.formatter = '{value}'+unitname; // unitname
+				opt.xAxis[0].axisLabel.formatter = '{value}'+'H'; // 增加X轴时间单位
+                if(isWan == null) opt.yAxis[0].axisLabel.formatter = '{value}'+unitname; // unitname
+                else opt.yAxis[0].axisLabel.formatter = '{value}'+' 万'+unitname; // unitname
+
 				opt.series[0].data = colsdata01;
 				//opt.series[0].barWidth = 15;
 				opt.series[1].data = piedata;
@@ -2856,11 +2882,14 @@ console.log(ajaxLoad_3)
 				success : function(json){
 					//console.log(json);
 					var opt = optionModal2;
+                    opt.xAxis[0].axisLabel.formatter = '{value}'+'H'; // 增加X轴时间单位
                     opt.yAxis[0].axisLabel.formatter = '{value}'+unitname; // unitname
 					opt.xAxis[0].data= (function() {
 						var  k = [];
 						$.each(json[0].list , function(index,data) {
-							k[index] = data.rectime.split(" ")[0];
+							//k[index] = data.rectime.split(" ")[0];
+							k[index] = data.rectime.split(" ")[1].split(':')[0]; // 小时
+							//k[index] = data.rectime; // 单项曲线X轴
 						});
 						return k
 					})();
@@ -2888,7 +2917,7 @@ console.log(ajaxLoad_3)
 					modalchartobj.setOption(opt);
 				},
 					error:function(){
-					alert('加载单条曲线数据失败');
+					//alert('加载单条曲线数据失败');
 				}
 			});	
         }
@@ -2903,23 +2932,23 @@ function innerLeftRight(id) {
    } 
 } 
 
-                function selectDate(type, pid, joinDate) {
+                function selectDate(type, pid, joinDate, unitname) {
 
                     switch(type) {
                         case 'one': // 耗气 
-                            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=days&date='+joinDate+'','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+pid+'&timeradio=days&date='+joinDate+'','energyPie']);
+                            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=days&date='+joinDate+'','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+pid+'&timeradio=days&date='+joinDate+'','energyPie'],unitname);
                             break;
                         case 'two': // 耗水
-                            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=days&date='+joinDate+'','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+pid+'&timeradio=days&date='+joinDate+'','energyPie']);
+                            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=days&date='+joinDate+'','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+pid+'&timeradio=days&date='+joinDate+'','energyPie'],unitname);
                             break;
                         case 'three': // 耗电
-                            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=days&date='+joinDate+'','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+pid+'&timeradio=days&date='+joinDate+'','energyPie']);
+                            energyFn(['http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=days&date='+joinDate+'','singleEnergy'],['http://10.36.128.73:8080/reds/ds/energyPie?pid='+pid+'&timeradio=days&date='+joinDate+'','energyPie'],unitname);
                             break;
                         case 'four':
                         case 'five':
                         case 'six':
                         case 'seven':
-                            singleEnergy_callback('http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=mons&date='+joinDate+'', 'singleEnergy');
+                            singleEnergy_callback('http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=days&date='+joinDate+'', 'singleEnergy',unitname);
                             break;
                         case 'eight':
                             costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=years&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=years&date="+joinDate+"","financePie"]);
@@ -2939,6 +2968,16 @@ function dateAllShow() {
   dateDay.parents('.selector').show();
 }
 
+function filterUnit(dig) {
+    if(Number(dig) > 100) {
+        isWan = 1;
+        return  Number(dig/10000).toFixed(1);//保留1位小数
+    }
+    else {
+        isWan = null;
+        return dig;
+    }
+}
 /**************end*************/
 };
        
