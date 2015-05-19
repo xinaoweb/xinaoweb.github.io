@@ -10,9 +10,10 @@ var demand
   , interId // 清重复
   , sumProjectid = 0
   , sumProjectData =  {}
-  , intervalWeather
-  , intervalInnerRight
-  , intervalLeftRight
+  , intervalWeather //小时刷新天气
+  , intervalInnerRight //小时刷新内页供能耗能
+  , intervalLeftRight // 小时刷新节能率等和成本收益
+  , intervalIndex //小时刷新首页项目
   , isWan = null
 
 // 日期备用
@@ -70,10 +71,14 @@ function failFn(jqXHR, textStatus) { console.log('error is ' + jqXHR.statusText 
 function doneFn() { console.log('done'); }
 demand = new Request(); // 统一调用ajax
 
-demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/login?USERNAME=ennshow&PASSWORD=ennshow0311',jsonp: 'login' ,done:remsLogin}); // 请求登录
-function remsLogin(data) {
-    if(data[0].login === 'true') demand.start({url:'http://10.36.128.73:8080/reds/ds/gislist', jsonp: 'gislist',done:indexInit}); // 登录成功加载项目
-    //else alert('数据库出错')
+updateIndex();
+intervalIndex = setInterval(updateIndex,3600000);//更新首页右侧项目列表
+function updateIndex(){
+    demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/login?USERNAME=ennshow&PASSWORD=ennshow0311',jsonp: 'login' ,done:remsLogin}); // 请求登录
+    function remsLogin(data) {
+        if(data[0].login === 'true') demand.start({url:'http://10.36.128.73:8080/reds/ds/gislist', jsonp: 'gislist',done:indexInit}); // 登录成功加载项目
+        //else alert('数据库出错')
+    }
 }
 function indexInit(data){
     jsonDataRight = data;
@@ -292,7 +297,7 @@ var re = new RegExp(reg);
 			/*内页顶部滚动*/
 			var header_swiper = new Swiper('#header_gonggao', {
 				direction: 'vertical',
-				autoplay:10000,
+				autoplay:10000, // 10秒
 				autoplayDisableOnInteraction:false,
 				loop:true
 			});
@@ -391,7 +396,7 @@ intervalLeftRight = setInterval(innerLeftRight(_pid),3600000);
 
 projectBoxIndex = _pid; //为了内页切换重载成本收益
 
-	$doc.trigger("loadRightTab2JSON",[_pid]); // 加载供能耗能
+	$doc.trigger("loadRightTab2JSON",[_pid]); // 加载供能耗能, JSON语法错误
     intervalInnerRight = setInterval(innerRight(_pid), 3600000); //小时更新供能耗能 
     getWeather(); 
     intervalWeather = setInterval(getWeather,3600000);// 加载气象信息
@@ -1837,27 +1842,28 @@ dateAllShow(); // show all datepicker
 
 
 /*
+                */
                 var renewNum = Number(data_1_val * _percent / 100).toFixed(1); 
 				$classGroupBlock_p.eq(3).find("font").html(renewNum) // 可再生能源
-                */
 
 				}
-                var renewNum = Number(data_1_val * _percent / 100).toFixed(1); 
+                var renewNum1 = Number(data_1_val * 87.9 / 100).toFixed(1); // 因为系统能效固定87.9 
 
 				myCharts.setOption(chartOPT)
 				
-				$classGroupBlock_p.eq(0).html( data_1_name )
-				$classGroupBlock_p.eq(2).html( data_2_name )
+                console.log(data_1_val)
+				$classGroupBlock_p.eq(0).html( data_1_name ) //名称第一行，如综合耗能
+				$classGroupBlock_p.eq(2).html( data_2_name ) //名称第三行，如综合供能，可再生能源
 				
-				$classGroupBlock_p.eq(1).find("font").html(data_1_val) 
-				$classGroupBlock_p.eq(1).find("span").html(data_1_unit)
+				$classGroupBlock_p.eq(1).find("font").html(data_1_val) //值第一行，如6 
+				$classGroupBlock_p.eq(1).find("span").html(data_1_unit) //单位第一行，如GJ
 				
 
-                //if(index != 3 ){ // 除了可再生能源 
-                    $classGroupBlock_p.eq(3).find("font").html(data_2_val)
-                    //$classGroupBlock_p.eq(3).find("font").html(renewNum) //综合供能和可再生能源
+                if(index != 3 ){ // 除了第4个可再生能源 
+                    //$classGroupBlock_p.eq(3).find("font").html(data_2_val)
+                    $classGroupBlock_p.eq(3).find("font").html(renewNum1) //综合供能和可再生能源
                     $classGroupBlock_p.eq(3).find("span").html(data_2_unit)
-                //}
+                }
 				//$classGroupBlock_p.eq(3).find("span").html(data_1_unit)
 				
 			}
@@ -2040,7 +2046,7 @@ function bindY_M_D_data(){
 }
 	
 //一些会调函数
-function setCompelte(){}	
+function setCompelte(){ console.log(1111)}	
 
 
 function main_years_Compelte(data){
