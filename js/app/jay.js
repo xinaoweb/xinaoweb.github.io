@@ -1807,13 +1807,13 @@ dateAllShow(); // show all datepicker
                         if(sumProjectid == 1){  return (100 - (_percent * 100)); } // 黄花机场系统能耗乘100  
                         else return (100 - _percent);
                         */
-                        //return (100 - _percent);
-                        return (100 - 87.9);
+                        return (100 - _percent);
+                        //return (100 - 87.9);
                     })();
 					chartOPT.series[0].data[1].value = (function() {
-						if (_percent > 80) {
-							//return 100;
-							return 87.9;
+						if (_percent > 100) {
+							return 100;
+							//return 87.9;
 						} else {
                         /*
                             if(sumProjectid == 1){ 
@@ -1823,8 +1823,8 @@ dateAllShow(); // show all datepicker
                             }// 黄花机场系统能耗乘100  
                             else return _percent;
                             */
-                        //return _percent;
-                        return 87.9;
+                        return _percent;
+                        //return 87.9;
 						}
 					})();
 					chartOPT.series[0].data[1].name = _name;
