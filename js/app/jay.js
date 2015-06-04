@@ -385,7 +385,7 @@ sumProjectid = _pid; // 为了3d属性
                     switchPage(function(){// 切换后回调
                         demand.start({type:'GET',url:'http://10.36.128.73:8080/reds/ds/setProject?projectid='+_pid,jsonp: 'setProject' ,done:setCompelte}); // 设置projectid
 
-                    change3d(_pid);
+                    //change3d(_pid); // 调用3d
 loadLeftRight(_pid); //加载左右
 intervalLeftRight = setInterval(innerLeftRight(_pid),3600000);
 
@@ -512,7 +512,7 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
                   , pid = wrap.attr('data-pid')
                   , unitname = wrap.attr('data-unitname')
                 
-                console.log('unitname ',unitname)
+                //console.log('unitname ',unitname)
                 y = (dateYear.val() == '') ? nowYear : dateYear.val();
                 m = (dateMon.val() == '') ? (nowMonth+1) : dateMon.val();
                 joinDate = y + '-' + m + '-' + ev.date.getDate(); // 选择的日 
@@ -1600,37 +1600,6 @@ dateAllShow(); // show all datepicker
 		
 	
 	
-//	myCharts.setOption(optionsPie1);
-//	myCharts2.setOption(optionsPie2);
-//	myCharts3.setOption(optionsbar1);
-//	var optionsbar2 = optionsbar1;
-//	optionsbar2.series[0].itemStyle.normal.color = "#22b473";
-//	optionsbar2.series[0].itemStyle.normal.label.formatter = function(params) {
-//		return params.value + "\n" + "标煤(kg)";
-//	};
-//	optionsbar2.series[0].data = [5406,16406];
-//	optionsbar2.xAxis[0].data = ["常规碳排放","常规能耗"];
-//	myCharts4.setOption(optionsbar2);
-	
-	
-	/*var optionsPie3 = optionsPie1;
-	var value = 75;
-	var secValue = 100 - 75;
-	optionsPie3.color = ["#ec1e79"];
-	optionsPie3.series[0].data[0].value = secValue;
-	optionsPie3.series[0].data[1].value = value;
-	optionsPie3.series[0].data[1].name = "系统能效";
-	myChartsPie3.setOption(optionsPie3);*/
-	
-	/*var optionsPie4 = optionsPie1;
-	value = 15;
-	secValue = 100 - value;
-	optionsPie4.color = ["#92278e"];
-	optionsPie4.series[0].data[0].value = secValue;
-	optionsPie4.series[0].data[1].value = value;
-	optionsPie4.series[0].data[1].name = "可再生能源\n利用率";
-	optionsPie4.series[0].data[1].itemStyle.normal.label.textStyle.fontSize =36;
-	myChartsPie4.setOption(optionsPie4);*/
 	
 	
 	
@@ -1851,7 +1820,7 @@ dateAllShow(); // show all datepicker
 
 				myCharts.setOption(chartOPT)
 				
-                console.log(data_1_val)
+                //console.log(data_1_val)
 				$classGroupBlock_p.eq(0).html( data_1_name ) //名称第一行，如综合耗能
 				$classGroupBlock_p.eq(2).html( data_2_name ) //名称第三行，如综合供能，可再生能源
 				
@@ -1886,7 +1855,7 @@ dateAllShow(); // show all datepicker
 		$(this).addClass("cur").siblings().removeClass("cur");
 		
 		 projectid = $(this).attr("index");
-         change3d(projectid);
+         //change3d(projectid); // 调用3d
 		
 		//alert("bbb"+a);
 		
@@ -2593,6 +2562,7 @@ function getRandomArbitrary(min, max) {
 	init();
 
 // unity3d
+/*
 			var config = {
 				width: 3100, 
 				//height: 2180,
@@ -2604,6 +2574,7 @@ function getRandomArbitrary(min, max) {
             var f3d = 0;
             var model = null;
 
+*/
 	function builtUnity3d(name) {
     
 
@@ -2710,22 +2681,15 @@ function energyFn() {
 				var piedata = [];
 				var piedata2 = [];
 
-                /*for(var i = 0, l = json_b.length; i < l; i++) {
-                    console.log(json_b[0][i]);
-					piedata[i] = {
-						value : json_b[0][0].y, name:json_b[0][0].name
-					}
-                }
-				console.log("ww");
-				console.log(json_a);
-
-*/
-if(json_a[0][0].list == null) json_a[0][0].list = [{'rectime':'0','data':'0'},{'rectime':'0','data':'0'}]; // 若数据无则默认输出 
+if(json_a[0][0].list == null)  json_a[0][0].list = [{'rectime':'0','data':'0'},{'rectime':'0','data':'0'}]; // 若数据无则默认输出 
 //if(json_b[0] == null) json_b[0] = []; 
 
+//console.log(json_a[0][0].list.length)
                 for(var i = 0, l = json_a[0][0].list.length; i < l; i++) {
+                //console.log(json_a[0][0].list[i].rectime)
 					//xAxisdata[i] = json_a[0][0].list[i].rectime.substring(0,10);// 过滤小时
-					xAxisdata[i] = json_a[0][0].list[i].rectime.split(' ')[1].split(':')[0]; // 过滤年月日，变为小时
+					//xAxisdata[i] = json_a[0][0].list[i].rectime.split(' ')[1].split(':')[0]; // 过滤年月日，变为小时
+					xAxisdata[i] = json_a[0][0].list[i].rectime; // 过滤年月日，变为小时
 
 					colsdata01[i] = filterUnit(json_a[0][0].list[i].data);
                 }
@@ -2734,23 +2698,9 @@ if(json_a[0][0].list == null) json_a[0][0].list = [{'rectime':'0','data':'0'},{'
 						value : json_b[0][j].y, name:json_b[0][j].name
 					}
                 }
-                /*
-				$.each(json_a[1].list, function(index,data) {
-					xAxisdata[index] = data.rectime;
-					colsdata01[index] = data.data;
-				});
-                
-                console.log('xAxisdata  ',xAxisdata);
-			//	alert(json_b[0].length);
-				$.each(json_b[0], function(index,data) {//多一层所以要00
-					piedata[index] = {
-						value : data.y, name:data.name
-					}
-				});
-                console.log('piedata  ',piedata);
-                */
 				opt.xAxis[0].data = xAxisdata;
-				opt.xAxis[0].axisLabel.formatter = '{value}'+'H'; // 增加X轴时间单位
+				//opt.xAxis[0].axisLabel.formatter = '{value}'+'H'; // 增加X轴时间单位
+				opt.xAxis[0].axisLabel.formatter = '{value}'; // 增加X轴时间单位
                 if(isWan == null) opt.yAxis[0].axisLabel.formatter = '{value}'+unitname; // unitname
                 else opt.yAxis[0].axisLabel.formatter = '{value}'+' 万'+unitname; // unitname
 
@@ -2892,9 +2842,11 @@ console.log(ajaxLoad_3)
                     opt.yAxis[0].axisLabel.formatter = '{value}'+unitname; // unitname
 					opt.xAxis[0].data= (function() {
 						var  k = [];
+                        if(json[0].list == null)  json[0].list = [{'rectime':'0','data':'0'},{'rectime':'0','data':'0'}]; // 若数据无则默认输出 
 						$.each(json[0].list , function(index,data) {
 							//k[index] = data.rectime.split(" ")[0];
-							k[index] = data.rectime.split(" ")[1].split(':')[0]; // 小时
+							//k[index] = data.rectime.split(" ")[1].split(':')[0]; // 小时
+							k[index] = data.rectime; // 小时
 							//k[index] = data.rectime; // 单项曲线X轴
 						});
 						return k
@@ -2975,7 +2927,7 @@ function dateAllShow() {
 }
 
 function filterUnit(dig) {
-    if(Number(dig) > 100) {
+    if(Number(dig) > 1000) {
         isWan = 1;
         return  Number(dig/10000).toFixed(1);//保留1位小数
     }
