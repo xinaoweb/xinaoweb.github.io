@@ -16,6 +16,19 @@ var demand
   , intervalIndex //小时刷新首页项目
   , isWan = null // 检查是不是超过万
 
+var legendName0 = '当'
+  , legendName1 = '年'
+  , legendName2 = '月'
+  , legendName3 = '日'
+  , legendName4 = '成本'
+  , legendName5 = '收益'
+  , legendName6 = legendName0+legendName1+legendName4 //当年成本
+  , legendName7 = legendName0+legendName2+legendName4 //当月成本
+  , legendName8 = legendName0+legendName3+legendName4 //当日成本
+  , legendName9 = legendName0+legendName1+legendName5 //当年收益
+  , legendName10 = legendName0+legendName2+legendName5 // 当月收益
+  , legendName11 = legendName0+legendName3+legendName5 // 当日收益
+
 // 日期备用
 var nowdate = new Date();
 var nowYear = nowdate.getFullYear();
@@ -176,7 +189,7 @@ function indexInit(data){
                     _buildingarea = filterUnit(_buildingarea); // 过滤万分位
                     
 					var _supplyarea = data.supplyarea;
-					_supplyarea = filterUnit(_supplyarea);
+					_supplyarea = filterUnit(_supplyarea); // 过滤万分位
 					
 					var _refh = data.longitude;
 					var _refv = data.latitude;
@@ -816,7 +829,7 @@ dateAllShow(); // show all datepicker
 			"top":"90px"
 		});
 		function show_8_callback() {
-        costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=years&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=years&date=now","financePie"]);
+        costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=years&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=years&date=now","financePie"],0);
 			//console.log("modal8 clicked")
             /*
 			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
@@ -851,7 +864,7 @@ dateAllShow(); // show all datepicker
 			"top":"90px"
 		});
 		function show_5_callback() {
-            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date=now","financePie"]);
+            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date=now","financePie"], 1);
 		}
 		showModal('nine',show_5_callback);
 	}).on("click", "#showModal_10",function() {
@@ -862,7 +875,7 @@ dateAllShow(); // show all datepicker
       dateMon.parents('.selector').hide();
       dateDay.parents('.selector').show();
 
-            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=now","financePie"]);
+            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date=now","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date=now","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date=now","financePie"],2);
             /*
 			var URLS = [["http://10.36.128.73:8080/reds/ds/","mainfinance"],["http://10.36.128.73:8080/reds/ds/","financePie"],["http://10.36.128.73:8080/reds/ds/","financePie"]];
 			$modalinnerChartWrap.data({
@@ -1058,7 +1071,7 @@ dateAllShow(); // show all datepicker
 	};
 	
 
-	var columnChartopt = {
+	var columnChartopt = { //成本收益柱状图模板
 		grid:{
 			//x:"100px",
 			x0:"10px"
@@ -1101,6 +1114,7 @@ dateAllShow(); // show all datepicker
 					}
 				},
 				axisLabel:{
+                    formatter: '￥{value}', //成本收益图表加单位
 					textStyle:{
 						color: '#989898',
 						fontWeight: 'bolder',
@@ -1404,7 +1418,7 @@ dateAllShow(); // show all datepicker
 			}
 		},
 		legend: {
-			x:"45%",
+			x:'center',
 			data:['当年成本','当年收益'],
 			textStyle:{
 				fontSize:40//图例的字号
@@ -1467,7 +1481,7 @@ dateAllShow(); // show all datepicker
 		],
 		series : [
 			{
-				name:"当年成本",
+				name:"当年成本", //图例item颜色与name相对应
 				type:'bar',
 				barWidth : 15,
 				barCategoryGap:'40%',
@@ -1887,7 +1901,7 @@ var tab01chartjsonM = {};
 	var tab01chartjsonD = {};
 	var tab01chartjsonY = {};
 	
-function bindY_M_D_data(){
+function bindY_M_D_data(){ //成本收益侧栏生成
 
 	$doc.on("tab01chartjsonloadM", function(e) { // 收益成本月
         mycolumnChart4.dispose();
@@ -1906,6 +1920,10 @@ function bindY_M_D_data(){
 		$.each(tab01chartjsonM[0].incomedatas, function(i, d) {
 			dates2[i] = d.data;
 		})
+        // 图例
+        columnChartoptInit.legend.data = [legendName7,legendName10]; 
+        columnChartoptInit.series[0].name=legendName7; //图例item颜色需name对应
+        columnChartoptInit.series[1].name=legendName10;
 		columnChartoptInit.xAxis[0].data = dateX;
 		columnChartoptInit.series[0].data = dates1;
 		columnChartoptInit.series[1].data = dates2;
@@ -1930,6 +1948,11 @@ function bindY_M_D_data(){
 		$.each(tab01chartjsonD[0].incomedatas, function(i, d) {
 			dates2[i] = d.data;
 		})
+        // 图例
+        columnChartoptInit.legend.data = [legendName8,legendName11]; 
+        columnChartoptInit.series[0].name=legendName8; //图例item颜色需name对应
+        columnChartoptInit.series[1].name=legendName11;
+
 		columnChartoptInit.xAxis[0].data = dateX;
 		columnChartoptInit.series[0].data = dates1;
 		columnChartoptInit.series[1].data = dates2;
@@ -1953,6 +1976,11 @@ function bindY_M_D_data(){
 		$.each(tab01chartjsonY[0].incomedatas, function(i, d) {
 			dates2[i] = d.data;
 		})
+        // 图例
+        columnChartoptInit.legend.data = [legendName6,legendName9]; 
+        columnChartoptInit.series[0].name=legendName6; //图例item颜色需name对应
+        columnChartoptInit.series[1].name=legendName9;
+
 		columnChartoptInit.xAxis[0].data = dateX;
 		columnChartoptInit.series[0].data = dates1;
 		columnChartoptInit.series[1].data = dates2;
@@ -2036,7 +2064,7 @@ function main_days_Compelte(data){
 
 function mainLeft_Compelte(data){
 	leftjsonpdata = data;
-	$doc.trigger("leftjsonpdataReady")
+	$doc.trigger("leftjsonpdataReady") //左侧4个圆
 }
 
 
@@ -2694,7 +2722,7 @@ if(json_a[0][0].list == null)  json_a[0][0].list = [{'rectime':'0','data':'0'},{
 					//xAxisdata[i] = json_a[0][0].list[i].rectime.split(' ')[1].split(':')[0]; // 过滤年月日，变为小时
 					xAxisdata[i] = json_a[0][0].list[i].rectime; // 过滤年月日，变为小时
 
-					colsdata01[i] = filterUnit(json_a[0][0].list[i].data);
+					colsdata01[i] = filterUnit(json_a[0][0].list[i].data); //过滤万分位
                 }
                 for(var j = 0, k = json_b[0].length; j < k; j++) {
 					piedata[j] = {
@@ -2717,10 +2745,11 @@ if(json_a[0][0].list == null)  json_a[0][0].list = [{'rectime':'0','data':'0'},{
     });
 }
 // 成本收益弹出框调用函数
-	function costFn(){ // 只传url和jsonp
+	function costFn(){ // 只传url、jsonp和type
 			var ajaxLoad_1,
 				ajaxLoad_2,
 				ajaxLoad_3,
+                type = arguments[3], //判断年0、月1、日2
 				getEchart;
             //             demand.start({url:"http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date=now",jsonp:'mainfinance',done:function(data){console.log('dddddd '+data);ajaxLoad_1 = data}});
             //console.log('dididid '+arguments)
@@ -2728,12 +2757,6 @@ if(json_a[0][0].list == null)  json_a[0][0].list = [{'rectime':'0','data':'0'},{
 			ajaxLoad_2 = ajaxget(arguments[1][0],arguments[1][1], "popinc_pie");
 			ajaxLoad_3 = ajaxget(arguments[2][0],arguments[2][1], "popinc_pie2");
 
-//注意状态
-/*
-console.log(ajaxLoad_1)
-console.log(ajaxLoad_2)
-console.log(ajaxLoad_3)
-*/
 			$.when(ajaxLoad_1,ajaxLoad_2,ajaxLoad_3).done(function(json_a,json_b,json_c) {
 				//console.log( json_a,json_b,json_c,"拿到JSON数据")
 				modalchartobj = echarts.init(document.getElementById('chartinner'), defaultTheme);
@@ -2746,10 +2769,10 @@ console.log(ajaxLoad_3)
 				var piedata2 = [];
 				$.each(json_a[0][0].costdatas, function(index,data) {
 					xAxisdata[index] = data.rectime;
-					colsdata01[index] = data.data;
+					colsdata01[index] = filterUnit(data.data); //万分位过滤
 				});
 				$.each(json_a[0][0].incomedatas, function(index,data) {
-					colsdata02[index] = data.data;
+					colsdata02[index] = filterUnit(data.data); // 万分位过滤
 				});
 				$.each(json_b[0], function(index,data) {
 					piedata[index] = {
@@ -2757,15 +2780,32 @@ console.log(ajaxLoad_3)
 					}
 				});
 				$.each(json_c[0], function(index,data) {
-									//console.log(data);
 					piedata2[index] = {
 						value : data.y, name:data.name
 					}
 				});
 
-
-				//console.log(colsdata01,"col1")
-				//console.log(colsdata02,"col2")
+                //修改图例
+                switch(type) {
+                    case 0: //当年成本收益 
+                        opt.legend.data = [legendName6,legendName9]; 
+                        opt.series[0].name=legendName6; //图例item颜色需name对应
+                        opt.series[1].name=legendName9;
+                        break;
+                    case 1: 
+                        opt.legend.data = [legendName7,legendName10]; 
+                        opt.series[0].name=legendName7;
+                        opt.series[1].name=legendName10;
+                        break;
+                    case 2: 
+                        opt.legend.data = [legendName8,legendName11]; 
+                        opt.series[0].name=legendName8;
+                        opt.series[1].name=legendName11;
+                        break;
+                }
+                //判断Y轴是否加万分位
+                if(isWan == null) opt.yAxis[0].axisLabel.formatter = '￥{value}';  
+                else opt.yAxis[0].axisLabel.formatter = '￥{value}'+' 万';  
 
 				opt.xAxis[0].data = xAxisdata;
 				opt.series[0].data = colsdata01;
@@ -2912,13 +2952,13 @@ function innerLeftRight(id) {
                             singleEnergy_callback('http://10.36.128.73:8080/reds/ds/singleEnergy?pid='+pid+'&timeradio=days&date='+joinDate+'', 'singleEnergy',unitname);
                             break;
                         case 'eight':
-                            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=years&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=years&date="+joinDate+"","financePie"]);
+                            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=years&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=years&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=years&date="+joinDate+"","financePie"],0);
                             break;
                         case 'nine':
-                            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date="+joinDate+"","financePie"]);
+                            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=mons&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=mons&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=mons&date="+joinDate+"","financePie"],1);
                             break;
                         case 'ten':
-                            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date="+joinDate+"","financePie"]);
+                            costFn(["http://10.36.128.73:8080/reds/ds/mainfinance?timeradio=days&date="+joinDate+"","mainfinance"],["http://10.36.128.73:8080/reds/ds/financePie?type=0&timeradio=days&date="+joinDate+"","financePie"],["http://10.36.128.73:8080/reds/ds/financePie?type=1&timeradio=days&date="+joinDate+"","financePie"],2);
                             break;
                     }
                 
@@ -2929,8 +2969,8 @@ function dateAllShow() {
   dateDay.parents('.selector').show();
 }
 
-function filterUnit(dig) {
-    if(Number(dig) > 1000) {
+function filterUnit(dig) {// 过滤万分位
+    if(Number(dig) > 10000 || Number(dig) > 5000) { //必须保持相同水准，若千万混搭会出问题，故须留5K
         isWan = 1;
         return  Number(dig/10000).toFixed(1);//保留1位小数
     }
