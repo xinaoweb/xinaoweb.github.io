@@ -14,7 +14,7 @@ var demand
   , intervalInnerRight //小时刷新内页供能耗能
   , intervalLeftRight // 小时刷新节能率等和成本收益
   , intervalIndex //小时刷新首页项目
-  , isWan = null
+  , isWan = null // 检查是不是超过万
 
 // 日期备用
 var nowdate = new Date();
@@ -449,6 +449,7 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
     var dateYear = $('.dateinput-year')
       , dateMon  = $('.dateinput-months')
       , dateDay  = $('.dateinput-day')
+      , joinDate = null, y, m, d
 
 			dateYear.datepicker({
 				autoclose:true,
@@ -458,9 +459,8 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
                 endDate: '+0y',
 				language:"zh-CN"
 			}).on('changeDate',function(ev) {
-                var joinDate = null
-                  , y, m, d
-                  , $this = $(this)
+                  
+                var $this = $(this)
                   , wrap = $this.parents('.xa-modal-wrapper')
                   , type = wrap.attr('data-type')
                   , pid = wrap.attr('data-pid')
@@ -468,9 +468,13 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
                 
                 m = (dateMon.val() == '') ? (nowMonth+1) : dateMon.val();
                 d = (dateDay.val() == '') ? nowDay : dateDay.val();
-                joinDate = ev.date.getFullYear() + '-' + m + '-' + d; // 选择的年 
+                y = ev.date.getFullYear();
+                joinDate =  y + '-' + m + '-' + d; // 选择的年 
 
 
+               //dateMon.datepicker('setDate', new Date(Date.UTC(y,m-1,d)));// 同步调整月中年
+               dateMon.datepicker('setDate', new Date(y,m-1,d));// 同步调整月中年
+               dateDay.datepicker('setDate', new Date(y,m-1,d));// 同步调整日中年
                selectDate(type, pid, joinDate, unitname); 
 			});
 			dateMon.datepicker({
@@ -481,18 +485,19 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
                 endDate: '+0m',
 				language:"zh-CN"
 			}).on('changeDate',function(ev) {
-                var joinDate = null
-                  , y, m, d
-                  , $this = $(this)
+                var $this = $(this)
                   , wrap = $this.parents('.xa-modal-wrapper')
                   , type = wrap.attr('data-type')
                   , pid = wrap.attr('data-pid')
                   , unitname = wrap.attr('data-unitname')
                 
+
                 y = (dateYear.val() == '') ? nowYear : dateYear.val();
                 d = (dateDay.val() == '') ? nowDay : dateDay.val();
-                joinDate = y + '-' + (ev.date.getMonth()+1) + '-' + d; // 选择的月 
+                m = ev.date.getMonth();
+                joinDate = y + '-' + (m+1) + '-' + d; // 选择的月 
 
+               dateDay.datepicker('setDate', new Date(y,m,d));// 同步调整日中年
                selectDate(type, pid, joinDate, unitname); 
 			});
             	dateDay.datepicker({
@@ -503,10 +508,7 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
                 endDate: '+0d',
 				language:"zh-CN"
 			}).on('changeDate', function(ev){
-            
-                var joinDate = null
-                  , y, m, d
-                  , $this = $(this)
+                var $this = $(this)
                   , wrap = $this.parents('.xa-modal-wrapper')
                   , type = wrap.attr('data-type')
                   , pid = wrap.attr('data-pid')
@@ -517,14 +519,15 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
                 m = (dateMon.val() == '') ? (nowMonth+1) : dateMon.val();
                 joinDate = y + '-' + m + '-' + ev.date.getDate(); // 选择的日 
 
-/*
-                if(ev.date.getDate() > nowDay ) {
-                    alert('不要超过今天'); return;
-                } 
-                */
                selectDate(type, pid, joinDate, unitname); 
 
 
+            })
+            .on('changeMonth', function(ev){
+               dateMon.datepicker('setDate', ev.date);// 同步调整日中月
+            })
+            .on('changeYear', function(ev){
+               dateYear.datepicker('setDate', ev.date);// 同步调整日中月
             });
 
 	
