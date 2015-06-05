@@ -580,6 +580,10 @@ var cur = (index == _pid) ? 'class="selector cur swiper-slide"' : 'class="select
             case 'eight': $title.text('当年成本收益'); break;
             case 'nine': $title.text('当月成本收益'); break;
             case 'ten': $title.text('当日成本收益'); break;
+            case 'eleven': $title.text('节能率'); break;
+            case 'twelve': $title.text('CO2减排率'); break;
+            case 'thirteen': $title.text('系统能效'); break;
+            case 'fourteen': $title.text('可再生能源利用率'); break;
         }
 
 // 时间控件显示当前时间
@@ -886,7 +890,24 @@ dateAllShow(); // show all datepicker
             */
 		}
 		showModal('ten',show_10_callback);
-	});
+	}).on('click', '#pie1',function(){ //节能率弹出层
+    function pie11(){}
+		showModal('eleven',pie11);
+
+    }).on('click', '#pie2',function(){ //co2减排率弹出层
+
+    function pie11(){}
+		showModal('twelve',pie11);
+    }).on('click', '#pie3',function(){ //系统能效弹出层
+
+    function pie11(){}
+		showModal('thirteen',pie11);
+    }).on('click', '#pie4',function(){ // 可再生能源利用率弹出层
+
+    function pie11(){}
+		showModal('fourteen',pie11);
+    });
+    
 	
 	
 	//Charts
