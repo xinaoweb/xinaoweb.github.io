@@ -1658,7 +1658,7 @@ dateAllShow(); // show all datepicker
 		var datalength = leftjsonpdata.length;
 //		console.log(datalength)
 		$.each(leftjsonpdata, function(index, data) {
-			if ( index <= 1) {
+			if ( index <= 1) { // 节能率和CO2排放
 				var _name,
 					_percent,
 					data_1_name,
@@ -1671,18 +1671,19 @@ dateAllShow(); // show all datepicker
 					data_3_val,
 					data_3_unit,
 					classGroup;
-
+                
+				/* 节能率 */
 				_name = data.name;
 				_percent = data.datavalue;
-				/* */
+				/* 节能量 */
 				data_1_name = data.data1.name;
 				data_1_val = data.data1.datavalue;
 				data_1_unit = data.data1.unitname;
-				/* */
+				/* 常规能耗 */
 				data_2_name = data.data2.name;
 				data_2_val = data.data2.datavalue;
 				data_2_unit = data.data2.unitname;
-
+                /* 当前能耗 */
 				data_3_name = data.data3.name;
 				data_3_val = data.data3.datavalue;
 				data_3_unit = data.data3.unitname;
@@ -1764,14 +1765,18 @@ dateAllShow(); // show all datepicker
 				
 				
 			} else {
+            /*系统能效和可再生能源利用率*/
 				var _name,
 					_percent,
+                    /*综合耗能*/
 					data_1_name,
 					data_1_val,
 					data_1_unit,
+                    /*综合供能或可再生能源*/
 					data_2_name,
 					data_2_val,
 					data_2_unit,
+                    /*null*/
 					data_3_name,
 					data_3_val,
 					data_3_unit,
@@ -1806,7 +1811,8 @@ dateAllShow(); // show all datepicker
 				})
 				var myCharts = echarts.init($chartel[0], defaultTheme);
 				var chartOPT;
-				if (index == "2") {
+
+				if (index == "2") { // 系统能效
 					chartOPT = optionsPie1;
 					chartOPT.color = ['#ec1e79'];
 					chartOPT.series[0].data[0].value = (function(){
@@ -1835,8 +1841,11 @@ dateAllShow(); // show all datepicker
 						}
 					})();
 					chartOPT.series[0].data[1].name = _name;
+
+                    $classGroupBlock_p.eq(3).find("font").html(data_2_val) //综合供能值
+                    $classGroupBlock_p.eq(3).find("span").html(data_2_unit)
 					
-				} else if (index == "3") {
+				} else if (index == "3") { //可再生能源利用率
 					chartOPT = optionsPie1
 					chartOPT.color = ['#92278e'];
 
@@ -1848,30 +1857,22 @@ dateAllShow(); // show all datepicker
 					chartOPT.series[0].data[1].itemStyle.normal.label.textStyle.fontSize =36;
 
 
-/*
-                */
-                var renewNum = Number(data_1_val * _percent / 100).toFixed(1); 
-				$classGroupBlock_p.eq(3).find("font").html(renewNum) // 可再生能源
+                    /* 可再生能源 */
+                    var renewNum = Number(data_1_val * _percent / 100).toFixed(1); //可再生能源计算公式 
+                    $classGroupBlock_p.eq(3).find("font").html(renewNum) // 可再生能源值
+                    $classGroupBlock_p.eq(3).find("span").html(data_2_unit)//可再生能源单位
 
 				}
-                var renewNum1 = Number(data_1_val * 87.9 / 100).toFixed(1); // 因为系统能效固定87.9 
-
-				myCharts.setOption(chartOPT)
+				myCharts.setOption(chartOPT); //圆环生成
 				
                 //console.log(data_1_val)
 				$classGroupBlock_p.eq(0).html( data_1_name ) //名称第一行，如综合耗能
 				$classGroupBlock_p.eq(2).html( data_2_name ) //名称第三行，如综合供能，可再生能源
 				
-				$classGroupBlock_p.eq(1).find("font").html(data_1_val) //值第一行，如6 
+				$classGroupBlock_p.eq(1).find("font").html(data_1_val) //值第一行，无需公式计算 
 				$classGroupBlock_p.eq(1).find("span").html(data_1_unit) //单位第一行，如GJ
 				
 
-                if(index != 3 ){ // 除了第4个可再生能源 
-                    //$classGroupBlock_p.eq(3).find("font").html(data_2_val)
-                    $classGroupBlock_p.eq(3).find("font").html(renewNum1) //综合供能和可再生能源
-                    $classGroupBlock_p.eq(3).find("span").html(data_2_unit)
-                }
-				//$classGroupBlock_p.eq(3).find("span").html(data_1_unit)
 				
 			}
 			
@@ -2788,12 +2789,16 @@ if(json_a[0][0].list == null)  json_a[0][0].list = [{'rectime':'0','data':'0'},{
 				var colsdata02 = [];
 				var piedata = [];
 				var piedata2 = [];
+
+
 				$.each(json_a[0][0].costdatas, function(index,data) {
 					xAxisdata[index] = data.rectime;
-					colsdata01[index] = filterUnit(data.data); //万分位过滤
+					colsdata01[index] = data.data; 
 				});
+
+
 				$.each(json_a[0][0].incomedatas, function(index,data) {
-					colsdata02[index] = filterUnit(data.data); // 万分位过滤
+					colsdata02[index] = data.data; 
 				});
 				$.each(json_b[0], function(index,data) {
 					piedata[index] = {
@@ -2828,10 +2833,11 @@ if(json_a[0][0].list == null)  json_a[0][0].list = [{'rectime':'0','data':'0'},{
                 if(isWan == null) opt.yAxis[0].axisLabel.formatter = '￥{value}';  
                 else opt.yAxis[0].axisLabel.formatter = '￥{value}'+' 万';  
 
+
 				opt.xAxis[0].data = xAxisdata;
-				opt.series[0].data = colsdata01;
+				opt.series[0].data = filterUnit(colsdata01);//万分位过滤
 				opt.series[0].barWidth = 15;
-				opt.series[1].data = colsdata02;
+				opt.series[1].data =  filterUnit(colsdata02);//万分位过滤
 				opt.series[1].barWidth = 15;
 				opt.series[2].data = piedata;
 				opt.series[3].data = piedata2;
@@ -2990,15 +2996,42 @@ function dateAllShow() {
   dateDay.parents('.selector').show();
 }
 
+function getMaxOfArray(numArray) {
+    return Math.max.apply(null, numArray);
+}
+
 function filterUnit(dig) {// 过滤万分位
-    if(Number(dig) > 10000 || Number(dig) > 5000) { //必须保持相同水准，若千万混搭会出问题，故须留5K
-        isWan = 1;
-        return  Number(dig/10000).toFixed(1);//保留1位小数
+    var max = null
+      , flag = null
+      , newArray = []
+    if(Object.prototype.toString.call(dig) == '[object Array]') { //判断为array
+       max = getMaxOfArray(dig); 
+       flag = 1;
+    } else {
+        max = Number(dig);
+        flag = null;
+    }
+                
+
+    /*
+    */
+    if(Number(max) > 10000 ) { // max大于1W
+        isWan = 1; //全局flag
+        if(flag === 1) { // 是否为array
+           $.each(dig, function(index, value) {
+               newArray[index] = Number(value/10000).toFixed(1); //保留1位小数
+           }); 
+           
+            return  newArray;
+        } else {
+            return Number(dig/10000).toFixed(1); //保留1位小数
+        }
     }
     else {
         isWan = null;
         return dig;
     }
+
 }
 /**************end*************/
 };
